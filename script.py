@@ -84,6 +84,15 @@ Contrast (Luminance Contrast) is the relationship between the luminance
 of a brighter area of interest and that of an adjacent darker area.
 '''
 
+def HistogramArray(img_gray,gray_level=256):
+
+    #vectorization
+    gray_array=img_gray.ravel()
+    
+    gray_step=256/gray_level
+
+    return [int(item/gray_step) for item in list(gray_array)]
+        
 #------------------------------------------------------------------------------
 """
 Calculation of contrast with different mode
@@ -95,7 +104,7 @@ Args:
 Returns:
     contrast value
 """
-def Contrast(img_gray,contrast_mode):
+def GlobalContrast(img_gray,contrast_mode):
     
     #vectorization
     gray_array=img_gray.ravel()
@@ -124,18 +133,43 @@ def Contrast(img_gray,contrast_mode):
 
 #------------------------------------------------------------------------------
 """
-Calculation of contrast with different mode from global pixels
+Calculation of contrast with different mode with 5-Area
 
 Args:
     img_gray: matrix of gray img
-    contrast_mode: mode of contrast calculation ['Whittle','Simple','Michelson','RMS']
+    contrast_mode: mode of contrast calculation ['Whittle','Simple','Michelson','RMS','ANSI']
     
 Returns:
-    global contrast value
+    contrast value
 """
-def GlobalContrast(img_gray,contrast_mode):
+def Contrast(img_gray,contrast_mode):
     
-    return Contrast(img_gray,contrast_mode)
+    height,width=np.shape(img_gray)
+    
+    if contrast_mode=='ANSI':
+        
+        #size of img patch
+        patch_height=int(height/4)
+        patch_width=int(width/4)
+    
+        #list index
+        list_index_white=[[0,0],[0,2],[1,1],[1,3],[2,0],[2,2],[3,0],[3,2]]
+        list_index_black=[[0,1],[0,3],[1,0],[1,2],[2,1],[2,3],[3,1],[3,3]]
+
+        #list patch
+        list_patches_white=[img_gray[i*patch_height:(i+1)*patch_height,j*patch_width:(j+1)*patch_width] for i,j in list_index_white]
+        list_patches_black=[img_gray[i*patch_height:(i+1)*patch_height,j*patch_width:(j+1)*patch_width] for i,j in list_index_black]
+        
+        #B and W
+        white_average=np.average([np.average(this_patch.ravel()) for this_patch in list_patches_white])
+        black_average=np.average([np.average(this_patch.ravel()) for this_patch in list_patches_black])
+            
+        return white_average/black_average
+
+    else:
+        
+        return GlobalContrast(img_gray,contrast_mode)
+a=Contrast(img_gray,'ANSI')
 
 #------------------------------------------------------------------------------
 """
@@ -143,12 +177,12 @@ Plot contrast curve with pixel mode
 
 Args:
     img_gray: matrix of gray img
-    pixel_mode: mode of pixel ['Global','5-Area','16-Area']
+    pixel_mode: mode of pixel ['Global','5-Area']
     
 Returns:
     None
 """
-def ContrastCurve(img_gray,pixel_mode):
+def ContrastCurve(img_gray):
     
     #legned font
     legend_font={'family':'Gill Sans MT','weight':'normal','size':12}
@@ -159,8 +193,8 @@ def ContrastCurve(img_gray,pixel_mode):
     #annotation font
     title_font=FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=20)
     
-    list_contrast_mode=['Whittle','Simple','Michelson','RMS']
-    list_contrast_color=['b','g','r','c']
+    list_contrast_mode=['Whittle','Simple','Michelson','RMS','ANSI']
+    list_contrast_color=['b','g','r','c','y']
     
     fig,ax=plt.subplots(figsize=(10,6))
     
@@ -178,9 +212,7 @@ def ContrastCurve(img_gray,pixel_mode):
         
         for this_img_gray in list_imgs_gray:
         
-            if pixel_mode=='Global':
-                
-                list_contrast.append(GlobalContrast(this_img_gray,this_mode))
+            list_contrast.append(Contrast(this_img_gray,this_mode))
     
         #generalized contrast value
         list_generalized_contrast=[]
@@ -209,7 +241,7 @@ def ContrastCurve(img_gray,pixel_mode):
     #label fonts
     [this_label.set_fontname('Times New Roman') for this_label in labels]
         
-    plt.title(pixel_mode+' Contrast-VCM Code Curve',FontProperties=title_font)  
+    plt.title('Contrast-VCM Code Curve',FontProperties=title_font)  
     
     plt.xlabel('VCM Code',FontProperties=annotation_font)
     plt.ylabel('Contrast',FontProperties=annotation_font)
@@ -225,5 +257,7 @@ def ContrastCurve(img_gray,pixel_mode):
     ax.xaxis.set_minor_locator(MultipleLocator(x_major_step))
     ax.yaxis.set_major_locator(MultipleLocator(y_major_step))
     ax.yaxis.set_minor_locator(MultipleLocator(y_minor_step))
-
-ContrastCurve(img_gray,'Global')
+    
+'''better histogram'''
+#Histogram(img_bgr,img_gray)
+ContrastCurve(img_gray)
