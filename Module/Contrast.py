@@ -117,7 +117,7 @@ def GlobalContrast(img_gray,contrast_mode):
     if contrast_mode=='SD':
         
         SD=np.sum(P*np.square(L-Lm))
-        
+
         return SD
         
     #standard deviation of logarithm of luminance
@@ -227,14 +227,13 @@ Args:
     img_gray: matrix of gray img
     contrast_mode: mode of contrast calculation ['Whittle','Simple','Michelson','RMS',
                                                  'SD','SDLG','SAM','SALGM','SAW','SALGW']
+    weight: weight list: 1st is the center the others are the neighbor
+    factor: module shrink factor 
     
 Returns:
     contrast value
 """
-def Contrast5Area(img_gray,contrast_mode):
-    
-    #shrink factor
-    window_size_factor=20
+def Contrast5Area(img_gray,contrast_mode,weight,factor):
     
     height,width=np.shape(img_gray)
     
@@ -269,11 +268,11 @@ def Contrast5Area(img_gray,contrast_mode):
                        [ height/2, width/2]]
         
         #size of area
-        area_half_height,area_half_width=int(np.shape(img_gray)[0]/window_size_factor),int(np.shape(img_gray)[1]/window_size_factor)
+        area_half_height,area_half_width=int(np.shape(img_gray)[0]/factor),int(np.shape(img_gray)[1]/factor)
         
         #calculate contrast in each area
         list_contrast_5_areas=[]
-        list_weight_5_areas=[0.14,0.14,0.14,0.14,0.44]
+#        list_weight_5_areas=[0.14,0.14,0.14,0.14,0.44]
 #        list_weight_5_areas=[0.16,0.16,0.16,0.16,0.36]
 #        list_weight_5_areas=[0.2,0.2,0.2,0.2,0.2]
         
@@ -289,20 +288,66 @@ def Contrast5Area(img_gray,contrast_mode):
 #        print(list_contrast_5_areas)
 #        print(np.array(list_weight_5_areas)*np.array(list_contrast_5_areas))
         
-        return np.sum(np.array(list_weight_5_areas)*np.array(list_contrast_5_areas))
+        return np.sum(np.array(weight)*np.array(list_contrast_5_areas))
 
+#------------------------------------------------------------------------------
+"""
+Calculation block module of an img the centers of img and module are the same 
+
+Args:
+    img_gray: matrix of gray img
+    ratio: size proportion module/img (default: 0.8)
+    
+Returns:
+    block module matrix
+"""
+def BlockModule(img_gray,ratio=0.8):
+        
+    height,width=np.shape(img_gray)
+    
+    #center of module
+    center=[int(np.round(height/2)),int(np.round(width/2))]
+    
+    #size of module
+    half_height_module=int(np.round(ratio*height/2))
+    half_width_module=int(np.round(ratio*width/2))
+    
+    return img_gray[center[0]-half_height_module:center[0]+half_height_module,
+                    center[1]-half_width_module:center[1]+half_width_module]
+    
+#------------------------------------------------------------------------------
+"""
+Calculation of contrast with different mode with block module
+
+Args:
+    img_gray: matrix of gray img
+    contrast_mode: mode of contrast calculation ['Whittle','Simple','Michelson','RMS',
+                                                 'SD','SDLG','SAM','SALGM','SAW','SALGW']
+    ratio: size proportion module/img (default: 0.8)
+    
+Returns:
+    contrast value
+"""
+def ContrastBlockModule(img_gray,contrast_mode,ratio=0.8):
+    
+    return GlobalContrast(BlockModule(img_gray,ratio),contrast_mode)
+    
 #------------------------------------------------------------------------------
 """
 Plot contrast curve with pixel mode
 
 Args:
     imgs_folder: images folder   
-    mode: contrast series ['Constant','Standard Deviation']
+    series_mode: contrast series ['Constant','Standard Deviation']
+    view_mode: view of img ['5-Area','Block Module']
+    ratio: size proportion module/img in 'Block Module' mode
+    weight: weight list in '5-Area' mode
+    factor: module shrink factor in '5-Area' mode
     
 Returns:
     None
 """
-def ContrastCurve(imgs_folder,mode):
+def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,0.14,0.14,0.14],factor=20):
     
     list_imgs_bgr,list_imgs_gray,list_VCM_code=Im.BatchImport(imgs_folder)     
  
@@ -329,11 +374,11 @@ def ContrastCurve(imgs_folder,mode):
                          'mediumslateblue',]
     
     #map between mode and color
-    if mode=='Constant':
+    if series_mode=='Constant':
     
         map_mode_color=dict(zip(list_contrast_mode[:4],list_contrast_color[:4]))
         
-    if mode=='Standard Deviation':
+    if series_mode=='Standard Deviation':
     
         map_mode_color=dict(zip(list_contrast_mode[4:],list_contrast_color[4:]))
         
@@ -353,7 +398,13 @@ def ContrastCurve(imgs_folder,mode):
         
         for this_img_gray in list_imgs_gray:
 
-            list_contrast.append(Contrast5Area(this_img_gray,this_mode))
+            if view_mode=='5-Area':
+            
+                list_contrast.append(Contrast5Area(this_img_gray,this_mode,weight,factor))
+                
+            if view_mode=='Block Module':
+            
+                list_contrast.append(ContrastBlockModule(this_img_gray,this_mode,ratio))
                 
         #generalized contrast value
         list_normalized_contrast=[]
