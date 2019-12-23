@@ -19,3 +19,5 @@ sys.path=list(set(sys.path))
 import Path as Pa
 import Import as Im
 import Contrast as Con
+import Histogram as Hist
+import Experiment as Exp

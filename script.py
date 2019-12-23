@@ -21,155 +21,48 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import MultipleLocator
 from matplotlib.font_manager import FontProperties
 
-        
-#plt.imshow(img_gray,cmap='gray')
-#cv2.imshow('gray',img_gray)
-
 imgs_folder=r'C:\Users\Administrator\Desktop\Ink_Step50'
- 
-Con.ContrastCurve(imgs_folder,'Constant','Block Module',ratio=0.2)
-#Con.ContrastCurve(imgs_folder,'Standard Deviation','Block Module',ratio=0.2)
-
-#img_gray=Im.BatchImport(imgs_folder)[1][10]
-
 output_folder=r'C:\Users\Administrator\Desktop\Contrast'
-
-#annotation font
-annotation_font=FontProperties(fname="C:\Windows\Fonts\GILI____.ttf",size=16)
-
-#------------------------------------------------------------------------------
-"""
-Experiment: block module size factor
-
-Args:
-    imgs_folder: images folder  
-    output_folder: figs output_folder
-
-Returns:
-    None
-"""
-def ExperimentBlockModuleRatio(imgs_folder,output_folder):
-    
-    final_folder=output_folder+'\\Block Module\\Ratio\\'
-    
-    #construct a folder
-    Pa.GenerateFolder(final_folder)   
-    
-    #ratio 0.1-0.9 step is 0.1
-    for k in range(1,10):
-        
-        this_ratio=0.1*k
-        
-        '''Constant'''
-        #plot curve
-        Con.ContrastCurve(imgs_folder,'Constant','Block Module',ratio=this_ratio)
-    
-        #add annotation
-        plt.text(0,1,'Block Module Ratio: %.1f'%(this_ratio),FontProperties=annotation_font)
-        plt.savefig(final_folder+str(k)+' (Constant).png')
-        plt.close()
-        
-#        '''Standard Deviation'''
-#        #plot curve
-#        Con.ContrastCurve(imgs_folder,'Standard Deviation','Block Module',ratio=this_ratio)
-#    
-#        #add annotation
-#        plt.text(0,1,'Block Module Ratio: %.1f'%(this_ratio),FontProperties=annotation_font)
-#        plt.savefig(final_folder+str(k)+' (Standard Deviation).png')
-#        plt.close()
-        
-#------------------------------------------------------------------------------
-"""
-Experiment: weight in 5 area method
-
-Args:
-    imgs_folder: images folder  
-    output_folder: figs output_folder
-
-Returns:
-    None
-"""
-def Experiment5AreaWeight(imgs_folder,output_folder):
-    
-    final_folder=output_folder+'\\5-Area\\Weight\\'
-    
-    #construct a folder
-    Pa.GenerateFolder(final_folder)   
-    
-    #ratio 0.1-0.9 step is 0.1
-    for k in range(1,10):
-        
-        center_weight=0.16+0.04*k
-        
-        this_weight=[center_weight]+4*[(1-center_weight)/4]
-        
-#        print(this_weight)
-        
-        '''Constant'''
-        #plot curve
-        Con.ContrastCurve(imgs_folder,'Constant','5-Area',weight=this_weight)
-    
-        #add annotation
-        plt.text(0,1,'5-Area Weight: %.2f-%.2f'%(this_weight[0],this_weight[1]),FontProperties=annotation_font)
-        plt.savefig(final_folder+str(k)+' (Constant).png')
-        plt.close()
-        
-#        '''Standard Deviation'''
-#        #plot curve
-#        Con.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',weight=this_weight)
-#    
-#        #add annotation
-#        plt.text(0,1,'5-Area Weight: %.2f-%.2f'%(this_weight[0],this_weight[1]),FontProperties=annotation_font)
-#        plt.savefig(final_folder+str(k)+' (Standard Deviation).png')
-#        plt.close()
-        
-#------------------------------------------------------------------------------
-"""
-Experiment: 5 area module factor
-
-Args:
-    imgs_folder: images folder  
-    output_folder: figs output_folder
-
-Returns:
-    None
-"""
-def Experiment5AreaFactor(imgs_folder,output_folder):
-    
-    final_folder=output_folder+'\\5-Area\\Factor\\'
-    
-    #construct a folder
-    Pa.GenerateFolder(final_folder)   
-    
-    #ratio 0.1-0.9 step is 0.1
-    for k in range(1,10):
-         
-        this_factor=10+2*k
-        
-#        print(this_weight)
-        
-        '''Constant'''
-        #plot curve
-        Con.ContrastCurve(imgs_folder,'Constant','5-Area',factor=this_factor)
-    
-        #add annotation
-        plt.text(0,1,'5-Area Factor: %d'%this_factor,FontProperties=annotation_font)
-        plt.savefig(final_folder+str(k)+' (Constant).png')
-        plt.close()
-        
-#        '''Standard Deviation'''
-#        #plot curve
-#        Con.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',factor=this_factor)
-#    
-#        #add annotation
-#        plt.text(0,1,'5-Area Factor: %d'%this_factor,FontProperties=annotation_font)
-#        plt.savefig(final_folder+str(k)+' (Standard Deviation).png')
-#        plt.close()
-        
-#ExperimentBlockModuleRatio(imgs_folder,output_folder)
-#Experiment5AreaWeight(imgs_folder,output_folder)
-#Experiment5AreaFactor(imgs_folder,output_folder)
+   
+#Exp.ExperimentBlockModuleRatio(imgs_folder,output_folder)
+#Exp.Experiment5AreaWeight(imgs_folder,output_folder)
+#Exp.Experiment5AreaFactor(imgs_folder,output_folder)
 
 '''find the best one'''
 '''criteria of Critiria and Algorithm from DB or photos'''
 '''change the histogram'''
+
+#img_gray=Im.BatchImport(imgs_folder)[1][10]
+#
+#equ = cv2.equalizeHist(img_gray)
+#
+#Hist.GrayHistogramCurve(img_gray)
+#
+#Hist.GrayHistogramCurve(equ)
+
+#img_rgb=Im.BatchImport(imgs_folder)[0][10]
+
+all_mode_normalized_contrast=Con.ContrastCurve(imgs_folder,'Constant','5-Area')
+#Con.ContrastCurve(imgs_folder,'Standard Deviation','Block Module',ratio=0.2)
+
+#plt.imshow(img_gray,cmap='gray')
+#cv2.imshow('gray',img_gray)
+
+'''operate all mode normalized contrast'''
+#weight depends on different contrast mode which relates to gray distribution
+all_mode_weight=[1/len(all_mode_normalized_contrast)]*len(all_mode_normalized_contrast)
+all_mode_max_index=[]
+
+for this_list_normalized_contrast in all_mode_normalized_contrast:
+    
+    #sum of consecutive 3 element
+    this_list_tri_sum=[]
+    
+    for k in range(1,len(this_list_normalized_contrast)-1):
+        
+        this_list_tri_sum.append(np.average(this_list_normalized_contrast[k-1:k+2]))
+        
+    all_mode_max_index.append(this_list_tri_sum.index(np.max(this_list_tri_sum))+1)
+
+'''plot the bound'''
+print(np.sum(np.array(all_mode_weight)*np.array(all_mode_max_index)))

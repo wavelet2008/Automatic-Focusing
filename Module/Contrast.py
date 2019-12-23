@@ -328,7 +328,7 @@ Args:
 Returns:
     contrast value
 """
-def ContrastBlockModule(img_gray,contrast_mode,ratio=0.8):
+def ContrastBlockModule(img_gray,contrast_mode,ratio):
     
     return GlobalContrast(BlockModule(img_gray,ratio),contrast_mode)
     
@@ -345,7 +345,7 @@ Args:
     factor: module shrink factor in '5-Area' mode
     
 Returns:
-    None
+    normalized contrast list of all contrast mode
 """
 def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,0.14,0.14,0.14],factor=20):
     
@@ -387,6 +387,9 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,
     #total value for plot
     total_normalized_contrast=[]
     
+    #normalized contrast list of all contrast mode
+    all_mode_normalized_contrast=[]
+    
     for k in range(len(map_mode_color)):
         
         #color of this mode
@@ -398,6 +401,9 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,
         
         for this_img_gray in list_imgs_gray:
 
+            #histogram equalization
+#            this_img_gray=cv2.equalizeHist(this_img_gray)
+            
             if view_mode=='5-Area':
             
                 list_contrast.append(Contrast5Area(this_img_gray,this_mode,weight,factor))
@@ -405,17 +411,24 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,
             if view_mode=='Block Module':
             
                 list_contrast.append(ContrastBlockModule(this_img_gray,this_mode,ratio))
-                
+
         #generalized contrast value
         list_normalized_contrast=[]
         
-        for this_contrast in list_contrast:
+        if np.min(list_contrast)==np.max(list_contrast):
             
-            '''Normalization'''
-            list_normalized_contrast.append((this_contrast-np.min(list_contrast))/(np.max(list_contrast)-np.min(list_contrast)))
+            list_normalized_contrast=[1]*len(list_contrast)
+            
+        else:
+                
+            for this_contrast in list_contrast:
+                
+                '''Normalization'''
+                list_normalized_contrast.append((this_contrast-np.min(list_contrast))/(np.max(list_contrast)-np.min(list_contrast)))
          
         #collect the generalized contrast list
         total_normalized_contrast+=list_normalized_contrast
+        all_mode_normalized_contrast.append(list_normalized_contrast)
         
         plt.plot(list_VCM_code,
                  list_normalized_contrast,
@@ -425,7 +438,7 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,
                  linestyle='-',
                  label=this_mode)
         
-        plt.legend(prop=legend_font)
+        plt.legend(prop=legend_font,loc='lower right')
 #        
 #        print(list_contrast)
 #        print(list_generalized_contrast)
@@ -454,3 +467,4 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,
     ax.yaxis.set_major_locator(MultipleLocator(y_major_step))
     ax.yaxis.set_minor_locator(MultipleLocator(y_minor_step))
     
+    return all_mode_normalized_contrast
