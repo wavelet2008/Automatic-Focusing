@@ -20,14 +20,11 @@ from matplotlib.font_manager import FontProperties
 import Import as Im
 import Histogram as His
 
-#legned font
-legend_font={'family':'Gill Sans MT','weight':'normal','size':12}
-
-#title font
-annotation_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=16)
-
-#annotation font
-title_font=FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=20)
+#font of fonts of all kinds
+legend_prop={'family':'Gill Sans MT','weight':'normal','size':12}
+text_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=14)
+label_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=16)
+title_font=FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=18)
 
 '''
 Contrast (Luminance Contrast) is the relationship between the luminance
@@ -77,6 +74,7 @@ def GlobalContrast(img_gray,contrast_mode):
         return np.average(np.square(np.array(gray_array)-gray_average))
     
     '''Standard Deviation'''
+    """Essay: The standard deviation of luminance as a metric for contrast in random-dot images"""
     #for frequency calculation
     pixel_amount=len(list(img_gray.ravel()))
     
@@ -96,7 +94,7 @@ def GlobalContrast(img_gray,contrast_mode):
 #    range_gray_level=np.max(list_gray_level)-np.min(list_gray_level)
     
     #average value of luminance
-    average_gray_level=np.sum(list_gray_level*list_frequency)
+    average_gray_level=np.sum(list_gray_level.ravel()*list_frequency.ravel())
     
 #    print(list_gray_level)
 #    print(list_frequency)
@@ -112,6 +110,8 @@ def GlobalContrast(img_gray,contrast_mode):
 #    R=cp.deepcopy(range_gray_level)
     
 #    print(Li,Pi)
+#    print(np.sum(L*P))
+#    print(Lm)
     
     #standard deviation
     if contrast_mode=='SD':
@@ -338,7 +338,7 @@ Plot contrast curve with pixel mode
 
 Args:
     imgs_folder: images folder   
-    series_mode: contrast series ['Constant','Standard Deviation']
+    series_mode: contrast series ['Constant','Standard Deviation','both']
     view_mode: view of img ['5-Area','Block Module']
     ratio: size proportion module/img in 'Block Module' mode
     weight: weight list in '5-Area' mode
@@ -347,8 +347,9 @@ Args:
 Returns:
     normalized contrast list of all contrast mode
 """
-def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,0.14,0.14,0.14],factor=20):
+def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.1,weight=[0.44,0.14,0.14,0.14,0.14],factor=18):
     
+    #fetch the inpuy img data
     list_imgs_bgr,list_imgs_gray,list_VCM_code=Im.BatchImport(imgs_folder)     
  
     list_contrast_mode=['Whittle',
@@ -381,6 +382,10 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,
     if series_mode=='Standard Deviation':
     
         map_mode_color=dict(zip(list_contrast_mode[4:],list_contrast_color[4:]))
+        
+    if series_mode=='both':
+        
+        map_mode_color=dict(zip(list_contrast_mode,list_contrast_color))
         
     fig,ax=plt.subplots(figsize=(10,6))
     
@@ -438,11 +443,25 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,
                  linestyle='-',
                  label=this_mode)
         
-        plt.legend(prop=legend_font,loc='lower right')
+        plt.legend(prop=legend_prop,loc='upper right')
 #        
 #        print(list_contrast)
 #        print(list_generalized_contrast)
         
+        '''find the best VCM code'''
+#        #sum of consecutive 3 element
+#        this_list_tri_sum=[]
+#        
+#        for kk in range(1,len(list_normalized_contrast)-1):
+#            
+#            this_list_tri_sum.append(np.average(list_normalized_contrast[kk-1:kk+2]))
+#            
+#        index_max=int(this_list_tri_sum.index(np.max(this_list_tri_sum))+1)
+#
+#        '''plot the bound lines'''    
+#        plt.vlines(list_VCM_code[index_max-1],-0.05,1.05,color='dimgray',linestyles="--")
+#        plt.vlines(list_VCM_code[index_max+1],-0.05,1.05,color='dimgray',linestyles="--")
+#    
     #set ticks
     plt.tick_params(labelsize=12)
     labels = ax.get_xticklabels() + ax.get_yticklabels()
@@ -452,14 +471,14 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,
         
     plt.title('Contrast-VCM Code Curve',FontProperties=title_font)  
     
-    plt.xlabel('VCM Code',FontProperties=annotation_font)
-    plt.ylabel('Contrast',FontProperties=annotation_font)
+    plt.xlabel('VCM Code',FontProperties=label_font)
+    plt.ylabel('Contrast',FontProperties=label_font)
     
     #tick step
     x_major_step=50
     x_minor_step=25
-    y_major_step=(max(total_normalized_contrast)-min(total_normalized_contrast))/10
-    y_minor_step=(max(total_normalized_contrast)-min(total_normalized_contrast))/20
+    y_major_step=0.1
+    y_minor_step=0.05
     
     #set locator
     ax.xaxis.set_major_locator(MultipleLocator(x_major_step))
@@ -467,4 +486,15 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.2,weight=[0.44,0.14,
     ax.yaxis.set_major_locator(MultipleLocator(y_major_step))
     ax.yaxis.set_minor_locator(MultipleLocator(y_minor_step))
     
-    return all_mode_normalized_contrast
+    #boundary
+    plt.ylim([-0.05,1.05])
+    plt.xlim([-24,1024])
+    
+    #add annotation
+    if view_mode=='5-Area':
+        
+        plt.text(0,1,'5-Area Factor: %d Weight: %.2f-%.2f'%(factor,weight[0],weight[1]),FontProperties=text_font)
+           
+    if view_mode=='Block Module':
+        
+        plt.text(0,1,'Block Module Ratio: %.1f'%(ratio),FontProperties=text_font)

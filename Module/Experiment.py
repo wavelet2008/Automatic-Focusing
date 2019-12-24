@@ -46,9 +46,7 @@ def ExperimentBlockModuleRatio(imgs_folder,output_folder,both_series=False):
         '''Constant'''
         #plot curve
         Con.ContrastCurve(imgs_folder,'Constant','Block Module',ratio=this_ratio)
-    
-        #add annotation
-        plt.text(0,1,'Block Module Ratio: %.1f'%(this_ratio),FontProperties=annotation_font)
+
         plt.savefig(final_folder+str(k)+' (Constant).png')
         plt.close()
         
@@ -58,8 +56,6 @@ def ExperimentBlockModuleRatio(imgs_folder,output_folder,both_series=False):
             #plot curve
             Con.ContrastCurve(imgs_folder,'Standard Deviation','Block Module',ratio=this_ratio)
         
-            #add annotation
-            plt.text(0,1,'Block Module Ratio: %.1f'%(this_ratio),FontProperties=annotation_font)
             plt.savefig(final_folder+str(k)+' (Standard Deviation).png')
             plt.close()
         
@@ -95,8 +91,6 @@ def Experiment5AreaWeight(imgs_folder,output_folder,both_series=False):
         #plot curve
         Con.ContrastCurve(imgs_folder,'Constant','5-Area',weight=this_weight)
     
-        #add annotation
-        plt.text(0,1,'5-Area Weight: %.2f-%.2f'%(this_weight[0],this_weight[1]),FontProperties=annotation_font)
         plt.savefig(final_folder+str(k)+' (Constant).png')
         plt.close()
         
@@ -106,8 +100,6 @@ def Experiment5AreaWeight(imgs_folder,output_folder,both_series=False):
             #plot curve
             Con.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',weight=this_weight)
         
-            #add annotation
-            plt.text(0,1,'5-Area Weight: %.2f-%.2f'%(this_weight[0],this_weight[1]),FontProperties=annotation_font)
             plt.savefig(final_folder+str(k)+' (Standard Deviation).png')
             plt.close()
         
@@ -141,8 +133,6 @@ def Experiment5AreaFactor(imgs_folder,output_folder,both_series=False):
         #plot curve
         Con.ContrastCurve(imgs_folder,'Constant','5-Area',factor=this_factor)
     
-        #add annotation
-        plt.text(0,1,'5-Area Factor: %d'%this_factor,FontProperties=annotation_font)
         plt.savefig(final_folder+str(k)+' (Constant).png')
         plt.close()
         
@@ -152,7 +142,5 @@ def Experiment5AreaFactor(imgs_folder,output_folder,both_series=False):
             #plot curve
             Con.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',factor=this_factor)
         
-            #add annotation
-            plt.text(0,1,'5-Area Factor: %d'%this_factor,FontProperties=annotation_font)
             plt.savefig(final_folder+str(k)+' (Standard Deviation).png')
             plt.close()
