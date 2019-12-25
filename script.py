@@ -24,12 +24,12 @@ from matplotlib.font_manager import FontProperties
 imgs_folder=r'C:\Users\Administrator\Desktop\Ink_Step50'
 output_folder=r'C:\Users\Administrator\Desktop\Contrast'
    
-Exp.ExperimentBlockModuleRatio(imgs_folder,output_folder)
-Exp.Experiment5AreaWeight(imgs_folder,output_folder)
-Exp.Experiment5AreaFactor(imgs_folder,output_folder)
+#Exp.ExperimentBlockModuleRatio(imgs_folder,output_folder,1)
+#Exp.Experiment5AreaWeight(imgs_folder,output_folder,1)
+#Exp.Experiment5AreaFactor(imgs_folder,output_folder,1)
 
-#img_gray=Im.BatchImport(imgs_folder)[1][10]
-#plt.imshow(img_gray,cmap='gray')
+img_gray=Im.BatchImport(imgs_folder)[1][10]
+plt.imshow(img_gray,cmap='gray')
 #cv2.imshow('gray',img_gray)
 
 '''criteria of Critiria and Algorithm from DB or photos'''
