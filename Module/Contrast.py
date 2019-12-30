@@ -19,6 +19,7 @@ from matplotlib.font_manager import FontProperties
 
 import Import as Im
 import Histogram as His
+import Discrimination as Dis
 
 #font of fonts of all kinds
 legend_prop={'family':'Gill Sans MT','weight':'normal','size':12}
@@ -48,31 +49,70 @@ def GlobalContrast(img_gray,contrast_mode):
     
     '''Constant'''
     #vectorization
-    gray_array=His.HistogramArray(img_gray,amount_gray_level)
-#    gray_array=img_gray.ravel()
+#    gray_array=His.HistogramArray(img_gray,amount_gray_level)
+    gray_array=img_gray.ravel()
     
-    L_max=np.max(gray_array)
-    L_min=np.min(gray_array)
+    #luminance of background and foreground
+    L_b,L_f=Dis.ForeAndBackLuminance(img_gray)
+
+    #maximum and minimum of luminance
+    L_max,L_min=np.max(gray_array),np.min(gray_array)
     
+    '''King-Smith and Kulikowski (1975)'''
+    if contrast_mode=='KK':
+        
+        return L_max-L_min
+    
+    '''Burkhardt (1984)'''
+    if contrast_mode=='Burkhardt':
+        
+        return (L_max-L_min)/L_max
+    
+    '''Whittle (1986)'''
     if contrast_mode=='Whittle':
         
         return (L_max-L_min)/L_min
     
-    if contrast_mode=='Simple':
-        
-        return L_max/L_min
-    
+    '''Michelson (1927)'''
     if contrast_mode=='Michelson':
         
         return (L_max-L_min)/(L_max+L_min)
     
-    if contrast_mode=='RMS':
+    '''Peli (1990)'''
+    if contrast_mode=='Peli':
         
         #mean value of img gray
-        gray_average=np.average(gray_array)
+        gray_average=np.average(img_gray.ravel())
         
         return np.average(np.square(np.array(gray_array)-gray_average))
     
+    '''Weber'''
+    if contrast_mode=='Weber':
+        
+        return np.abs(L_f-L_b)/L_b
+    
+    '''Boccignone'''
+    if contrast_mode=='Boccignone':
+        
+        return np.log(L_f/L_b)
+    
+    '''WSC'''
+    if contrast_mode=='WSC':
+        
+        return (L_max+0.05)/(L_min+0.05)
+    
+    '''Stevens'''
+    if contrast_mode=='Stevens':
+        
+        #filter the matrix
+        img_gray_S=116*(img_gray/255)**(1/3)-16
+        
+        #foreground and background luminance
+        '''histogram calculated from np.uint8 matrix'''
+        L_b_S,L_f_S=Dis.ForeAndBackLuminance(img_gray_S.astype(np.uint8))
+        
+        return np.abs(L_b_S-L_f_S)
+        
     '''Standard Deviation'''
     """Essay: The standard deviation of luminance as a metric for contrast in random-dot images"""
     #for frequency calculation
@@ -113,14 +153,14 @@ def GlobalContrast(img_gray,contrast_mode):
 #    print(np.sum(L*P))
 #    print(Lm)
     
-    #standard deviation
+    '''standard deviation'''
     if contrast_mode=='SD':
         
         SD=np.sum(P*np.square(L-Lm))
 
         return SD
         
-    #standard deviation of logarithm of luminance
+    '''standard deviation of logarithm of luminance'''
     if contrast_mode=='SDLG':
         
         '''np.log() stands for ln() in mathamatics'''
@@ -135,7 +175,7 @@ def GlobalContrast(img_gray,contrast_mode):
         
         return SDLG
         
-    #space-average of Michelson contrast
+    '''space-average of Michelson contrast'''
     if contrast_mode=='SAM':
         
         SAM=0
@@ -156,7 +196,7 @@ def GlobalContrast(img_gray,contrast_mode):
             
         return SAM
     
-    #space-average logarithm of Michelson contrast
+    '''space-average logarithm of Michelson contrast'''
     if contrast_mode=='SALGM':
         
         SALGM=0
@@ -177,7 +217,7 @@ def GlobalContrast(img_gray,contrast_mode):
             
         return SALGM
 
-    #space-average of Whittle contrast
+    '''space-average of Whittle contrast'''
     if contrast_mode=='SAW':
         
         SAW=0
@@ -198,7 +238,7 @@ def GlobalContrast(img_gray,contrast_mode):
             
         return SAW
     
-    #space-average logarithm of Whittle contrast
+    '''space-average logarithm of Whittle contrast'''
     if contrast_mode=='SALGW':
         
         SALGW=0
@@ -225,15 +265,23 @@ Calculation of contrast with different mode with 5-Area
 
 Args:
     img_gray: matrix of gray img
-    contrast_mode: mode of contrast calculation ['Whittle','Simple','Michelson','RMS',
+    contrast_mode: mode of contrast calculation ['KK','Whittle','Burkhardt','Michelson',
+                                                 'Peli','WSC','Weber','Stevens','Boccignone',
                                                  'SD','SDLG','SAM','SALGM','SAW','SALGW']
-    weight: weight list: 1st is the center the others are the neighbor
-    factor: module shrink factor 
+    ROI_weight: weight list: 1st is the center the others are the neighbor
+    zoom_factor: module zoom factor 
     
 Returns:
     contrast value
 """
-def Contrast5Area(img_gray,contrast_mode,weight,factor):
+def Contrast5Area(img_gray,
+                  contrast_mode,
+                  ROI_weight,
+                  zoom_factor):
+    
+    print('')
+    print('-- Contrast 5-Area')
+    print('->',contrast_mode)
     
     height,width=np.shape(img_gray)
     
@@ -268,7 +316,8 @@ def Contrast5Area(img_gray,contrast_mode,weight,factor):
                        [ height/2, width/2]]
         
         #size of area
-        area_half_height,area_half_width=int(np.shape(img_gray)[0]/factor),int(np.shape(img_gray)[1]/factor)
+        area_half_height=int(np.shape(img_gray)[0]/zoom_factor)
+        area_half_width=int(np.shape(img_gray)[1]/zoom_factor)
         
         #calculate contrast in each area
         list_contrast_5_areas=[]
@@ -288,7 +337,7 @@ def Contrast5Area(img_gray,contrast_mode,weight,factor):
 #        print(list_contrast_5_areas)
 #        print(np.array(list_weight_5_areas)*np.array(list_contrast_5_areas))
         
-        return np.sum(np.array(weight)*np.array(list_contrast_5_areas))
+        return np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas))
 
 #------------------------------------------------------------------------------
 """
@@ -321,7 +370,8 @@ Calculation of contrast with different mode with block module
 
 Args:
     img_gray: matrix of gray img
-    contrast_mode: mode of contrast calculation ['Whittle','Simple','Michelson','RMS',
+    contrast_mode: mode of contrast calculation ['KK','Whittle','Burkhardt','Michelson',
+                                                 'Peli','WSC','Weber','Stevens','Boccignone',
                                                  'SD','SDLG','SAM','SALGM','SAW','SALGW']
     ratio: size proportion module/img (default: 0.8)
     
@@ -337,56 +387,72 @@ def ContrastBlockModule(img_gray,contrast_mode,ratio):
 Plot contrast curve with pixel mode
 
 Args:
-    imgs_folder: images folder   
-    series_mode: contrast series ['Constant','Standard Deviation','both']
-    view_mode: view of img ['5-Area','Block Module']
-    ratio: size proportion module/img in 'Block Module' mode
-    weight: weight list in '5-Area' mode
-    factor: module shrink factor in '5-Area' mode
+    list_imgs_folder: images folder list
+    series_mode: contrast series ['Constant','Advanced','Standard Deviation'] (default: 'Constant')
+    view_mode: view of img ['5-Area','Block Module'] (default: '5-Area')
+    ratio: size proportion module/img in 'Block Module' mode (default: 0.1)
+    ROI_weight: weight list in '5-Area' mode (default: [0.44,0.14,0.14,0.14,0.14])
+    zoom_factor: module zoom factor in '5-Area' mode (default: 18)
     
 Returns:
     normalized contrast list of all contrast mode
 """
-def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.1,weight=[0.44,0.14,0.14,0.14,0.14],factor=18):
+def ContrastCurve(list_imgs_folder,
+                  series_mode='Constant',
+                  view_mode='5-Area',
+                  ratio=0.1,
+                  ROI_weight=[0.44,0.14,0.14,0.14,0.14],
+                  zoom_factor=18):
     
     #fetch the inpuy img data
-    list_imgs_bgr,list_imgs_gray,list_VCM_code=Im.BatchImport(imgs_folder)     
- 
-    list_contrast_mode=['Whittle',
-                        'Simple',
-                        'Michelson',
-                        'RMS',
-                        'SD',
-                        'SDLG',
-                        'SAM',
-                        'SALGM',
-                        'SAW',
-                        'SALGW']
-        
-    list_contrast_color=['slategray',
-                         'steelblue',
-                         'rosybrown',
-                         'maroon',
-                         'lightsalmon',
-                         'thistle',
-                         'mediumturquoise',
-                         'orchid',
-                         'tan',
-                         'mediumslateblue',]
+#    list_imgs_bgr,list_imgs_gray,list_VCM_code=Im.BatchImages(list_imgs_folder[0])     
+    list_imgs_bgr,list_imgs_gray,list_VCM_code=Im.CombineImages(list_imgs_folder)
     
-    #map between mode and color
     if series_mode=='Constant':
-    
-        map_mode_color=dict(zip(list_contrast_mode[:4],list_contrast_color[:4]))
+        
+        list_contrast_mode=['KK',
+                            'Whittle',
+                            'Burkhardt',
+                            'Michelson']
+        
+        list_contrast_color=['rosybrown',
+                             'slategray',
+                             'steelblue',
+                             'maroon']
+        
+    if series_mode=='Advanced':
+        
+        list_contrast_mode=['Peli',
+                            'WSC',
+                            'Weber',
+                            'Stevens',
+                            'Boccignone']
+        
+        list_contrast_color=['olive',
+                             'teal',
+                             'slateblue',
+                             'firebrick',
+                             'chocolate']
         
     if series_mode=='Standard Deviation':
+        
+        list_contrast_mode=['SD',
+                            'SDLG',
+                            'SAM',
+                            'SALGM',
+                            'SAW',
+                            'SALGW']
+        
+        list_contrast_color=['tan',
+                             'orchid',
+                             'thistle',
+                             'lightsalmon',
+                             'mediumturquoise',
+                             'mediumslateblue']
+        
+    #map between mode and color     
+    map_mode_color=dict(zip(list_contrast_mode,list_contrast_color))  
     
-        map_mode_color=dict(zip(list_contrast_mode[4:],list_contrast_color[4:]))
-        
-    if series_mode=='both':
-        
-        map_mode_color=dict(zip(list_contrast_mode,list_contrast_color))
-        
     fig,ax=plt.subplots(figsize=(10,6))
     
     #total value for plot
@@ -411,7 +477,7 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.1,weight=[0.44,0.14,
             
             if view_mode=='5-Area':
             
-                list_contrast.append(Contrast5Area(this_img_gray,this_mode,weight,factor))
+                list_contrast.append(Contrast5Area(this_img_gray,this_mode,ROI_weight,zoom_factor))
                 
             if view_mode=='Block Module':
             
@@ -443,7 +509,7 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.1,weight=[0.44,0.14,
                  linestyle='-',
                  label=this_mode)
         
-        plt.legend(prop=legend_prop,loc='upper right')
+        plt.legend(prop=legend_prop,loc='lower right')
 #        
 #        print(list_contrast)
 #        print(list_generalized_contrast)
@@ -469,7 +535,7 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.1,weight=[0.44,0.14,
     #label fonts
     [this_label.set_fontname('Times New Roman') for this_label in labels]
         
-    plt.title('Contrast-VCM Code Curve',FontProperties=title_font)  
+    plt.title(view_mode+' Contrast-VCM Code Curve',FontProperties=title_font)  
     
     plt.xlabel('VCM Code',FontProperties=label_font)
     plt.ylabel('Contrast',FontProperties=label_font)
@@ -488,12 +554,14 @@ def ContrastCurve(imgs_folder,series_mode,view_mode,ratio=0.1,weight=[0.44,0.14,
     
     #boundary
     plt.ylim([-0.05,1.05])
-    plt.xlim([-24,1024])
+    plt.xlim([-24,512])
     
     #add annotation
     if view_mode=='5-Area':
         
-        plt.text(0,1,'5-Area Factor: %d Weight: %.2f-%.2f'%(factor,weight[0],weight[1]),FontProperties=text_font)
+        plt.text(0,1,'Zoom Factor: %d ROI Weight: %.2f-%.2f'%(zoom_factor,
+                                                              ROI_weight[0],
+                                                              ROI_weight[1]),FontProperties=text_font)
            
     if view_mode=='Block Module':
         

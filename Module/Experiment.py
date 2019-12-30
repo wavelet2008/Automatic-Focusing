@@ -9,6 +9,7 @@ Created on Mon Dec 23 17:30:30 2019
 @title：Module-Experiment
 """
 
+import os
 import matplotlib.pyplot as plt
 
 from matplotlib.font_manager import FontProperties
@@ -143,4 +144,64 @@ def Experiment5AreaFactor(imgs_folder,output_folder,both_series=False):
             Con.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',factor=this_factor)
         
             plt.savefig(final_folder+str(k)+' (Standard Deviation).png')
+            plt.close()
+            
+#------------------------------------------------------------------------------
+"""
+Operate comparison experiment
+
+Args:
+    folder_experiment: experiment imgs total folder
+    save_fig: whether to save fog (default: True)
+    
+Returns:
+    None
+"""
+def ExperimentComparison(folder_experiment,save_fig=True):
+    
+    for name_this_group in os.listdir(folder_experiment):
+        
+        #join the path
+        folder_this_group=folder_experiment+'\\'+name_this_group
+        
+    #    print(folder_this_group)
+        
+        #imgs of this group experiment
+        list_imgs_folder=[]
+        
+        for name_this_imgs_folder in os.listdir(folder_this_group):
+        
+            if '.png' in name_this_imgs_folder:
+                
+                continue
+            
+            #join the path
+            this_imgs_folder=folder_this_group+'\\'+name_this_imgs_folder
+            
+    #        print(this_imgs_folder)
+            
+            list_imgs_folder.append(this_imgs_folder)
+            
+        #Constant contrast mode
+        Con.ContrastCurve(list_imgs_folder,'Constant')
+        
+        if save_fig:
+            
+            plt.savefig(folder_this_group+'\\Constant.png')
+            plt.close()
+        
+        #Advanced contrast mode
+        Con.ContrastCurve(list_imgs_folder,'Advanced')
+        
+        if save_fig:
+            
+            plt.savefig(folder_this_group+'\\Advanced.png')
+            plt.close()
+            
+        #Standard Deviation contrast mode
+        Con.ContrastCurve(list_imgs_folder,'Standard Deviation')
+        
+        if save_fig:
+            
+            plt.savefig(folder_this_group+'\\Standard Deviation.png')
             plt.close()

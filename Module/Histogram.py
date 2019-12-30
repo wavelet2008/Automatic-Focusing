@@ -161,10 +161,10 @@ Returns:
 def HistogramCurve(img_path,amount_gray_level=256):
     
     #read image
-    img_rgb=cv2.imread(img_path)
+    img_bgr=cv2.imread(img_path)
     
     #convert rgb img to gray img
-    img_gray=cv2.cvtColor(img_rgb,cv2.COLOR_BGR2GRAY)
+    img_gray=cv2.cvtColor(img_bgr,cv2.COLOR_BGR2GRAY)
         
     #for frequency calculation
     pixel_amount=len(list(img_gray.ravel()))

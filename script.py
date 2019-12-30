@@ -21,22 +21,30 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import MultipleLocator
 from matplotlib.font_manager import FontProperties
 
-imgs_folder=r'C:\Users\Administrator\Desktop\Ink_Step50'
-output_folder=r'C:\Users\Administrator\Desktop\Contrast'
+#imgs_folder=r'C:\Users\Administrator\Desktop\Ink_Step50'
+
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Invarious\Coarse'
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Various\Coarse'
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\High\Coarse'
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low\Coarse'
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious\Coarse'
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious\Coarse'
+
+#output_folder=r'C:\Users\Administrator\Desktop\Contrast'
    
 #Exp.ExperimentBlockModuleRatio(imgs_folder,output_folder,1)
 #Exp.Experiment5AreaWeight(imgs_folder,output_folder,1)
 #Exp.Experiment5AreaFactor(imgs_folder,output_folder,1)
 
-img_gray=Im.BatchImport(imgs_folder)[1][10]
+#img_gray=Im.BatchImport(imgs_folder)[1][10]
 #plt.imshow(img_gray,cmap='gray')
 #cv2.imshow('gray',img_gray)
 
+folder_texture=r'C:\Users\Administrator\Desktop\Experiment\Texture'
+
 '''criteria of Critiria and Algorithm from DB or photos'''
-'''change the histogram'''
+folder_total=r'C:\Users\Administrator\Desktop\Experiment'
 
-#Con.ContrastCurve(imgs_folder,'Constant','5-Area')
-#Con.ContrastCurve(imgs_folder,'Standard Deviation','5-Area')
-
-#luminance of background and foreground
-L_b,L_f=Dis.ForeAndBackLuminance(img_gray)
+for name_this_experiment in os.listdir(folder_total):
+    
+    Exp.ExperimentComparison(folder_total+'\\'+name_this_experiment)
