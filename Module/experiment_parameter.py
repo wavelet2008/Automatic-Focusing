@@ -14,8 +14,9 @@ import matplotlib.pyplot as plt
 
 from matplotlib.font_manager import FontProperties
 
-import Path as Pa
-import Contrast as Con
+import operation_path as O_P
+
+import calculation_contrast as C_C
 
 #annotation font
 annotation_font=FontProperties(fname="C:\Windows\Fonts\GILI____.ttf",size=16)
@@ -37,7 +38,7 @@ def ExperimentBlockModuleRatio(imgs_folder,output_folder,both_series=False):
     final_folder=output_folder+'\\Block Module\\Ratio\\'
     
     #construct a folder
-    Pa.GenerateFolder(final_folder)   
+    O_P.GenerateFolder(final_folder)   
     
     #ratio 0.1-0.9 step is 0.1
     for k in range(1,10):
@@ -46,18 +47,18 @@ def ExperimentBlockModuleRatio(imgs_folder,output_folder,both_series=False):
         
         '''Constant'''
         #plot curve
-        Con.ContrastCurve(imgs_folder,'Constant','Block Module',ratio=this_ratio)
+        C_C.ContrastCurve(imgs_folder,'Constant','Block Module',ratio=this_ratio)
 
-        plt.savefig(final_folder+str(k)+' (Constant).png')
+        plt.savefig(final_folder+str(k)+' (Constant).png',dpi=300,bbox_inches='tight')
         plt.close()
         
         if both_series:
             
             '''Standard Deviation'''
             #plot curve
-            Con.ContrastCurve(imgs_folder,'Standard Deviation','Block Module',ratio=this_ratio)
+            C_C.ContrastCurve(imgs_folder,'Standard Deviation','Block Module',ratio=this_ratio)
         
-            plt.savefig(final_folder+str(k)+' (Standard Deviation).png')
+            plt.savefig(final_folder+str(k)+' (Standard Deviation).png',dpi=300,bbox_inches='tight')
             plt.close()
         
 #------------------------------------------------------------------------------
@@ -77,7 +78,7 @@ def Experiment5AreaWeight(imgs_folder,output_folder,both_series=False):
     final_folder=output_folder+'\\5-Area\\Weight\\'
     
     #construct a folder
-    Pa.GenerateFolder(final_folder)   
+    O_P.GenerateFolder(final_folder)   
     
     #ratio 0.1-0.9 step is 0.1
     for k in range(1,10):
@@ -90,18 +91,18 @@ def Experiment5AreaWeight(imgs_folder,output_folder,both_series=False):
         
         '''Constant'''
         #plot curve
-        Con.ContrastCurve(imgs_folder,'Constant','5-Area',weight=this_weight)
+        C_C.ContrastCurve(imgs_folder,'Constant','5-Area',weight=this_weight)
     
-        plt.savefig(final_folder+str(k)+' (Constant).png')
+        plt.savefig(final_folder+str(k)+' (Constant).png',dpi=300,bbox_inches='tight')
         plt.close()
         
         if both_series:
             
             '''Standard Deviation'''
             #plot curve
-            Con.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',weight=this_weight)
+            C_C.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',weight=this_weight)
         
-            plt.savefig(final_folder+str(k)+' (Standard Deviation).png')
+            plt.savefig(final_folder+str(k)+' (Standard Deviation).png',dpi=300,bbox_inches='tight')
             plt.close()
         
 #------------------------------------------------------------------------------
@@ -121,7 +122,7 @@ def Experiment5AreaFactor(imgs_folder,output_folder,both_series=False):
     final_folder=output_folder+'\\5-Area\\Factor\\'
     
     #construct a folder
-    Pa.GenerateFolder(final_folder)   
+    O_P.GenerateFolder(final_folder)   
     
     #ratio 0.1-0.9 step is 0.1
     for k in range(1,10):
@@ -132,18 +133,18 @@ def Experiment5AreaFactor(imgs_folder,output_folder,both_series=False):
         
         '''Constant'''
         #plot curve
-        Con.ContrastCurve(imgs_folder,'Constant','5-Area',factor=this_factor)
+        C_C.ContrastCurve(imgs_folder,'Constant','5-Area',factor=this_factor)
     
-        plt.savefig(final_folder+str(k)+' (Constant).png')
+        plt.savefig(final_folder+str(k)+' (Constant).png',dpi=300,bbox_inches='tight')
         plt.close()
         
         if both_series:
             
             '''Standard Deviation'''
             #plot curve
-            Con.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',factor=this_factor)
+            C_C.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',factor=this_factor)
         
-            plt.savefig(final_folder+str(k)+' (Standard Deviation).png')
+            plt.savefig(final_folder+str(k)+' (Standard Deviation).png',dpi=300,bbox_inches='tight')
             plt.close()
             
 #------------------------------------------------------------------------------
@@ -152,12 +153,13 @@ Operate comparison experiment
 
 Args:
     folder_experiment: experiment imgs total folder
+    series_mode: contrast series ['Constant','Advanced','Standard Deviation']
     save_fig: whether to save fog (default: True)
     
 Returns:
     None
 """
-def ExperimentComparison(folder_experiment,save_fig=True):
+def ExperimentContrastComparison(folder_experiment,series_mode,save_fig=True):
     
     for name_this_group in os.listdir(folder_experiment):
         
@@ -182,26 +184,12 @@ def ExperimentComparison(folder_experiment,save_fig=True):
             
             list_imgs_folder.append(this_imgs_folder)
             
+        
         #Constant contrast mode
-        Con.ContrastCurve(list_imgs_folder,'Constant')
+        C_C.ContrastCurve(list_imgs_folder,series_mode)
         
         if save_fig:
             
-            plt.savefig(folder_this_group+'\\Constant.png')
+            plt.savefig(folder_this_group+'\\'+series_mode+'.png',dpi=300,bbox_inches='tight')
             plt.close()
         
-        #Advanced contrast mode
-        Con.ContrastCurve(list_imgs_folder,'Advanced')
-        
-        if save_fig:
-            
-            plt.savefig(folder_this_group+'\\Advanced.png')
-            plt.close()
-            
-        #Standard Deviation contrast mode
-        Con.ContrastCurve(list_imgs_folder,'Standard Deviation')
-        
-        if save_fig:
-            
-            plt.savefig(folder_this_group+'\\Standard Deviation.png')
-            plt.close()

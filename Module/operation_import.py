@@ -12,28 +12,9 @@ Created on Fri Dec 20 11:08:33 2019
 import os
 import cv2
 
-#------------------------------------------------------------------------------
-"""
-To arrange the dictionary index in the order of a list
+import operation_dictionary as O_D
 
-Args:
-    which_dict: dictionary object to be arranged
-    which_keys: keys list of new dictionary
-    
-Returns:
-    new dictionary object
-"""
-def DictSortByIndex(which_dict,which_keys):
-    
-    #The results of operation
-    that_dict={}
-    
-    #Traverse the new list and populate the dictionary
-    for this_key in which_keys:
-        
-        that_dict[this_key]=which_dict[this_key]
-        
-    return that_dict
+from o_frame import frame
 
 #------------------------------------------------------------------------------
 """
@@ -78,8 +59,8 @@ def BatchImages(imgs_folder,pre_fix='Near'):
     list_VCM_code.sort()
 
     #sort imgs
-    list_imgs_bgr=list(DictSortByIndex(map_VCM_code_imgs_bgr,list_VCM_code).values())
-    list_imgs_gray=list(DictSortByIndex(map_VCM_code_imgs_gray,list_VCM_code).values())
+    list_imgs_bgr=list(O_D.DictSortByIndex(map_VCM_code_imgs_bgr,list_VCM_code).values())
+    list_imgs_gray=list(O_D.DictSortByIndex(map_VCM_code_imgs_gray,list_VCM_code).values())
     
     return list_imgs_bgr,list_imgs_gray,list_VCM_code
 
@@ -120,9 +101,80 @@ def CombineImages(list_imgs_folder,pre_fix='Near'):
     list_VCM_code.sort()
     
     #sort imgs
-    list_imgs_bgr=list(DictSortByIndex(map_VCM_code_imgs_bgr,list_VCM_code).values())
-    list_imgs_gray=list(DictSortByIndex(map_VCM_code_imgs_gray,list_VCM_code).values())
+    list_imgs_bgr=list(O_D.DictSortByIndex(map_VCM_code_imgs_bgr,list_VCM_code).values())
+    list_imgs_gray=list(O_D.DictSortByIndex(map_VCM_code_imgs_gray,list_VCM_code).values())
     
     return list_imgs_bgr,list_imgs_gray,list_VCM_code
         
+#------------------------------------------------------------------------------
+"""
+Construct frame object from folder
+
+Args:
+    imgs_folder: images folder
+    pre_fix: same part of imgs name
+    
+Returns:
+    frame object list
+"""
+def FramesConstruction(imgs_folder,pre_fix='Near'):
+    
+    #final image object list
+    list_frames=[]
+    
+    #traverse all image
+    for this_img_name in os.listdir(imgs_folder):
         
+        #define a new image object
+        that_image=frame()
+
+        that_image.path=imgs_folder+'\\'+this_img_name
+        that_image.pre_fix=pre_fix
+        
+        that_image.Init()
+        
+        list_frames.append(that_image)
+        
+    list_VCM_code=[this_frame.VCM_code for this_frame in list_frames]
+    
+    #construct map between VCM code and frame object
+    map_VCM_code_frames=dict(zip(list_VCM_code,list_frames))
+    
+    #sort the VCM code list in an ascending order
+    list_VCM_code=list(set(list_VCM_code))
+    list_VCM_code.sort()
+    
+    return list(O_D.DictSortByIndex(map_VCM_code_frames,list_VCM_code).values())   
+
+'''combine frames from imgs folder list'''
+#------------------------------------------------------------------------------
+"""
+Combine frames from imgs folder list
+
+Args:
+    list_imgs_folder: images folder list
+    pre_fix: same part of imgs name
+    
+Returns:
+    list_imgs_bgr,list_imgs_gray,list_VCM_code
+"""
+def CombineFrames(list_imgs_folder,pre_fix='Near'):
+    
+    #total frames
+    list_frames=[]
+    
+    for this_imgs_folder in list_imgs_folder:
+        
+        list_frames+=FramesConstruction(this_imgs_folder,pre_fix) 
+        
+    #total VCM code
+    list_VCM_code=[this_frame.VCM_code for this_frame in list_frames]
+    
+    #construct map between VCM code and frame object
+    map_VCM_code_frames=dict(zip(list_VCM_code,list_frames))
+    
+    #sort the VCM code list in an ascending order
+    list_VCM_code=list(set(list_VCM_code))
+    list_VCM_code.sort()
+    
+    return list(O_D.DictSortByIndex(map_VCM_code_frames,list_VCM_code).values())   

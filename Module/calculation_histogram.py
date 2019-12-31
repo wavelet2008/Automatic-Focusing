@@ -10,8 +10,9 @@ Created on Fri Dec 20 10:59:44 2019
 """
 
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
+
 from matplotlib.pyplot import MultipleLocator
 from matplotlib.font_manager import FontProperties
 

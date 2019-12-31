@@ -26,7 +26,7 @@ class frame:
         self.img_bgr=img_bgr
         self.img_gray=img_gray
         self.VCM_code=VCM_code
-   
+        
     def Init(self):
         
         #read image

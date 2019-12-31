@@ -13,12 +13,15 @@ import sys,os
     
 sys.path.append(os.getcwd())
 sys.path.append(os.getcwd()+'\\Module')
-#sys.path.append(os.getcwd()+'\\Object')
+sys.path.append(os.getcwd()+'\\Object')
 sys.path=list(set(sys.path))
 
-import Path as Pa
-import Import as Im
-import Contrast as Con
-import Histogram as Hist
-import Experiment as Exp
-import Discrimination as Dis
+import operation_path as O_P
+import operation_import as O_I
+
+import calculation_contrast as C_C
+import calculation_histogram as C_H
+import calculation_scene_discrimination as C_S_D
+
+import experiment_parameter as E_P
+import simulation_automatic_focusing as S_A_F

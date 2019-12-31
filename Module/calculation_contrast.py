@@ -17,9 +17,9 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import MultipleLocator
 from matplotlib.font_manager import FontProperties
 
-import Import as Im
-import Histogram as His
-import Discrimination as Dis
+import operation_import as O_I
+
+import calculation_scene_discrimination as C_S_D
 
 #font of fonts of all kinds
 legend_prop={'family':'Gill Sans MT','weight':'normal','size':12}
@@ -38,12 +38,12 @@ Calculation of contrast with different mode
 
 Args:
     img_gray: matrix of gray img
-    contrast_mode: mode of contrast calculation ['Whittle','Simple','Michelson','RMS']
+    contrast_operator: operator of contrast calculation
     
 Returns:
     contrast value
 """
-def GlobalContrast(img_gray,contrast_mode):
+def GlobalContrast(img_gray,contrast_operator):
     
     amount_gray_level=256
     
@@ -53,33 +53,33 @@ def GlobalContrast(img_gray,contrast_mode):
     gray_array=img_gray.ravel()
     
     #luminance of background and foreground
-    L_b,L_f=Dis.ForeAndBackLuminance(img_gray)
+    L_b,L_f=C_S_D.ForeAndBackLuminance(img_gray)
 
     #maximum and minimum of luminance
     L_max,L_min=np.max(gray_array),np.min(gray_array)
     
     '''King-Smith and Kulikowski (1975)'''
-    if contrast_mode=='KK':
+    if contrast_operator=='KK':
         
         return L_max-L_min
     
     '''Burkhardt (1984)'''
-    if contrast_mode=='Burkhardt':
+    if contrast_operator=='Burkhardt':
         
         return (L_max-L_min)/L_max
     
     '''Whittle (1986)'''
-    if contrast_mode=='Whittle':
+    if contrast_operator=='Whittle':
         
         return (L_max-L_min)/L_min
     
     '''Michelson (1927)'''
-    if contrast_mode=='Michelson':
+    if contrast_operator=='Michelson':
         
         return (L_max-L_min)/(L_max+L_min)
     
     '''Peli (1990)'''
-    if contrast_mode=='Peli':
+    if contrast_operator=='Peli':
         
         #mean value of img gray
         gray_average=np.average(img_gray.ravel())
@@ -87,29 +87,29 @@ def GlobalContrast(img_gray,contrast_mode):
         return np.average(np.square(np.array(gray_array)-gray_average))
     
     '''Weber'''
-    if contrast_mode=='Weber':
+    if contrast_operator=='Weber':
         
         return np.abs(L_f-L_b)/L_b
     
     '''Boccignone'''
-    if contrast_mode=='Boccignone':
+    if contrast_operator=='Boccignone':
         
         return np.log(L_f/L_b)
     
     '''WSC'''
-    if contrast_mode=='WSC':
+    if contrast_operator=='WSC':
         
         return (L_max+0.05)/(L_min+0.05)
     
     '''Stevens'''
-    if contrast_mode=='Stevens':
+    if contrast_operator=='Stevens':
         
         #filter the matrix
-        img_gray_S=116*(img_gray/255)**(1/3)-16
+        img_gray_S=np.abs(116*(img_gray/255)**(1/3)-16)
         
         #foreground and background luminance
         '''histogram calculated from np.uint8 matrix'''
-        L_b_S,L_f_S=Dis.ForeAndBackLuminance(img_gray_S.astype(np.uint8))
+        L_b_S,L_f_S=C_S_D.ForeAndBackLuminance(img_gray_S.astype(np.uint8))
         
         return np.abs(L_b_S-L_f_S)
         
@@ -154,14 +154,14 @@ def GlobalContrast(img_gray,contrast_mode):
 #    print(Lm)
     
     '''standard deviation'''
-    if contrast_mode=='SD':
+    if contrast_operator=='SD':
         
         SD=np.sum(P*np.square(L-Lm))
 
         return SD
         
     '''standard deviation of logarithm of luminance'''
-    if contrast_mode=='SDLG':
+    if contrast_operator=='SDLG':
         
         '''np.log() stands for ln() in mathamatics'''
         LG_L=np.log2(L)
@@ -176,7 +176,7 @@ def GlobalContrast(img_gray,contrast_mode):
         return SDLG
         
     '''space-average of Michelson contrast'''
-    if contrast_mode=='SAM':
+    if contrast_operator=='SAM':
         
         SAM=0
         
@@ -197,7 +197,7 @@ def GlobalContrast(img_gray,contrast_mode):
         return SAM
     
     '''space-average logarithm of Michelson contrast'''
-    if contrast_mode=='SALGM':
+    if contrast_operator=='SALGM':
         
         SALGM=0
         
@@ -218,7 +218,7 @@ def GlobalContrast(img_gray,contrast_mode):
         return SALGM
 
     '''space-average of Whittle contrast'''
-    if contrast_mode=='SAW':
+    if contrast_operator=='SAW':
         
         SAW=0
         
@@ -239,7 +239,7 @@ def GlobalContrast(img_gray,contrast_mode):
         return SAW
     
     '''space-average logarithm of Whittle contrast'''
-    if contrast_mode=='SALGW':
+    if contrast_operator=='SALGW':
         
         SALGW=0
         
@@ -265,9 +265,9 @@ Calculation of contrast with different mode with 5-Area
 
 Args:
     img_gray: matrix of gray img
-    contrast_mode: mode of contrast calculation ['KK','Whittle','Burkhardt','Michelson',
-                                                 'Peli','WSC','Weber','Stevens','Boccignone',
-                                                 'SD','SDLG','SAM','SALGM','SAW','SALGW']
+    contrast_operator: operator of contrast calculation ['KK','Whittle','Burkhardt','Michelson',
+                                                         'Peli','WSC','Weber','Stevens','Boccignone',
+                                                         'SD','SDLG','SAM','SALGM','SAW','SALGW']
     ROI_weight: weight list: 1st is the center the others are the neighbor
     zoom_factor: module zoom factor 
     
@@ -275,17 +275,17 @@ Returns:
     contrast value
 """
 def Contrast5Area(img_gray,
-                  contrast_mode,
+                  contrast_operator,
                   ROI_weight,
                   zoom_factor):
     
     print('')
     print('-- Contrast 5-Area')
-    print('->',contrast_mode)
+    print('->Operator:',contrast_operator)
     
     height,width=np.shape(img_gray)
     
-    if contrast_mode=='ANSI':
+    if contrast_operator=='ANSI':
         
         #size of img patch
         patch_height=int(height/4)
@@ -331,7 +331,7 @@ def Contrast5Area(img_gray,
                                int(j)-area_half_width:int(j)+area_half_width]
 
             #collect it
-            list_contrast_5_areas.append(GlobalContrast(this_area,contrast_mode))
+            list_contrast_5_areas.append(GlobalContrast(this_area,contrast_operator))
 
 #        print(list_weight_5_areas)
 #        print(list_contrast_5_areas)
@@ -406,7 +406,7 @@ def ContrastCurve(list_imgs_folder,
     
     #fetch the inpuy img data
 #    list_imgs_bgr,list_imgs_gray,list_VCM_code=Im.BatchImages(list_imgs_folder[0])     
-    list_imgs_bgr,list_imgs_gray,list_VCM_code=Im.CombineImages(list_imgs_folder)
+    list_imgs_bgr,list_imgs_gray,list_VCM_code=O_I.CombineImages(list_imgs_folder)
     
     if series_mode=='Constant':
         
@@ -559,7 +559,7 @@ def ContrastCurve(list_imgs_folder,
     #add annotation
     if view_mode=='5-Area':
         
-        plt.text(0,1,'Zoom Factor: %d ROI Weight: %.2f-%.2f'%(zoom_factor,
+        plt.text(0,1,'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor,
                                                               ROI_weight[0],
                                                               ROI_weight[1]),FontProperties=text_font)
            
