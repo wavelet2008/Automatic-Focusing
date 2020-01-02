@@ -26,9 +26,9 @@ from matplotlib.font_manager import FontProperties
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\High\Coarse'
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low\Coarse'
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious\Coarse'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious\Coarse'
+imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious\Coarse'
 
-#img_gray=Im.BatchImport(imgs_folder)[1][10]
+img_gray=O_I.BatchImages(imgs_folder)[1][10]
 #plt.imshow(img_gray,cmap='gray')
 #cv2.imshow('gray',img_gray)
 
@@ -39,8 +39,15 @@ from matplotlib.font_manager import FontProperties
 #    E_P.ExperimentContrastComparison(folder_total+'\\'+name_this_experiment,'Constant')
 #    E_P.ExperimentContrastComparison(folder_total+'\\'+name_this_experiment,'Advanced')
 
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious' 
+imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious' 
 imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious' 
+imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Invarious'
+imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Various'
+
+list_imgs_folder=[r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious',
+                  r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious',
+                  r'C:\Users\Administrator\Desktop\Experiment\Distance\Invarious',
+                  r'C:\Users\Administrator\Desktop\Experiment\Distance\Various']
 
 def ExperimentOperator(imgs_folder):
     
@@ -61,13 +68,23 @@ def ExperimentOperator(imgs_folder):
                             'SAM',
                             'SALGM',
                             'SAW',
-                            'SALGW']
+                            'SALGW',
+                            'RMSC-1',
+                            'RMSC-2']
     
     for this_contrast_operator in list_contrast_operator:
        
         S_A_F.ImageAndContrast(imgs_folder,this_contrast_operator)
         
-ExperimentOperator(imgs_folder) 
-   
+for this_imgs_folder in list_imgs_folder:
+    
+    ExperimentOperator(this_imgs_folder) 
+    
+#S_A_F.ImageAndContrast(imgs_folder,'Whittle')
+
+
 '''criteria of Critiria and Algorithm from DB or photos''' 
+
 '''optimized frames construction'''
+
+'''change output folder'''

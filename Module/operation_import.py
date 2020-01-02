@@ -108,7 +108,7 @@ def CombineImages(list_imgs_folder,pre_fix='Near'):
         
 #------------------------------------------------------------------------------
 """
-Construct frame object from folder
+Construct all frame object from folder
 
 Args:
     imgs_folder: images folder
@@ -119,8 +119,11 @@ Returns:
 """
 def FramesConstruction(imgs_folder,pre_fix='Near'):
     
-    #final image object list
+    #final image object list and their paths
     list_frames=[]
+    
+    '''while for searching'''
+    list_frames_path=[]
     
     #traverse all image
     for this_img_name in os.listdir(imgs_folder):

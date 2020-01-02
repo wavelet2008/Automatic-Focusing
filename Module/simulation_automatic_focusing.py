@@ -76,26 +76,31 @@ def ImageAndContrast(imgs_folder,contrast_operator):
                             'SAM',
                             'SALGM',
                             'SAW',
-                            'SALGW']
+                            'SALGW',
+                            'RMSC-1',
+                            'RMSC-2']
         
-    list_contrast_color=['rosybrown',
-                         'slategray',
-                         'steelblue',
-                         'maroon','olive',
+    list_contrast_color=['tan',
                          'teal',
-                         'slateblue',
-                         'firebrick',
-                         'chocolate',
-                         'tan',
+                         'olive',
+                         'maroon',
                          'orchid',
                          'thistle',
+                         'chocolate',
+                         'firebrick',
+                         'rosybrown',
+                         'slategray',
+                         'steelblue',
+                         'slateblue',
                          'lightsalmon',
+                         'mediumvioletred',
+                         'mediumslateblue',
                          'mediumturquoise',
-                         'mediumslateblue']
+                         'mediumaquamarine']
     
     #map between mode and color     
     map_mode_color=dict(zip(list_contrast_operator,list_contrast_color))  
-    
+
     if contrast_operator not in list_contrast_operator:
         
         return print('=> ERROR: Incorrect Input')
@@ -147,18 +152,15 @@ def ImageAndContrast(imgs_folder,contrast_operator):
                 this_img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
                 this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
                 this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
-    
+
         #collect the data
         list_VCM_code.append(this_frame.VCM_code)
         list_contrast.append(np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas)))
         list_img_ROI.append(this_img_ROI)
         
-    '''we shall have made normalization first'''
-    list_normalized_contrast=C_N_A.Normalize(list_contrast)
-    
     #limit of x and y
     x_min,x_max=np.min(list_VCM_code),np.max(list_VCM_code)
-    y_min,y_max=np.min(list_normalized_contrast),np.max(list_normalized_contrast)
+    y_min,y_max=0,1
     
     #cellpadding of x,y direction
     x_cellpadding=(x_max-x_min)/20
@@ -181,7 +183,7 @@ def ImageAndContrast(imgs_folder,contrast_operator):
         
         #init real-time data
         list_VCM_code_this_frame=list_VCM_code[:k+1]
-        list_normalized_contrast_this_frame=list_normalized_contrast[:k+1]
+        list_normalized_contrast_this_frame=C_N_A.Normalize(list_contrast[:k+1])
         img_ROI_this_frame=list_img_ROI[k]
         
         plt.figure(figsize=(17,6))
@@ -214,7 +216,7 @@ def ImageAndContrast(imgs_folder,contrast_operator):
         
         '''contrast curve'''
         ax_contrast_curve=plt.subplot(122)
-    
+
         plt.plot(list_VCM_code_this_frame,
                  list_normalized_contrast_this_frame,
                  color=map_mode_color[contrast_operator],

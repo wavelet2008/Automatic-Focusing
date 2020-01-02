@@ -50,7 +50,13 @@ def GlobalContrast(img_gray,contrast_operator):
     '''Constant'''
     #vectorization
 #    gray_array=His.HistogramArray(img_gray,amount_gray_level)
-    gray_array=img_gray.ravel()
+    
+    """
+    1 np.uint8 256→0 so convert the data type
+    2 avoid liminance minimum being 0
+    3 but float type cost more
+    """
+    gray_array=img_gray.ravel()+0.5
     
     #luminance of background and foreground
     L_b,L_f=C_S_D.ForeAndBackLuminance(img_gray)
@@ -70,12 +76,12 @@ def GlobalContrast(img_gray,contrast_operator):
     
     '''Whittle (1986)'''
     if contrast_operator=='Whittle':
-        
+ 
         return (L_max-L_min)/L_min
     
     '''Michelson (1927)'''
     if contrast_operator=='Michelson':
-        
+  
         return (L_max-L_min)/(L_max+L_min)
     
     '''Peli (1990)'''
@@ -189,7 +195,7 @@ def GlobalContrast(img_gray,contrast_operator):
                 if i==j:
                     
                     continue
-                
+
                 this_sum+=P[j]*np.abs(L[i]-L[j])/(L[i]+L[j])
                 
             SAM+=P[i]*this_sum
@@ -258,16 +264,60 @@ def GlobalContrast(img_gray,contrast_operator):
             SALGW+=P[i]*this_sum
             
         return SALGW
-
+    
+    #center img
+    center_img_gray=img_gray[+1:-1,+1:-1]
+    
+    #neighbor img
+    neighbor_img_gray=[img_gray[+1:-1,+2:],
+                       img_gray[+1:-1,:-2],
+                       img_gray[+2:,+1:-1],
+                       img_gray[:-2,+1:-1],
+                       img_gray[+2:,+2:],
+                       img_gray[:-2,+2:],
+                       img_gray[+2:,:-2],
+                       img_gray[:-2,:-2]]
+    
+    '''sum: 8I+(I1+I2+...+I8)'''
+    sum_img_gray=np.zeros(np.shape(center_img_gray),dtype='uint8')
+    
+    '''diff: 8I-(I1+I2+...+I8)'''
+    diff_img_gray=np.zeros(np.shape(center_img_gray),dtype='uint8')
+    
+    '''diff sqaure: (I-I1)**2+(I-I2)**2+...+(I-I8)**2'''
+    diff_square_img_gray=np.zeros(np.shape(center_img_gray),dtype='uint8')
+    
+    #traverse nieghbor and calculate
+    for this_neighbor_img_gray in neighbor_img_gray:
+       
+        sum_img_gray+=(center_img_gray+this_neighbor_img_gray)
+        diff_img_gray+=(center_img_gray-this_neighbor_img_gray)
+        diff_square_img_gray+=(center_img_gray-this_neighbor_img_gray)
+    
+    '''root-mean-square contrast (Rizzi)'''
+    if contrast_operator=='RMSC-1':
+        
+        return np.average((np.sqrt(diff_square_img_gray/8)).ravel())
+    
+    '''root-mean-square contrast (Panetta)'''
+    if contrast_operator=='RMSC-2':
+        
+        #expire denominatior being 0
+        diff_img_gray[np.where(sum_img_gray==0)]=0
+        sum_img_gray[np.where(sum_img_gray==0)]=1
+        
+        #valid pixel amount
+        valid_amount=len(list(center_img_gray.ravel()))-len(np.where(sum_img_gray==0)[0])
+        
+        return np.sum((diff_img_gray/sum_img_gray).ravel())/valid_amount
+          
 #------------------------------------------------------------------------------
 """
 Calculation of contrast with different mode with 5-Area
 
 Args:
     img_gray: matrix of gray img
-    contrast_operator: operator of contrast calculation ['KK','Whittle','Burkhardt','Michelson',
-                                                         'Peli','WSC','Weber','Stevens','Boccignone',
-                                                         'SD','SDLG','SAM','SALGM','SAW','SALGW']
+    contrast_operator: operator of contrast calculation
     ROI_weight: weight list: 1st is the center the others are the neighbor
     zoom_factor: module zoom factor 
     
@@ -333,9 +383,9 @@ def Contrast5Area(img_gray,
             #collect it
             list_contrast_5_areas.append(GlobalContrast(this_area,contrast_operator))
 
-#        print(list_weight_5_areas)
+#        print(ROI_weight)
 #        print(list_contrast_5_areas)
-#        print(np.array(list_weight_5_areas)*np.array(list_contrast_5_areas))
+#        print(np.array(ROI_weight)*np.array(list_contrast_5_areas))
         
         return np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas))
 
@@ -370,9 +420,7 @@ Calculation of contrast with different mode with block module
 
 Args:
     img_gray: matrix of gray img
-    contrast_mode: mode of contrast calculation ['KK','Whittle','Burkhardt','Michelson',
-                                                 'Peli','WSC','Weber','Stevens','Boccignone',
-                                                 'SD','SDLG','SAM','SALGM','SAW','SALGW']
+    contrast_mode: mode of contrast calculation 
     ratio: size proportion module/img (default: 0.8)
     
 Returns:
