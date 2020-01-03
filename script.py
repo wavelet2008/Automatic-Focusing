@@ -39,52 +39,26 @@ img_gray=O_I.BatchImages(imgs_folder)[1][10]
 #    E_P.ExperimentContrastComparison(folder_total+'\\'+name_this_experiment,'Constant')
 #    E_P.ExperimentContrastComparison(folder_total+'\\'+name_this_experiment,'Advanced')
 
-imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious' 
-imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious' 
-imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Invarious'
-imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Various'
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious' 
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious' 
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Invarious'
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Various'
 
-list_imgs_folder=[r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious',
-                  r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious',
-                  r'C:\Users\Administrator\Desktop\Experiment\Distance\Invarious',
-                  r'C:\Users\Administrator\Desktop\Experiment\Distance\Various']
+root_folder=r'C:\Users\Administrator\Desktop\Experiment'
 
-def ExperimentOperator(imgs_folder):
-    
-    print('')
-    print('-- Experiment Operator')
-    
-    list_contrast_operator=['KK',
-                            'Whittle',
-                            'Burkhardt',
-                            'Michelson',
-                            'Peli',
-                            'WSC',
-                            'Weber',
-                            'Stevens',
-                            'Boccignone',
-                            'SD',
-                            'SDLG',
-                            'SAM',
-                            'SALGM',
-                            'SAW',
-                            'SALGW',
-                            'RMSC-1',
-                            'RMSC-2']
-    
-    for this_contrast_operator in list_contrast_operator:
-       
-        S_A_F.ImageAndContrast(imgs_folder,this_contrast_operator)
-        
-for this_imgs_folder in list_imgs_folder:
-    
-    ExperimentOperator(this_imgs_folder) 
-    
-#S_A_F.ImageAndContrast(imgs_folder,'Whittle')
+list_imgs_folder_name=[r'Luminance\Low',
+                       r'Luminance\High',
+                       r'Texture\Unobvious',
+                       r'Texture\Obvious',
+                       r'Distance\Invarious',
+                       r'Distance\Various']
 
+list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name]
+
+E_P.ExperimentOverall(list_imgs_folder)
 
 '''criteria of Critiria and Algorithm from DB or photos''' 
 
 '''optimized frames construction'''
 
-'''change output folder'''
+'''plot maximum bound and output the best frame'''

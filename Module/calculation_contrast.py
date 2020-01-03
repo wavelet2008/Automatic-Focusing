@@ -184,32 +184,26 @@ def GlobalContrast(img_gray,contrast_operator):
     '''space-average of Michelson contrast'''
     if contrast_operator=='SAM':
         
-        SAM=0
+        SAM=np.zeros((len(L),len(L)))
         
         for i in range(len(L)):
-            
-            this_sum=0
             
             for j in range(len(L)):
                 
                 if i==j:
                     
                     continue
-
-                this_sum+=P[j]*np.abs(L[i]-L[j])/(L[i]+L[j])
                 
-            SAM+=P[i]*this_sum
-            
-        return SAM
+                SAM[i,j]=P[i]*P[j]*np.abs(L[i]-L[j])/(L[i]+L[j])
+                
+        return np.sum(SAM.ravel())
     
     '''space-average logarithm of Michelson contrast'''
     if contrast_operator=='SALGM':
         
-        SALGM=0
+        SALGM=np.zeros((len(L),len(L)))
         
         for i in range(len(L)):
-            
-            this_sum=0
             
             for j in range(len(L)):
                 
@@ -217,20 +211,16 @@ def GlobalContrast(img_gray,contrast_operator):
                     
                     continue
                 
-                this_sum+=P[j]*np.log2(np.abs(L[i]-L[j])/(L[i]+L[j]))
+                SALGM[i,j]=P[i]*P[j]*np.log2(np.abs(L[i]-L[j])/(L[i]+L[j]))
                 
-            SALGM+=P[i]*this_sum
-            
-        return SALGM
-
+        return np.sum(SALGM.ravel())
+    
     '''space-average of Whittle contrast'''
     if contrast_operator=='SAW':
         
-        SAW=0
+        SAW=np.zeros((len(L),len(L)))
         
         for i in range(len(L)):
-            
-            this_sum=0
             
             for j in range(len(L)):
                 
@@ -238,20 +228,16 @@ def GlobalContrast(img_gray,contrast_operator):
                     
                     continue
                 
-                this_sum+=P[j]*np.abs(L[i]-L[j])/np.min([L[i],L[j]])
+                SAW[i,j]=P[i]*P[j]*np.abs(L[i]-L[j])/np.min([L[i],L[j]])
                 
-            SAW+=P[i]*this_sum
-            
-        return SAW
+        return np.sum(SAW.ravel())
     
     '''space-average logarithm of Whittle contrast'''
     if contrast_operator=='SALGW':
         
-        SALGW=0
+        SALGW=np.zeros((len(L),len(L)))
         
         for i in range(len(L)):
-            
-            this_sum=0
             
             for j in range(len(L)):
                 
@@ -259,11 +245,9 @@ def GlobalContrast(img_gray,contrast_operator):
                     
                     continue
                 
-                this_sum+=P[j]*np.log2(np.abs(L[i]-L[j])/np.min([L[i],L[j]]))
+                SALGW[i,j]=P[i]*P[j]*np.log2(np.abs(L[i]-L[j])/np.min([L[i],L[j]]))
                 
-            SALGW+=P[i]*this_sum
-            
-        return SALGW
+        return np.sum(SALGW.ravel())
     
     #center img
     center_img_gray=img_gray[+1:-1,+1:-1]

@@ -15,11 +15,29 @@ import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 
 import operation_path as O_P
-
 import calculation_contrast as C_C
+import simulation_automatic_focusing as S_A_F
 
 #annotation font
 annotation_font=FontProperties(fname="C:\Windows\Fonts\GILI____.ttf",size=16)
+
+list_contrast_operator=['KK',
+                        'Whittle',
+                        'Burkhardt',
+                        'Michelson',
+                        'Peli',
+                        'WSC',
+                        'Weber',
+                        'Stevens',
+                        'Boccignone',
+                        'SD',
+                        'SDLG',
+                        'SAM',
+                        'SALGM',
+                        'SAW',
+                        'SALGW',
+                        'RMSC-1',
+                        'RMSC-2']
 
 #------------------------------------------------------------------------------
 """
@@ -183,8 +201,7 @@ def ExperimentContrastComparison(folder_experiment,series_mode,save_fig=True):
     #        print(this_imgs_folder)
             
             list_imgs_folder.append(this_imgs_folder)
-            
-        
+               
         #Constant contrast mode
         C_C.ContrastCurve(list_imgs_folder,series_mode)
         
@@ -192,4 +209,63 @@ def ExperimentContrastComparison(folder_experiment,series_mode,save_fig=True):
             
             plt.savefig(folder_this_group+'\\'+series_mode+'.png',dpi=300,bbox_inches='tight')
             plt.close()
+
+#------------------------------------------------------------------------------
+"""
+Operate experiment among various contrast operator
+
+Args:
+    imgs_folder: imgs folder
+    
+Returns:
+    None
+"""
+def ExperimentOperator(imgs_folder):
+    
+    print('')
+    print('-- Experiment Operator')
+
+    for this_contrast_operator in list_contrast_operator:
+       
+        S_A_F.ImageAndContrast(imgs_folder,this_contrast_operator)
         
+#------------------------------------------------------------------------------
+"""
+Operate experiment among various contrast operator
+
+Args:
+    list_imgs_folder: imgs folder of various scenario
+    contrast_operator: operator to calculate contrast
+    
+Returns:
+    None
+"""        
+def ExperimentScenario(list_imgs_folder,contrast_operator):
+        
+    print('')
+    print('-- Experiment Scenario')
+    
+    for this_imgs_folder in list_imgs_folder:
+        
+        S_A_F.ImageAndContrast(this_imgs_folder,contrast_operator)
+        
+#------------------------------------------------------------------------------
+"""
+Operate experiment among various experiment and scenario
+
+Args:
+    list_imgs_folder: imgs folder of various scenario
+    
+Returns:
+    None
+"""   
+def ExperimentOverall(list_imgs_folder):
+    
+    print('')
+    print('-- Experiment Overall')
+    
+    for this_contrast_operator in list_contrast_operator:
+        
+        for this_imgs_folder in list_imgs_folder:
+            
+            S_A_F.ImageAndContrast(this_imgs_folder,this_contrast_operator)

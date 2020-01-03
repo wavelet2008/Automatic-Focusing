@@ -46,12 +46,16 @@ def ImageAndContrast(imgs_folder,contrast_operator):
     print('-- Image And Contrast')
     print('-> Operator:',contrast_operator)
     
+    str_a,str_b=imgs_folder.split('Experiment')[-1].strip('\\').split('\\')
+    
     #construct output folder
-    output_folder=imgs_folder.replace('Experiment','Contrast')+'//'+contrast_operator+'//'
+    output_folder_operator=imgs_folder.replace('Experiment','Contrast')+'\\'+contrast_operator+'\\'
+    output_folder_condition=output_folder_operator.split(str_a)[0]+'\\'+contrast_operator+'\\'
     
-    O_P.GenerateFolder(output_folder)
+    O_P.GenerateFolder(output_folder_operator)
+    O_P.GenerateFolder(output_folder_condition)
     
-    '''Optimized frames construction'''
+    '''need optimized frames construction'''
     list_imgs_folder=[imgs_folder+'\\'+this_name for this_name in os.listdir(imgs_folder) if '.' not in this_name]
 
     #construct frame objects
@@ -261,7 +265,7 @@ def ImageAndContrast(imgs_folder,contrast_operator):
         ax_contrast_curve.yaxis.set_minor_locator(MultipleLocator(y_minor_step))
         
         #save the fig
-        this_fig_path=output_folder+'//%d.png'%(list_VCM_code[k])
+        this_fig_path=output_folder_operator+'//%d.png'%(list_VCM_code[k])
         plt.savefig(this_fig_path,dpi=300,bbox_inches='tight')
         
         plt.close()
@@ -269,5 +273,9 @@ def ImageAndContrast(imgs_folder,contrast_operator):
         #collect fig to create GIF
         figures.append(imageio.imread(this_fig_path))
         
-    #save GIF
-    imageio.mimsave(output_folder+'\\'+contrast_operator+'.gif',figures,duration=0.1) 
+    #save GIF 
+    '''operator experiment'''
+    imageio.mimsave(output_folder_operator+'\\'+contrast_operator+'.gif',figures,duration=0.1) 
+    
+    '''condition experiment'''
+    imageio.mimsave(output_folder_condition+str_b+' '+str_a+'.gif',figures,duration=0.1) 
