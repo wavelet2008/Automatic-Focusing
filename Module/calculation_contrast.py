@@ -64,6 +64,9 @@ def GlobalContrast(img_gray,contrast_operator):
     #maximum and minimum of luminance
     L_max,L_min=np.max(gray_array),np.min(gray_array)
     
+    #mean value of img gray
+    gray_average=np.average(gray_array)
+        
     '''King-Smith and Kulikowski (1975)'''
     if contrast_operator=='KK':
         
@@ -87,27 +90,24 @@ def GlobalContrast(img_gray,contrast_operator):
     '''Peli (1990)'''
     if contrast_operator=='Peli':
         
-        #mean value of img gray
-        gray_average=np.average(img_gray.ravel())
-        
         return np.average(np.square(np.array(gray_array)-gray_average))
     
-    '''Weber'''
+    '''Weber (1840)'''
     if contrast_operator=='Weber':
         
         return np.abs(L_f-L_b)/L_b
     
-    '''Boccignone'''
+    '''Boccignone (1996)'''
     if contrast_operator=='Boccignone':
         
         return np.log(L_f/L_b)
     
-    '''WSC'''
-    if contrast_operator=='WSC':
+    '''W3C (2006)'''
+    if contrast_operator=='W3C':
         
         return (L_max+0.05)/(L_min+0.05)
     
-    '''Stevens'''
+    '''Stevens (1961)'''
     if contrast_operator=='Stevens':
         
         #filter the matrix
@@ -118,172 +118,176 @@ def GlobalContrast(img_gray,contrast_operator):
         L_b_S,L_f_S=C_S_D.ForeAndBackLuminance(img_gray_S.astype(np.uint8))
         
         return np.abs(L_b_S-L_f_S)
-        
-    '''Standard Deviation'''
-    """Essay: The standard deviation of luminance as a metric for contrast in random-dot images"""
-    #for frequency calculation
-    pixel_amount=len(list(img_gray.ravel()))
     
-    #step between gray level nearby
-    step_gray_level=int(np.ceil(256/amount_gray_level))
-    
-    '''column vector'''
-    hist_gray=cv2.calcHist([img_gray],[0],None,[amount_gray_level],[0,256])
-    
-    #x axis gray level
-    list_gray_level=np.array([step_gray_level*(k+0.5) for k in range(amount_gray_level)])
+    '''Moulden (1990): Standard Deviation'''    
+    if 'S' in contrast_operator:
 
-    #y axis frequency
-    list_frequency=np.array([frequency_this_gray_level/pixel_amount for frequency_this_gray_level in hist_gray])
-  
-    #range of luminance
-#    range_gray_level=np.max(list_gray_level)-np.min(list_gray_level)
+        """Essay: The standard deviation of luminance as a metric for contrast in random-dot images"""
+        #for frequency calculation
+        pixel_amount=len(list(img_gray.ravel()))
+        
+        #step between gray level nearby
+        step_gray_level=int(np.ceil(256/amount_gray_level))
+        
+        '''column vector'''
+        hist_gray=cv2.calcHist([img_gray],[0],None,[amount_gray_level],[0,256])
+        
+        #x axis gray level
+        list_gray_level=np.array([step_gray_level*(k+0.5) for k in range(amount_gray_level)])
     
-    #average value of luminance
-    average_gray_level=np.sum(list_gray_level.ravel()*list_frequency.ravel())
-    
-#    print(list_gray_level)
-#    print(list_frequency)
-#    print(sum(list_frequency))
-#    print(len(list_gray_level),len(list_frequency))      
-#    print(average_gray_level)
-    
-    #simplism
-#    G=cp.deepcopy(amount_gray_level)
-    L=cp.deepcopy(list_gray_level).ravel()
-    P=cp.deepcopy(list_frequency).ravel()
-    Lm=cp.deepcopy(average_gray_level)
-#    R=cp.deepcopy(range_gray_level)
-    
-#    print(Li,Pi)
-#    print(np.sum(L*P))
-#    print(Lm)
-    
-    '''standard deviation'''
-    if contrast_operator=='SD':
+        #y axis frequency
+        list_frequency=np.array([frequency_this_gray_level/pixel_amount for frequency_this_gray_level in hist_gray])
+      
+        #range of luminance
+    #    range_gray_level=np.max(list_gray_level)-np.min(list_gray_level)
         
-        SD=np.sum(P*np.square(L-Lm))
-
-        return SD
+        #average value of luminance
+        average_gray_level=np.sum(list_gray_level.ravel()*list_frequency.ravel())
         
-    '''standard deviation of logarithm of luminance'''
-    if contrast_operator=='SDLG':
+    #    print(list_gray_level)
+    #    print(list_frequency)
+    #    print(sum(list_frequency))
+    #    print(len(list_gray_level),len(list_frequency))      
+    #    print(average_gray_level)
         
-        '''np.log() stands for ln() in mathamatics'''
-        LG_L=np.log2(L)
-        LG_Lm=np.sum(P*LG_L)
+        #simplism
+    #    G=cp.deepcopy(amount_gray_level)
+        L=cp.deepcopy(list_gray_level).ravel()
+        P=cp.deepcopy(list_frequency).ravel()
+        Lm=cp.deepcopy(average_gray_level)
+    #    R=cp.deepcopy(range_gray_level)
         
-#        print(np.sum(Pi))
-#        print(LG_Lm)
-#        print(LG_Li)
+    #    print(Li,Pi)
+    #    print(np.sum(L*P))
+    #    print(Lm)
         
-        SDLG=np.sum(P*np.square(LG_L-LG_Lm))
-        
-        return SDLG
-        
-    '''space-average of Michelson contrast'''
-    if contrast_operator=='SAM':
-        
-        SAM=np.zeros((len(L),len(L)))
-        
-        for i in range(len(L)):
+        '''standard deviation'''
+        if contrast_operator=='SD':
             
-            for j in range(len(L)):
-                
-                if i==j:
-                    
-                    continue
-                
-                SAM[i,j]=P[i]*P[j]*np.abs(L[i]-L[j])/(L[i]+L[j])
-                
-        return np.sum(SAM.ravel())
+            SD=np.sum(P*np.square(L-Lm))
     
-    '''space-average logarithm of Michelson contrast'''
-    if contrast_operator=='SALGM':
-        
-        SALGM=np.zeros((len(L),len(L)))
-        
-        for i in range(len(L)):
+            return SD
             
-            for j in range(len(L)):
-                
-                if i==j:
-                    
-                    continue
-                
-                SALGM[i,j]=P[i]*P[j]*np.log2(np.abs(L[i]-L[j])/(L[i]+L[j]))
-                
-        return np.sum(SALGM.ravel())
-    
-    '''space-average of Whittle contrast'''
-    if contrast_operator=='SAW':
-        
-        SAW=np.zeros((len(L),len(L)))
-        
-        for i in range(len(L)):
+        '''standard deviation of logarithm of luminance'''
+        if contrast_operator=='SDLG':
             
-            for j in range(len(L)):
-                
-                if i==j:
-                    
-                    continue
-                
-                SAW[i,j]=P[i]*P[j]*np.abs(L[i]-L[j])/np.min([L[i],L[j]])
-                
-        return np.sum(SAW.ravel())
-    
-    '''space-average logarithm of Whittle contrast'''
-    if contrast_operator=='SALGW':
-        
-        SALGW=np.zeros((len(L),len(L)))
-        
-        for i in range(len(L)):
+            '''np.log() stands for ln() in mathamatics'''
+            LG_L=np.log2(L)
+            LG_Lm=np.sum(P*LG_L)
             
-            for j in range(len(L)):
+    #        print(np.sum(Pi))
+    #        print(LG_Lm)
+    #        print(LG_Li)
+            
+            SDLG=np.sum(P*np.square(LG_L-LG_Lm))
+            
+            return SDLG
+            
+        '''space-average of Michelson contrast'''
+        if contrast_operator=='SAM':
+            
+            SAM=np.zeros((len(L),len(L)))
+            
+            for i in range(len(L)):
                 
-                if i==j:
+                for j in range(len(L)):
                     
-                    continue
+                    if i==j:
+                        
+                        continue
+                    
+                    SAM[i,j]=P[i]*P[j]*np.abs(L[i]-L[j])/(L[i]+L[j])
+                    
+            return np.sum(SAM.ravel())
+        
+        '''space-average logarithm of Michelson contrast'''
+        if contrast_operator=='SALGM':
+            
+            SALGM=np.zeros((len(L),len(L)))
+            
+            for i in range(len(L)):
                 
-                SALGW[i,j]=P[i]*P[j]*np.log2(np.abs(L[i]-L[j])/np.min([L[i],L[j]]))
+                for j in range(len(L)):
+                    
+                    if i==j:
+                        
+                        continue
+                    
+                    SALGM[i,j]=P[i]*P[j]*np.log2(np.abs(L[i]-L[j])/(L[i]+L[j]))
+                    
+            return np.sum(SALGM.ravel())
+        
+        '''space-average of Whittle contrast'''
+        if contrast_operator=='SAW':
+            
+            SAW=np.zeros((len(L),len(L)))
+            
+            for i in range(len(L)):
                 
-        return np.sum(SALGW.ravel())
+                for j in range(len(L)):
+                    
+                    if i==j:
+                        
+                        continue
+                    
+                    SAW[i,j]=P[i]*P[j]*np.abs(L[i]-L[j])/np.min([L[i],L[j]])
+                    
+            return np.sum(SAW.ravel())
+        
+        '''space-average logarithm of Whittle contrast'''
+        if contrast_operator=='SALGW':
+            
+            SALGW=np.zeros((len(L),len(L)))
+            
+            for i in range(len(L)):
+                
+                for j in range(len(L)):
+                    
+                    if i==j:
+                        
+                        continue
+                    
+                    SALGW[i,j]=P[i]*P[j]*np.log2(np.abs(L[i]-L[j])/np.min([L[i],L[j]]))
+                    
+            return np.sum(SALGW.ravel())
     
-    #center img
-    center_img_gray=img_gray[+1:-1,+1:-1]
+    if 'RMSC' in contrast_operator:
+        
+        #center img
+        center_img_gray=img_gray[+1:-1,+1:-1]
+        
+        #neighbor img
+        neighbor_img_gray=[img_gray[+1:-1,+2:],
+                           img_gray[+1:-1,:-2],
+                           img_gray[+2:,+1:-1],
+                           img_gray[:-2,+1:-1],
+                           img_gray[+2:,+2:],
+                           img_gray[:-2,+2:],
+                           img_gray[+2:,:-2],
+                           img_gray[:-2,:-2]]
+        
+        '''sum: 8I+(I1+I2+...+I8)'''
+        sum_img_gray=np.zeros(np.shape(center_img_gray),dtype='uint8')
+        
+        '''diff: 8I-(I1+I2+...+I8)'''
+        diff_img_gray=np.zeros(np.shape(center_img_gray),dtype='uint8')
+        
+        '''diff sqaure: (I-I1)**2+(I-I2)**2+...+(I-I8)**2'''
+        diff_square_img_gray=np.zeros(np.shape(center_img_gray),dtype='uint8')
+        
+        #traverse nieghbor and calculate
+        for this_neighbor_img_gray in neighbor_img_gray:
+           
+            sum_img_gray+=(center_img_gray+this_neighbor_img_gray)
+            diff_img_gray+=(center_img_gray-this_neighbor_img_gray)
+            diff_square_img_gray+=(center_img_gray-this_neighbor_img_gray)
     
-    #neighbor img
-    neighbor_img_gray=[img_gray[+1:-1,+2:],
-                       img_gray[+1:-1,:-2],
-                       img_gray[+2:,+1:-1],
-                       img_gray[:-2,+1:-1],
-                       img_gray[+2:,+2:],
-                       img_gray[:-2,+2:],
-                       img_gray[+2:,:-2],
-                       img_gray[:-2,:-2]]
-    
-    '''sum: 8I+(I1+I2+...+I8)'''
-    sum_img_gray=np.zeros(np.shape(center_img_gray),dtype='uint8')
-    
-    '''diff: 8I-(I1+I2+...+I8)'''
-    diff_img_gray=np.zeros(np.shape(center_img_gray),dtype='uint8')
-    
-    '''diff sqaure: (I-I1)**2+(I-I2)**2+...+(I-I8)**2'''
-    diff_square_img_gray=np.zeros(np.shape(center_img_gray),dtype='uint8')
-    
-    #traverse nieghbor and calculate
-    for this_neighbor_img_gray in neighbor_img_gray:
-       
-        sum_img_gray+=(center_img_gray+this_neighbor_img_gray)
-        diff_img_gray+=(center_img_gray-this_neighbor_img_gray)
-        diff_square_img_gray+=(center_img_gray-this_neighbor_img_gray)
-    
-    '''root-mean-square contrast (Rizzi)'''
+    '''Rizzi: root-mean-square contrast (2004)'''
     if contrast_operator=='RMSC-1':
         
         return np.average((np.sqrt(diff_square_img_gray/8)).ravel())
     
-    '''root-mean-square contrast (Panetta)'''
+    '''Panetta: root-mean-square contrast (2013)'''
     if contrast_operator=='RMSC-2':
         
         #expire denominatior being 0
@@ -294,6 +298,11 @@ def GlobalContrast(img_gray,contrast_operator):
         valid_amount=len(list(center_img_gray.ravel()))-len(np.where(sum_img_gray==0)[0])
         
         return np.sum((diff_img_gray/sum_img_gray).ravel())/valid_amount
+    
+    '''Reinagel'''
+    if contrast_operator=='Reinagel':
+        
+        return
           
 #------------------------------------------------------------------------------
 """

@@ -29,6 +29,45 @@ text_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=14)
 label_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=16)
 title_font=FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=18)
 
+list_contrast_operator=['KK',
+                        'Whittle',
+                        'Burkhardt',
+                        'Michelson',
+                        'Peli',
+                        'W3C',
+                        'Weber',
+                        'Stevens',
+                        'Boccignone',
+                        'SD',
+                        'SDLG',
+                        'SAM',
+                        'SALGM',
+                        'SAW',
+                        'SALGW',
+                        'RMSC-1',
+                        'RMSC-2']
+        
+list_contrast_color=['tan',
+                     'teal',
+                     'olive',
+                     'maroon',
+                     'orchid',
+                     'thistle',
+                     'chocolate',
+                     'firebrick',
+                     'rosybrown',
+                     'slategray',
+                     'steelblue',
+                     'slateblue',
+                     'lightsalmon',
+                     'mediumvioletred',
+                     'mediumslateblue',
+                     'mediumturquoise',
+                     'mediumaquamarine']
+
+#map between mode and color     
+map_mode_color=dict(zip(list_contrast_operator,list_contrast_color)) 
+    
 #------------------------------------------------------------------------------
 """
 Plot input image as well as contrast curve
@@ -46,11 +85,15 @@ def ImageAndContrast(imgs_folder,contrast_operator):
     print('-- Image And Contrast')
     print('-> Operator:',contrast_operator)
     
-    str_a,str_b=imgs_folder.split('Experiment')[-1].strip('\\').split('\\')
+    str_a,str_b=imgs_folder.split('Experiment')
+    str_c,str_d=imgs_folder.split('Experiment')[-1].strip('\\').split('\\')
     
     #construct output folder
-    output_folder_operator=imgs_folder.replace('Experiment','Contrast')+'\\'+contrast_operator+'\\'
-    output_folder_condition=output_folder_operator.split(str_a)[0]+'\\'+contrast_operator+'\\'
+    output_folder_operator=str_a+'\\Contrast\\Scenario'+str_b
+    output_folder_condition=output_folder_operator.split(str_c)[0]+'\\Operator'
+    
+    output_folder_operator+='\\'+contrast_operator+'\\'
+    output_folder_condition+='\\'+contrast_operator+'\\'
     
     O_P.GenerateFolder(output_folder_operator)
     O_P.GenerateFolder(output_folder_condition)
@@ -65,45 +108,6 @@ def ImageAndContrast(imgs_folder,contrast_operator):
     list_VCM_code=[]
     list_contrast=[]
     list_img_ROI=[]
-
-    list_contrast_operator=['KK',
-                            'Whittle',
-                            'Burkhardt',
-                            'Michelson',
-                            'Peli',
-                            'WSC',
-                            'Weber',
-                            'Stevens',
-                            'Boccignone',
-                            'SD',
-                            'SDLG',
-                            'SAM',
-                            'SALGM',
-                            'SAW',
-                            'SALGW',
-                            'RMSC-1',
-                            'RMSC-2']
-        
-    list_contrast_color=['tan',
-                         'teal',
-                         'olive',
-                         'maroon',
-                         'orchid',
-                         'thistle',
-                         'chocolate',
-                         'firebrick',
-                         'rosybrown',
-                         'slategray',
-                         'steelblue',
-                         'slateblue',
-                         'lightsalmon',
-                         'mediumvioletred',
-                         'mediumslateblue',
-                         'mediumturquoise',
-                         'mediumaquamarine']
-    
-    #map between mode and color     
-    map_mode_color=dict(zip(list_contrast_operator,list_contrast_color))  
 
     if contrast_operator not in list_contrast_operator:
         
@@ -278,4 +282,4 @@ def ImageAndContrast(imgs_folder,contrast_operator):
     imageio.mimsave(output_folder_operator+'\\'+contrast_operator+'.gif',figures,duration=0.1) 
     
     '''condition experiment'''
-    imageio.mimsave(output_folder_condition+str_b+' '+str_a+'.gif',figures,duration=0.1) 
+    imageio.mimsave(output_folder_condition+str_c+' '+str_d+'.gif',figures,duration=0.1) 

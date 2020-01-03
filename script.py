@@ -26,9 +26,9 @@ from matplotlib.font_manager import FontProperties
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\High\Coarse'
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low\Coarse'
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious\Coarse'
-imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious\Coarse'
-
-img_gray=O_I.BatchImages(imgs_folder)[1][10]
+#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious\Coarse'
+#
+#img_gray=O_I.BatchImages(imgs_folder)[1][10]
 #plt.imshow(img_gray,cmap='gray')
 #cv2.imshow('gray',img_gray)
 
@@ -42,7 +42,7 @@ img_gray=O_I.BatchImages(imgs_folder)[1][10]
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious' 
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious' 
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Invarious'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Various'
+imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Various'
 
 root_folder=r'C:\Users\Administrator\Desktop\Experiment'
 
