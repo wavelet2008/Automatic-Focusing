@@ -45,13 +45,19 @@ list_contrast_operator=['KK',
                         'SAW',
                         'SALGW',
                         'RMSC-1',
-                        'RMSC-2']
+                        'RMSC-2',
+                        'Tadmor-1',
+                        'Tadmor-2',
+                        'Tadmor-3']
         
 list_contrast_color=['tan',
                      'teal',
                      'olive',
                      'maroon',
                      'orchid',
+                     'fuchsia',
+                     'crimson',
+                     'magenta',
                      'thistle',
                      'chocolate',
                      'firebrick',
@@ -90,7 +96,7 @@ def ImageAndContrast(imgs_folder,contrast_operator):
     
     #construct output folder
     output_folder_operator=str_a+'\\Contrast\\Scenario'+str_b
-    output_folder_condition=output_folder_operator.split(str_c)[0]+'\\Operator'
+    output_folder_condition=output_folder_operator.split(str_c)[0].replace('\\Scenario','')+'\\Operator'
     
     output_folder_operator+='\\'+contrast_operator+'\\'
     output_folder_condition+='\\'+contrast_operator+'\\'

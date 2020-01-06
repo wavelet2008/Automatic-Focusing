@@ -26,9 +26,9 @@ from matplotlib.font_manager import FontProperties
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\High\Coarse'
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low\Coarse'
 #imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious\Coarse'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious\Coarse'
-#
-#img_gray=O_I.BatchImages(imgs_folder)[1][10]
+imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious\Coarse'
+
+img_gray=O_I.BatchImages(imgs_folder)[1][10]
 #plt.imshow(img_gray,cmap='gray')
 #cv2.imshow('gray',img_gray)
 
@@ -56,6 +56,17 @@ list_imgs_folder_name=[r'Luminance\Low',
 list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name]
 
 E_P.ExperimentOverall(list_imgs_folder)
+
+
+#lower_reso = cv2.pyrDown(img_gray)
+#
+#higher_reso2 = cv2.pyrUp(img_gray)
+#
+#plt.subplot(121)
+#plt.imshow(lower_reso)
+#plt.subplot(122)
+#plt.imshow(higher_reso2)
+
 
 '''criteria of Critiria and Algorithm from DB or photos''' 
 

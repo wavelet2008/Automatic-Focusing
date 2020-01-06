@@ -161,95 +161,95 @@ def GlobalContrast(img_gray,contrast_operator):
     #    print(np.sum(L*P))
     #    print(Lm)
         
-        '''standard deviation'''
-        if contrast_operator=='SD':
+    '''standard deviation'''
+    if contrast_operator=='SD':
+        
+        SD=np.sum(P*np.square(L-Lm))
+
+        return SD
+        
+    '''standard deviation of logarithm of luminance'''
+    if contrast_operator=='SDLG':
+        
+        '''np.log() stands for ln() in mathamatics'''
+        LG_L=np.log2(L)
+        LG_Lm=np.sum(P*LG_L)
+        
+#        print(np.sum(Pi))
+#        print(LG_Lm)
+#        print(LG_Li)
+        
+        SDLG=np.sum(P*np.square(LG_L-LG_Lm))
+        
+        return SDLG
+        
+    '''space-average of Michelson contrast'''
+    if contrast_operator=='SAM':
+        
+        SAM=np.zeros((len(L),len(L)))
+        
+        for i in range(len(L)):
             
-            SD=np.sum(P*np.square(L-Lm))
+            for j in range(len(L)):
+                
+                if i==j:
+                    
+                    continue
+                
+                SAM[i,j]=P[i]*P[j]*np.abs(L[i]-L[j])/(L[i]+L[j])
+                
+        return np.sum(SAM.ravel())
     
-            return SD
-            
-        '''standard deviation of logarithm of luminance'''
-        if contrast_operator=='SDLG':
-            
-            '''np.log() stands for ln() in mathamatics'''
-            LG_L=np.log2(L)
-            LG_Lm=np.sum(P*LG_L)
-            
-    #        print(np.sum(Pi))
-    #        print(LG_Lm)
-    #        print(LG_Li)
-            
-            SDLG=np.sum(P*np.square(LG_L-LG_Lm))
-            
-            return SDLG
-            
-        '''space-average of Michelson contrast'''
-        if contrast_operator=='SAM':
-            
-            SAM=np.zeros((len(L),len(L)))
-            
-            for i in range(len(L)):
-                
-                for j in range(len(L)):
-                    
-                    if i==j:
-                        
-                        continue
-                    
-                    SAM[i,j]=P[i]*P[j]*np.abs(L[i]-L[j])/(L[i]+L[j])
-                    
-            return np.sum(SAM.ravel())
+    '''space-average logarithm of Michelson contrast'''
+    if contrast_operator=='SALGM':
         
-        '''space-average logarithm of Michelson contrast'''
-        if contrast_operator=='SALGM':
-            
-            SALGM=np.zeros((len(L),len(L)))
-            
-            for i in range(len(L)):
-                
-                for j in range(len(L)):
-                    
-                    if i==j:
-                        
-                        continue
-                    
-                    SALGM[i,j]=P[i]*P[j]*np.log2(np.abs(L[i]-L[j])/(L[i]+L[j]))
-                    
-            return np.sum(SALGM.ravel())
+        SALGM=np.zeros((len(L),len(L)))
         
-        '''space-average of Whittle contrast'''
-        if contrast_operator=='SAW':
+        for i in range(len(L)):
             
-            SAW=np.zeros((len(L),len(L)))
-            
-            for i in range(len(L)):
+            for j in range(len(L)):
                 
-                for j in range(len(L)):
+                if i==j:
                     
-                    if i==j:
-                        
-                        continue
-                    
-                    SAW[i,j]=P[i]*P[j]*np.abs(L[i]-L[j])/np.min([L[i],L[j]])
-                    
-            return np.sum(SAW.ravel())
+                    continue
+                
+                SALGM[i,j]=P[i]*P[j]*np.log2(np.abs(L[i]-L[j])/(L[i]+L[j]))
+                
+        return np.sum(SALGM.ravel())
+    
+    '''space-average of Whittle contrast'''
+    if contrast_operator=='SAW':
         
-        '''space-average logarithm of Whittle contrast'''
-        if contrast_operator=='SALGW':
+        SAW=np.zeros((len(L),len(L)))
+        
+        for i in range(len(L)):
             
-            SALGW=np.zeros((len(L),len(L)))
-            
-            for i in range(len(L)):
+            for j in range(len(L)):
                 
-                for j in range(len(L)):
+                if i==j:
                     
-                    if i==j:
-                        
-                        continue
+                    continue
+                
+                SAW[i,j]=P[i]*P[j]*np.abs(L[i]-L[j])/np.min([L[i],L[j]])
+                
+        return np.sum(SAW.ravel())
+    
+    '''space-average logarithm of Whittle contrast'''
+    if contrast_operator=='SALGW':
+        
+        SALGW=np.zeros((len(L),len(L)))
+        
+        for i in range(len(L)):
+            
+            for j in range(len(L)):
+                
+                if i==j:
                     
-                    SALGW[i,j]=P[i]*P[j]*np.log2(np.abs(L[i]-L[j])/np.min([L[i],L[j]]))
-                    
-            return np.sum(SALGW.ravel())
+                    continue
+                
+                SALGW[i,j]=P[i]*P[j]*np.log2(np.abs(L[i]-L[j])/np.min([L[i],L[j]]))
+                
+        return np.sum(SALGW.ravel())
     
     if 'RMSC' in contrast_operator:
         
@@ -299,11 +299,53 @@ def GlobalContrast(img_gray,contrast_operator):
         
         return np.sum((diff_img_gray/sum_img_gray).ravel())/valid_amount
     
-    '''Reinagel'''
+    '''Reinagel (1999)'''
     if contrast_operator=='Reinagel':
         
-        return
-          
+        return np.average(np.square(np.array(gray_array)/gray_average))
+    
+    '''Tadmor (1998)'''
+    if 'Tadmor' in contrast_operator:
+        
+        r_c=1
+        r_s=1
+        
+        #Difference of Gaussian
+        center=lambda x,y:np.exp(-(x**2+y**2)/r_c)
+        surround=lambda x,y:np.exp(-(x**2+y**2)/r_s)*(r_c/r_s)**2*0.85
+        
+        R_c=0
+        
+        for i in range(-3*r_c,3*r_c+1):
+            
+            for j in range(-3*r_c,3*r_c+1):
+                
+                R_c+=np.average(center(i,j)*\
+                                       img_gray[3*r_c+i:3*r_c+i+np.shape(img_gray)[0]-6*r_c,
+                                                3*r_c+j:3*r_c+j+np.shape(img_gray)[1]-6*r_c])
+        
+        R_s=0
+        
+        for i in range(-3*r_s,3*r_s+1):
+            
+            for j in range(-3*r_s,3*r_s+1):
+                
+                R_s+=np.average(surround(i,j)*\
+                                img_gray[3*r_s+i:3*r_s+i+np.shape(img_gray)[0]-6*r_s,
+                                         3*r_s+j:3*r_s+j+np.shape(img_gray)[1]-6*r_s])
+            
+    if contrast_operator=='Tadmor-1':
+        
+        return (R_c-R_s)/R_c
+    
+    if contrast_operator=='Tadmor-2':
+        
+        return (R_c-R_s)/R_s
+    
+    if contrast_operator=='Tadmor-3':
+        
+        return (R_c-R_s)/(R_c+R_s)
+            
 #------------------------------------------------------------------------------
 """
 Calculation of contrast with different mode with 5-Area
