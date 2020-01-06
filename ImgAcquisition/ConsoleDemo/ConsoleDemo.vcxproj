@@ -80,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\Program Files (x86)\OpenCV\opencv\build\include\opencv2;E:\Program Files (x86)\OpenCV\opencv\build\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\Program Files (x86)\OpenCV\opencv\build\x64\vc15\lib;C:\Users\Administrator\Desktop\ImgAcquisition\DTCCM2_SDK\X64_Lib;C:\Users\Administrator\Desktop\ImgAcquisition\DTCCM2_SDK;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\opencv\build\include\opencv2;C:\opencv\build\include;E:\Program Files (x86)\OpenCV\opencv\build\include\opencv2;E:\Program Files (x86)\OpenCV\opencv\build\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\GitHub\KAMERAWERK\Auto-Focus\ImgAcquisition\DTCCM2_SDK\X64_Lib;D:\GitHub\KAMERAWERK\Auto-Focus\ImgAcquisition\DTCCM2_SDK;C:\opencv\build\x64\vc15\lib;E:\Program Files (x86)\OpenCV\opencv\build\x64\vc15\lib;C:\Users\Administrator\Desktop\ImgAcquisition\DTCCM2_SDK\X64_Lib;C:\Users\Administrator\Desktop\ImgAcquisition\DTCCM2_SDK;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -118,7 +118,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <AdditionalLibraryDirectories>C:\Users\Administrator\Desktop\ImgAcquisition\DTCCM2_SDK\X64_Lib;$(OPENCV_DIR)\x64\vc15\lib;D:\Kamerawerk\Development\OpenCV\ConsoleDemo-vcm\ConsoleDemo\ConsoleDemo\DTCCM2_SDK\X64_Lib;D:\Kamerawerk\Hardware\ConsoleDemo\ConsoleDemo\ConsoleDemo\V5USDK;C:\Users\Administrator\Desktop\ImgAcquisition\DTCCM2_SDK;E:\Program Files (x86)\OpenCV\opencv\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\opencv\build\x64\vc15\lib;D:\GitHub\KAMERAWERK\Auto-Focus\ImgAcquisition\DTCCM2_SDK\X64_Lib;C:\Users\Administrator\Desktop\ImgAcquisition\DTCCM2_SDK\X64_Lib;$(OPENCV_DIR)\x64\vc15\lib;D:\Kamerawerk\Development\OpenCV\ConsoleDemo-vcm\ConsoleDemo\ConsoleDemo\DTCCM2_SDK\X64_Lib;D:\Kamerawerk\Hardware\ConsoleDemo\ConsoleDemo\ConsoleDemo\V5USDK;C:\Users\Administrator\Desktop\ImgAcquisition\DTCCM2_SDK;E:\Program Files (x86)\OpenCV\opencv\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world420.lib;opencv_world420d.lib;dtccm2.lib;DtccmKit64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
