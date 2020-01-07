@@ -280,7 +280,7 @@ def GlobalContrast(img_gray,contrast_operator):
            
             sum_img_gray+=(center_img_gray+this_neighbor_img_gray)
             diff_img_gray+=(center_img_gray-this_neighbor_img_gray)
-            diff_square_img_gray+=(center_img_gray-this_neighbor_img_gray)
+            diff_square_img_gray+=(center_img_gray-this_neighbor_img_gray)**2
     
     '''Rizzi: root-mean-square contrast (2004)'''
     if contrast_operator=='RMSC-1':
@@ -345,6 +345,40 @@ def GlobalContrast(img_gray,contrast_operator):
     if contrast_operator=='Tadmor-3':
         
         return (R_c-R_s)/(R_c+R_s)
+    
+    '''Rizzi (2004)'''
+    if contrast_operator=='Rizzi':
+        
+        total_level=[]
+        
+        for level in range(6):
+            
+            img_gray=cv2.pyrDown(img_gray)
+        
+            #center img
+            center_img_gray=img_gray[+1:-1,+1:-1]
+            
+            #neighbor img
+            neighbor_img_gray=[img_gray[+1:-1,+2:],
+                               img_gray[+1:-1,:-2],
+                               img_gray[+2:,+1:-1],
+                               img_gray[:-2,+1:-1],
+                               img_gray[+2:,+2:],
+                               img_gray[:-2,+2:],
+                               img_gray[+2:,:-2],
+                               img_gray[:-2,:-2]]
+
+            '''diff sqaure: (I-I1)**2+(I-I2)**2+...+(I-I8)**2'''
+            diff_square_img_gray=np.zeros(np.shape(center_img_gray),dtype='uint8')
+        
+            #traverse nieghbor and calculate
+            for this_neighbor_img_gray in neighbor_img_gray:
+               
+                diff_square_img_gray+=(center_img_gray-this_neighbor_img_gray)**2
+                
+            total_level.append(np.average((np.sqrt(diff_square_img_gray/8)).ravel()))
+            
+        return np.average(total_level)
             
 #------------------------------------------------------------------------------
 """

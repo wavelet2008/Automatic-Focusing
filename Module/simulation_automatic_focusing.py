@@ -48,7 +48,8 @@ list_contrast_operator=['KK',
                         'RMSC-2',
                         'Tadmor-1',
                         'Tadmor-2',
-                        'Tadmor-3']
+                        'Tadmor-3',
+                        'Rizzi']
         
 list_contrast_color=['tan',
                      'teal',
@@ -65,6 +66,7 @@ list_contrast_color=['tan',
                      'slategray',
                      'steelblue',
                      'slateblue',
+                     'cadetblue',
                      'lightsalmon',
                      'mediumvioletred',
                      'mediumslateblue',
@@ -108,7 +110,7 @@ def ImageAndContrast(imgs_folder,contrast_operator):
     list_imgs_folder=[imgs_folder+'\\'+this_name for this_name in os.listdir(imgs_folder) if '.' not in this_name]
 
     #construct frame objects
-    frames=O_I.CombineFrames(list_imgs_folder,pre_fix='Near')
+    frames=O_I.CombineFrames(list_imgs_folder,pre_fix='tmp')
 
     #total data of frames
     list_VCM_code=[]
