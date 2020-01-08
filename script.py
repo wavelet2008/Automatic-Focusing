@@ -55,7 +55,7 @@ list_imgs_folder_name=[r'Luminance\Low',
                        r'Distance\Invarious',
                        r'Distance\Various']
 
-list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[:2]]
+list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[2:]]
 
 E_P.ExperimentOverall(list_imgs_folder)
 

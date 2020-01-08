@@ -110,7 +110,7 @@ def ImageAndContrast(imgs_folder,contrast_operator):
     list_imgs_folder=[imgs_folder+'\\'+this_name for this_name in os.listdir(imgs_folder) if '.' not in this_name]
 
     #construct frame objects
-    frames=O_I.CombineFrames(list_imgs_folder,pre_fix='tmp')
+    frames=O_I.CombineFrames(list_imgs_folder,pre_fix='Near')
 
     #total data of frames
     list_VCM_code=[]
