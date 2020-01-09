@@ -21,31 +21,23 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import MultipleLocator
 from matplotlib.font_manager import FontProperties
 
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Invarious\Coarse'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Various\Coarse'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\High\Coarse'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low\Coarse'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious\Coarse'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious\Coarse'
+imgs_folder=r'C:\Users\Administrator\Desktop\Ink_Step50'
+output_folder=r'C:\Users\Administrator\Desktop\Contrast\Parameter'
+
+E_P.Experiment5AreaFactor(imgs_folder,output_folder,1)
+E_P.Experiment5AreaWeight(imgs_folder,output_folder,1)
+E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder,1)
 
 #img_gray=O_I.BatchImages(imgs_folder)[1][10]
 #plt.imshow(img_gray,cmap='gray')
 #cv2.imshow('gray',img_gray)
 
-#folder_total=r'C:\Users\Administrator\Desktop\Experiment'
-#
-#for name_this_experiment in os.listdir(folder_total):
-#    
-#    E_P.ExperimentContrastComparison(folder_total+'\\'+name_this_experiment,'Constant')
-#    E_P.ExperimentContrastComparison(folder_total+'\\'+name_this_experiment,'Advanced')
-
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Unobvious' 
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture\Obvious' 
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Invarious'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Distance\Various'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\High'
-#imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low'
-
+experiment_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture'
+ 
+#E_P.ExperimentContrastComparison(experiment_folder,'Constant')
+#E_P.ExperimentContrastComparison(experiment_folder,'Advanced')
+#E_P.ExperimentContrastComparison(experiment_folder,'Standard Deviation')
+    
 root_folder=r'C:\Users\Administrator\Desktop\Experiment'
 
 list_imgs_folder_name=[r'Luminance\Low',
@@ -57,7 +49,7 @@ list_imgs_folder_name=[r'Luminance\Low',
 
 list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[2:]]
 
-E_P.ExperimentOverall(list_imgs_folder)
+#E_P.ExperimentOverall(list_imgs_folder)
 
 '''criteria of Critiria and Algorithm from DB or photos''' 
 

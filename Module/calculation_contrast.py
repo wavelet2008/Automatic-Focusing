@@ -400,7 +400,7 @@ def Contrast5Area(img_gray,
     
     print('')
     print('-- Contrast 5-Area')
-    print('->Operator:',contrast_operator)
+    print('-> Operator:',contrast_operator)
     
     height,width=np.shape(img_gray)
     
@@ -495,9 +495,13 @@ Args:
 Returns:
     contrast value
 """
-def ContrastBlockModule(img_gray,contrast_mode,ratio):
+def ContrastBlockModule(img_gray,contrast_operator,ratio):
     
-    return GlobalContrast(BlockModule(img_gray,ratio),contrast_mode)
+    print('')
+    print('-- Contrast Block Module')
+    print('-> Operator:',contrast_operator)
+    
+    return GlobalContrast(BlockModule(img_gray,ratio),contrast_operator)
     
 #------------------------------------------------------------------------------
 """
@@ -530,27 +534,39 @@ def ContrastCurve(list_imgs_folder,
         list_contrast_mode=['KK',
                             'Whittle',
                             'Burkhardt',
-                            'Michelson']
-        
-        list_contrast_color=['rosybrown',
-                             'slategray',
-                             'steelblue',
-                             'maroon']
-        
-    if series_mode=='Advanced':
-        
-        list_contrast_mode=['Peli',
-                            'WSC',
+                            'Michelson',
+                            'Peli',
+                            'W3C',
                             'Weber',
                             'Stevens',
                             'Boccignone']
         
-        list_contrast_color=['olive',
+        list_contrast_color=['tan',
                              'teal',
-                             'slateblue',
-                             'firebrick',
-                             'chocolate']
+                             'olive',
+                             'maroon',
+                             'orchid',
+                             'fuchsia',
+                             'crimson',
+                             'magenta',
+                             'thistle']
         
+    if series_mode=='Advanced':
+        
+        list_contrast_mode=['RMSC-1',
+                            'RMSC-2',
+                            'Tadmor-1',
+                            'Tadmor-2',
+                            'Tadmor-3',
+                            'Rizzi']
+        
+        list_contrast_color=['cadetblue',
+                             'lightsalmon',
+                             'mediumvioletred',
+                             'mediumslateblue',
+                             'mediumturquoise',
+                             'mediumaquamarine']
+            
     if series_mode=='Standard Deviation':
         
         list_contrast_mode=['SD',
@@ -560,12 +576,12 @@ def ContrastCurve(list_imgs_folder,
                             'SAW',
                             'SALGW']
         
-        list_contrast_color=['tan',
-                             'orchid',
-                             'thistle',
-                             'lightsalmon',
-                             'mediumturquoise',
-                             'mediumslateblue']
+        list_contrast_color=['chocolate',
+                             'firebrick',
+                             'rosybrown',
+                             'slategray',
+                             'steelblue',
+                             'slateblue']
         
     #map between mode and color     
     map_mode_color=dict(zip(list_contrast_mode,list_contrast_color))  
@@ -669,17 +685,25 @@ def ContrastCurve(list_imgs_folder,
     ax.yaxis.set_major_locator(MultipleLocator(y_major_step))
     ax.yaxis.set_minor_locator(MultipleLocator(y_minor_step))
     
-    #boundary
-    plt.ylim([-0.05,1.05])
-    plt.xlim([-24,512])
+    #limit of x and y
+    x_min,x_max=np.min(list_VCM_code),np.max(list_VCM_code)
+    y_min,y_max=0,1
+    
+    #cellpadding of x,y direction
+    x_cellpadding=(x_max-x_min)/20
+    y_cellpadding=(y_max-y_min)/20
+    
+    #axis boundary
+    plt.xlim([x_min-x_cellpadding,x_max+x_cellpadding])
+    plt.ylim([y_min-y_cellpadding,y_max+y_cellpadding])  
     
     #add annotation
     if view_mode=='5-Area':
         
-        plt.text(0,1,'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor,
+        plt.text(x_min,y_max,'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor,
                                                               ROI_weight[0],
                                                               ROI_weight[1]),FontProperties=text_font)
            
     if view_mode=='Block Module':
         
-        plt.text(0,1,'Block Module Ratio: %.1f'%(ratio),FontProperties=text_font)
+        plt.text(x_min,y_max,'Block Module Ratio: %.1f'%(ratio),FontProperties=text_font)

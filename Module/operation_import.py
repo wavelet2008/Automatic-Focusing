@@ -16,18 +16,20 @@ import operation_dictionary as O_D
 
 from o_frame import frame
 
+#pre_fix: same part of imgs name
+pre_fix='VCM'
+
 #------------------------------------------------------------------------------
 """
 Import a batch of images from folder
 
 Args:
     imgs_folder: images folder
-    pre_fix: same part of imgs name
     
 Returns:
     list_imgs_bgr,list_imgs_gray,list_VCM_code
 """
-def BatchImages(imgs_folder,pre_fix='Near'):
+def BatchImages(imgs_folder):
     
     '''cv2 read image with the format of BGR meanwhile plt read it with the one of RGB'''
     #list to contain img matrix (rgb and gray)
@@ -37,7 +39,7 @@ def BatchImages(imgs_folder,pre_fix='Near'):
     
     #traverse all image
     for this_img_name in os.listdir(imgs_folder):
-        
+
         this_img_path=imgs_folder+'\\'+this_img_name
         
         #read image
@@ -71,12 +73,11 @@ Combine images from imgs folder list
 
 Args:
     list_imgs_folder: images folder list
-    pre_fix: same part of imgs name
-    
+
 Returns:
     list_imgs_bgr,list_imgs_gray,list_VCM_code
 """
-def CombineImages(list_imgs_folder,pre_fix='Near'):
+def CombineImages(list_imgs_folder):
     
     #define new list
     list_imgs_bgr,list_imgs_gray,list_VCM_code=[],[],[]
@@ -85,7 +86,7 @@ def CombineImages(list_imgs_folder,pre_fix='Near'):
         
         this_list_imgs_bgr,\
         this_list_imgs_gray,\
-        this_list_VCM_code=BatchImages(this_imgs_folder,pre_fix)
+        this_list_VCM_code=BatchImages(this_imgs_folder)
         
         #combine this list
         list_imgs_bgr+=this_list_imgs_bgr
@@ -112,19 +113,15 @@ Construct all frame object from folder
 
 Args:
     imgs_folder: images folder
-    pre_fix: same part of imgs name
     
 Returns:
     frame object list
 """
-def FramesConstruction(imgs_folder,pre_fix='Near'):
+def FramesConstruction(imgs_folder):
     
     #final image object list and their paths
     list_frames=[]
-    
-    '''while for searching'''
-    list_frames_path=[]
-    
+
     #traverse all image
     for this_img_name in os.listdir(imgs_folder):
         
@@ -156,12 +153,11 @@ Combine frames from imgs folder list
 
 Args:
     list_imgs_folder: images folder list
-    pre_fix: same part of imgs name
     
 Returns:
     list_imgs_bgr,list_imgs_gray,list_VCM_code
 """
-def CombineFrames(list_imgs_folder,pre_fix='Near'):
+def CombineFrames(list_imgs_folder):
     
     #total frames
     list_frames=[]
