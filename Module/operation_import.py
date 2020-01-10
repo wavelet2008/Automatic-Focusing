@@ -17,7 +17,7 @@ import operation_dictionary as O_D
 from o_frame import frame
 
 #pre_fix: same part of imgs name
-pre_fix='VCM'
+pre_fix='tmp'
 
 #------------------------------------------------------------------------------
 """
@@ -164,7 +164,7 @@ def CombineFrames(list_imgs_folder):
     
     for this_imgs_folder in list_imgs_folder:
         
-        list_frames+=FramesConstruction(this_imgs_folder,pre_fix) 
+        list_frames+=FramesConstruction(this_imgs_folder) 
         
     #total VCM code
     list_VCM_code=[this_frame.VCM_code for this_frame in list_frames]
