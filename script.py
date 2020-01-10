@@ -24,9 +24,9 @@ from matplotlib.font_manager import FontProperties
 imgs_folder=r'C:\Users\Administrator\Desktop\Ink_Step50'
 output_folder=r'C:\Users\Administrator\Desktop\Contrast\Parameter'
 
-E_P.Experiment5AreaFactor(imgs_folder,output_folder,1)
-E_P.Experiment5AreaWeight(imgs_folder,output_folder,1)
-E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder,1)
+#E_P.Experiment5AreaFactor(imgs_folder,output_folder,1)
+#E_P.Experiment5AreaWeight(imgs_folder,output_folder,1)
+#E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder,1)
 
 #img_gray=O_I.BatchImages(imgs_folder)[1][10]
 #plt.imshow(img_gray,cmap='gray')
@@ -47,7 +47,7 @@ list_imgs_folder_name=[r'Luminance\Low',
                        r'Distance\Invarious',
                        r'Distance\Various']
 
-list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[2:]]
+list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[:2]]
 
 #E_P.ExperimentOverall(list_imgs_folder)
 
@@ -56,3 +56,7 @@ list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_na
 '''optimized frames construction'''
 
 '''plot maximum bound and output the best frame'''
+
+imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low'
+
+C_P_S.FullSweep(imgs_folder,'Michelson')

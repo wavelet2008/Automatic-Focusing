@@ -110,7 +110,7 @@ def ImageAndContrast(imgs_folder,contrast_operator):
     list_imgs_folder=[imgs_folder+'\\'+this_name for this_name in os.listdir(imgs_folder) if '.' not in this_name]
 
     #construct frame objects
-    frames=O_I.CombineFrames(list_imgs_folder,pre_fix='Near')
+    frames=O_I.CombineFrames(list_imgs_folder)
 
     #total data of frames
     list_VCM_code=[]
@@ -265,8 +265,8 @@ def ImageAndContrast(imgs_folder,contrast_operator):
                                                                                 ROI_weight[0],
                                                                                 ROI_weight[1]),FontProperties=text_font)
         #tick step
-        x_major_step=50
-        x_minor_step=25
+        x_major_step=np.ceil((x_max-x_min)/10/50)*50
+        x_minor_step=np.ceil((x_max-x_min)/10/50)*25
         y_major_step=0.1
         y_minor_step=0.05
         
