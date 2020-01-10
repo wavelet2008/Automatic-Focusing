@@ -264,11 +264,14 @@ def FullSweep(imgs_folder,contrast_operator):
         if result_full_sweep is not None:
             
             break
-        
+
     if result_full_sweep is None:
         
         print('Fine')
-        
+      
+    #index for fine search
+    index_start,index_end=result_full_sweep
+    
     plt.figure()
     plt.plot(list_contrast)
         
