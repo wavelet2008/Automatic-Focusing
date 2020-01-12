@@ -5,10 +5,14 @@
 #include "ConsoleDemo.h"
 #include <vector>
 #include <opencv2\opencv.hpp>
+#include<opencv2\imgproc\imgproc.hpp>
+#include<opencv2\imgproc\imgproc_c.h>
+#include<opencv2\highgui\highgui.hpp>
 #include "..\\DTCCM2_SDK\\dtccm2.h"
 #include "IniFileRW.h"
 #include "..\\LC898124EP1/DownloadCmd.h"
 #include "..\\LC898124EP1/HighLevelCmd.h"
+#include <Eigen\Dense>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,6 +25,7 @@ CWinApp theApp;
 
 using namespace std;
 using namespace cv;
+using namespace Eigen;
 
 #pragma comment(lib,"..\\DTCCM2_SDK\\dtccm2.lib")
 
@@ -46,7 +51,41 @@ float m_fMclk = 18;
 
 BOOL	m_isTV;
 
+//get gray value of img gray
 
+int GetValueFromImgGray(Mat img_gray,int i,int j){
+
+	//size of img//
+	int cols = img_gray.cols;
+	int rows = img_gray.rows;
+
+	int channels = img_gray.channels();
+
+	if (channels == 1)
+
+	{
+		//iteration from start 
+		Mat_<uchar>::iterator it_begin = img_gray.begin<uchar>();
+
+		int pixel = *(it_begin + cols * i + j);
+
+		return pixel;
+	}
+
+}
+
+int GetValueFromImgRGB(Mat img_bgr,int i,int j){
+	
+	Vec3i bgr = img_bgr.at<Vec3b>(i, j);
+
+	int B, G, R;
+
+	B = bgr.val[0];
+	G = bgr.val[1];
+	R = bgr.val[2];
+
+	return (R * 30 + G * 59 + B * 11) / 100;
+}
 
 
 vector<string> split(const string &s, const string &seperator)
@@ -923,9 +962,13 @@ int main()
 	//int nLoop_12M = 0;
 	//CString sTemp_12M = "";
 	unsigned int iWidth_12M = GetPrivateProfileInt(_T("Sensor"), _T("width"), 0, sConfigPath_12M);
-	unsigned int iHeight_12M = GetPrivateProfileInt(_T("Sensor"), _T("height"), 0, sConfigPath_12M/*"C:\\work\\zhanglei\\项目\\ConsoleDemo\\Debug\\IMX214_4L_3120_063_34.ini"*/);
-	unsigned char *pRawBuf_12M =  new unsigned char[iWidth_12M*iHeight_12M*3+1024];
-	unsigned char *pRaw8Buf_12M = new unsigned char[iWidth_12M*iHeight_12M];
+	unsigned int iHeight_12M = GetPrivateProfileInt(_T("Sensor"), _T("height"), 0, sConfigPath_12M);
+	/*"C:\\work\\zhanglei\\项目\\ConsoleDemo\\Debug\\IMX214_4L_3120_063_34.ini"*/
+	
+	//picture object with various format
+	unsigned char* pRawBuf_12M = new unsigned char[iWidth_12M * iHeight_12M * 3 + 1024];
+	unsigned char* pRaw8Buf_12M = new unsigned char[iWidth_12M * iHeight_12M];
+
 	FrameInfo m_FrameInfo;
 
 	// change 1: brightness
@@ -943,8 +986,8 @@ int main()
 	int nStep = 5;
 
 	// change 2: start and end number
-	nStart = 950;
-	nEnd = 1150;
+	nStart = 650;
+	nEnd = 700;
 
 	//nStart += (nStep * 1);
 	int cir = 0;
@@ -1018,15 +1061,92 @@ int main()
 
 			Mat iris_img = Mat(iHeight_12M, iWidth_12M, CV_8UC1, pRaw8Buf_12M);
 			cvtColor(iris_img, iris_img, COLOR_BayerRG2RGB);
+			
+			//size of matrix
+			int height = iris_img.rows;
+			int width = iris_img.cols;
+
+			//5-Area ROI center
+			int center_ROI_A[2]; 
+			int center_ROI_B[2];
+			int center_ROI_C[2];
+			int center_ROI_D[2];
+			int center_ROI_E[2];
+
+			//upper left
+			center_ROI_A[0] = int(height / 4);
+			center_ROI_A[1] = int(height / 4);
+
+			//upper right
+			center_ROI_B[0] = int(height / 4);
+			center_ROI_B[1] = int(3 * height / 4);
+
+			//lower left
+			center_ROI_C[0] = int(3 * height / 4);
+			center_ROI_C[1] = int(height / 4);
+
+			//lower right
+			center_ROI_D[0] = int(3 * height / 4);
+			center_ROI_D[1] = int(3 * height / 4);
+
+			//center
+			center_ROI_E[0] = int(height / 2);
+			center_ROI_E[1] = int(height / 2);
+
+			//5-Area ROI size
+			int height_ROI = int(height / 18);
+			int width_ROI = int(width / 18);
+
+			//half size
+			int half_height_ROI = int(height / 36);
+			int half_width_ROI = int(width / 36);
+
+			//amount of pixel in ROI
+			int area_ROI = height_ROI * width_ROI;
+
+			//ROI matrix
+			int* ROI_A = new int[area_ROI];
+			int* ROI_B = new int[area_ROI];
+			int* ROI_C = new int[area_ROI];
+			int* ROI_D = new int[area_ROI];
+			int* ROI_E = new int[area_ROI];
+
+			//construct img gray//
+			Mat img_gray(height, width, CV_8UC1);
+			cvtColor(iris_img, img_gray, CV_BGR2GRAY);
+
+			//give value to ROI matrix object
+
+			//A
+			int i_start = center_ROI_A[0] - half_height_ROI;
+			int j_start = center_ROI_A[1] - half_width_ROI;
+
+			for (int i = 0; i < height_ROI; i++) {
+
+				for (int j = 0; j < width_ROI; j++) {
+
+					ROI_A[i * width_ROI + j] = img_gray.ptr<uchar>(i_start + i)[j_start + j];
+
+				}
+			}
+			
+			//sizeof(ROI_A) stands for size of index variable
+			//cout << sizeof(ROI_A) << endl;
+
+			//_msize(ROI_A）represent the array size to which the index points
+			//cout << _msize(ROI_A) << endl;
+
+			cout << bool(_msize(ROI_A) / sizeof(ROI_A[0]) == area_ROI) << endl;
+
 			//vector<int> compression_params;
 			//compression_params.push_back(COLOR_IMWRITE_PNG_STRATEGY_DEFAULT);
 			//compression_params.push_back(100);
 			//imwrite("D:/tmp/new.png", iris_img, compression_params);
 			//namedWindow("iris_img", CV_WINDOW_NORMAL);
-			pyrDown(iris_img, iris_img, Size(iris_img.cols / 2, iris_img.rows / 2));
+			//pyrDown(iris_img, iris_img, Size(iris_img.cols / 2, iris_img.rows / 2));//
 			//resizeWindow("iris_img", 1200, 900);
 			//imshow("iris_img", iris_img);
-			resize(iris_img, iris_img, Size(3968, 2976), 0, 0, INTER_LINEAR);
+			//resize(iris_img, iris_img, Size(3968, 2976), 0, 0, INTER_LINEAR);//
 			char name[50];//the problem "buffer too small" once raised
 			printf("");
 			printf("-->VCM Code: %d\n", nStart);
@@ -1034,15 +1154,15 @@ int main()
 			if (nStart < 1000)
 			{
 				
-				sprintf_s(name, "C:/Users/魏华敬/Desktop/Test/tmp0%d.jpg", nStart);
+				sprintf_s(name, "C:/Users/Administrator/Desktop/Test/tmp0%d.jpg", nStart);
 			}
 			else
 			{
-				sprintf_s(name, "C:/Users/魏华敬/Desktop/Test/tmp%d.jpg", nStart);
+				sprintf_s(name, "C:/Users/Administrator/Desktop/Test/tmp%d.jpg", nStart);
 			}
 
 			
-			imwrite(name, iris_img);
+			//imwrite(name, iris_img);//
 			//waitKey(0);
 			//destroyWindow("iris_img");
 			iris_img.release();
