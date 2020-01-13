@@ -25,7 +25,7 @@ import calculation_numerical_analysis as C_N_A
 
 #font of fonts of all kinds
 legend_prop={'family':'Gill Sans MT','weight':'normal','size':12}
-text_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=14)
+text_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=12)
 label_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=16)
 title_font=FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=18)
 
@@ -174,14 +174,6 @@ def ImageAndContrast(imgs_folder,contrast_operator):
         list_contrast.append(np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas)))
         list_img_ROI.append(this_img_ROI)
         
-    #limit of x and y
-    x_min,x_max=np.min(list_VCM_code),np.max(list_VCM_code)
-    y_min,y_max=0,1
-    
-    #cellpadding of x,y direction
-    x_cellpadding=(x_max-x_min)/20
-    y_cellpadding=(y_max-y_min)/20
-    
     #center of ROI
     list_5_center_ROI=[[ height/2, width/2],
                        [  height/4,   width/4],
@@ -241,9 +233,22 @@ def ImageAndContrast(imgs_folder,contrast_operator):
                  linestyle='-',
                  label=contrast_operator)
         
+        #plot grid
+        plt.grid()
+        
+        #limit of x and y
+        x_min,x_max=np.min(list_VCM_code),np.max(list_VCM_code)
+        y_min,y_max=0,1
+        
+        #tick step
+        x_major_step=np.ceil((x_max-x_min)/10/50)*50
+        x_minor_step=np.ceil((x_max-x_min)/10/50)*25
+        y_major_step=0.1
+        y_minor_step=0.05
+        
         #axis boundary
-        plt.xlim([x_min-x_cellpadding,x_max+x_cellpadding])
-        plt.ylim([y_min-y_cellpadding,y_max+y_cellpadding])  
+        plt.xlim([x_min-x_minor_step,x_max+x_minor_step])
+        plt.ylim([y_min-y_minor_step,y_max+y_minor_step])  
         
         #set ticks fonts
         plt.tick_params(labelsize=12)
@@ -258,23 +263,22 @@ def ImageAndContrast(imgs_folder,contrast_operator):
         plt.ylabel('Contrast',FontProperties=label_font)
         
         plt.legend(prop=legend_prop,loc='lower right')
-        
-        if text_position=='Contrast':
-            
-            ax_contrast_curve.text(0,1,'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor,
-                                                                                ROI_weight[0],
-                                                                                ROI_weight[1]),FontProperties=text_font)
-        #tick step
-        x_major_step=np.ceil((x_max-x_min)/10/50)*50
-        x_minor_step=np.ceil((x_max-x_min)/10/50)*25
-        y_major_step=0.1
-        y_minor_step=0.05
-        
+  
         #set locator
         ax_contrast_curve.xaxis.set_major_locator(MultipleLocator(x_major_step))
         ax_contrast_curve.xaxis.set_minor_locator(MultipleLocator(x_minor_step))
         ax_contrast_curve.yaxis.set_major_locator(MultipleLocator(y_major_step))
         ax_contrast_curve.yaxis.set_minor_locator(MultipleLocator(y_minor_step))
+        
+        #text of parameter
+        if text_position=='Contrast':
+            
+            ax_contrast_curve.text(list_VCM_code[0]+x_major_step/10,
+                                   1+y_major_step/10,
+                                   'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor,
+                                                                            ROI_weight[0],
+                                                                            ROI_weight[1]),
+                                                                            FontProperties=text_font)               
         
         #save the fig
         this_fig_path=output_folder_operator+'//%d.png'%(list_VCM_code[k])

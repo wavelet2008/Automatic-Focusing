@@ -16,6 +16,7 @@ from matplotlib.font_manager import FontProperties
 
 import operation_path as O_P
 import calculation_contrast as C_C
+import calculation_peak_search as C_P_S
 import simulation_automatic_focusing as S_A_F
 
 #annotation font
@@ -295,8 +296,10 @@ def ExperimentOverall(list_imgs_folder):
     print('')
     print('-- Experiment Overall')
     
-    for this_contrast_operator in list_contrast_operator:
+    for this_contrast_operator in list_contrast_operator[7:8]:
         
         for this_imgs_folder in list_imgs_folder:
             
-            S_A_F.ImageAndContrast(this_imgs_folder,this_contrast_operator)
+#            S_A_F.ImageAndContrast(this_imgs_folder,this_contrast_operator)
+            C_P_S.FullSweep(this_imgs_folder,this_contrast_operator)
+    

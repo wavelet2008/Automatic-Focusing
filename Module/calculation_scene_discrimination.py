@@ -62,9 +62,14 @@ def ForeAndBackLuminance(img_gray,e=0.1,show=False):
         
         #update threhold
         threshold_next=0.5*(average_gray_level_f+average_gray_level_b)
-    
-    #    print(count,np.abs(threshold_next-threshold_pre))
         
+        '''???'''
+        if np.sum(array_frequency_f)==0:
+                
+            print(count,np.abs(threshold_next-threshold_pre))
+            print(array_frequency_f)
+            print(average_gray_level_b,average_gray_level_f)
+            
         count+=1
       
     if show:

@@ -25,9 +25,10 @@ import calculation_numerical_analysis as C_N_A
 
 #font of fonts of all kinds
 legend_prop={'family':'Gill Sans MT','weight':'normal','size':12}
-text_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=14)
+text_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=12)
 label_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=16)
 title_font=FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=18)
+sample_font=FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=12)
 
 list_contrast_operator=['KK',
                         'Whittle',
@@ -75,6 +76,7 @@ list_contrast_color=['tan',
 
 #map between mode and color     
 map_mode_color=dict(zip(list_contrast_operator,list_contrast_color))
+
 #------------------------------------------------------------------------------
 """
 Calculation of peak value in contrast value coarsely
@@ -86,10 +88,7 @@ Returns:
     start index and end index for fine search
 """
 def FullSweepCoarse(list_contrast):
-
-    print('')
-    print('-- Full Sweep Coarse')
-    
+  
     #amount of consecutive ascending or descending points
     amount_revert=5
     
@@ -102,6 +101,7 @@ def FullSweepCoarse(list_contrast):
     #index of maximum
     index_maximum=list_contrast.index(np.max(list_contrast))
     
+    '''try to tolerate one fluctuation'''
     for k in range(len(list_contrast)-1):
         
         if list_contrast[k]<list_contrast[k+1]:
@@ -147,9 +147,9 @@ Args:
     list_contrast: contrast value list
     
 Returns:
-    VCM code of contrast peak value
+    index of VCM code of contrast peak value
 """   
-def FullSweepFine(list_contrast,list_VCM_code):
+def FullSweepFine(list_contrast):
     
     print('')
     print('-- Full Sweep Fine')
@@ -203,6 +203,9 @@ def FullSweep(imgs_folder,contrast_operator):
 
     result_full_sweep=None
     
+    print('')
+    print('-- Full Sweep Coarse')
+    
     #traverse all frames for full sweeping
     for this_frame in frames:
 
@@ -255,7 +258,7 @@ def FullSweep(imgs_folder,contrast_operator):
         list_VCM_code.append(this_frame.VCM_code)
         list_contrast.append(np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas)))
         list_img_ROI.append(this_img_ROI)
-        
+       
         #result of full sweep
         result_full_sweep=FullSweepCoarse(list_contrast)
         
@@ -263,120 +266,165 @@ def FullSweep(imgs_folder,contrast_operator):
         
         if result_full_sweep is not None:
             
+            #index for fine search
+            index_start,index_end=result_full_sweep
+            
             break
 
+    #no valid peak: select maximum instead
     if result_full_sweep is None:
-        
-        print('Fine')
+
+        index_start=list_contrast.index(np.max(list_contrast))-1
+        index_end=list_contrast.index(np.max(list_contrast))+1
       
-    #index for fine search
-    index_start,index_end=result_full_sweep
-    
-    plt.figure()
-    plt.plot(list_contrast)
+    #expetion    
+    if index_start<0:
         
-#    #limit of x and y
-#    x_min,x_max=np.min(list_VCM_code),np.max(list_VCM_code)
-#    y_min,y_max=0,1
-#    
-#    #cellpadding of x,y direction
-#    x_cellpadding=(x_max-x_min)/20
-#    y_cellpadding=(y_max-y_min)/20
-#    
-#    #center of ROI
-#    list_5_center_ROI=[[ height/2, width/2],
-#                       [  height/4,   width/4],
-#                       [  height/4, 3*width/4],
-#                       [3*height/4, 3*width/4],
-#                       [3*height/4,   width/4]]
-#    
-#    #traverse again and make visualization
-#    for k in range(len(frames)):
-#        
-#        print('--> VCM Code:',list_VCM_code[k])
-#        
-#        #init real-time data
-#        list_VCM_code_this_frame=list_VCM_code[:k+1]
-#        list_normalized_contrast_this_frame=C_N_A.Normalize(list_contrast[:k+1])
-#        img_ROI_this_frame=list_img_ROI[k]
-#        
-#    plt.figure(figsize=(17,6))
-#    
-#    '''input image'''
-#    ax_input_image=plt.subplot(121)
-#    plt.imshow(frames[k].img_gray,cmap='gray')
-#    
-#    #ROI bound
-#    plt.imshow(img_ROI_this_frame,cmap='seismic_r')
-#    
-#    if text_position=='Image':
-#    
-#        #show ROI weight
-#        for kk in range(len(list_5_center_ROI)):
-#            
-#            #center coordinates of ROI
-#            y_center_ROI=list_5_center_ROI[kk][0]+height/60
-#            x_center_ROI=list_5_center_ROI[kk][1]-width/40
-#            
-#            ax_input_image.text(x_center_ROI,
-#                                y_center_ROI,
-#                                '%.2f'%(ROI_weight[kk]),
-#                                fontproperties=text_font)
-#        
-#    plt.title('Input Image',FontProperties=title_font)
-#    
-#    plt.xticks([])
-#    plt.yticks([])
-#    
-#    '''contrast curve'''
-#    ax_contrast_curve=plt.subplot(122)
-#
-#    plt.plot(list_VCM_code_this_frame,
-#             list_normalized_contrast_this_frame,
-#             color=map_mode_color[contrast_operator],
-#             marker='.',
-#             markersize=8,
-#             linestyle='-',
-#             label=contrast_operator)
-#    
-#    #axis boundary
-#    plt.xlim([x_min-x_cellpadding,x_max+x_cellpadding])
-#    plt.ylim([y_min-y_cellpadding,y_max+y_cellpadding])  
-#    
-#    #set ticks fonts
-#    plt.tick_params(labelsize=12)
-#    labels=ax_contrast_curve.get_xticklabels()+ax_contrast_curve.get_yticklabels()
-#    
-#    #label fonts
-#    [this_label.set_fontname('Times New Roman') for this_label in labels]
-#        
-#    plt.title(contrast_operator+' Contrast-VCM Code Curve',FontProperties=title_font)
-#    
-#    plt.xlabel('VCM Code',FontProperties=label_font)
-#    plt.ylabel('Contrast',FontProperties=label_font)
-#    
-#    plt.legend(prop=legend_prop,loc='lower right')
-#    
-#    if text_position=='Contrast':
-#        
-#        ax_contrast_curve.text(0,1,'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor,
-#                                                                            ROI_weight[0],
-#                                                                            ROI_weight[1]),FontProperties=text_font)
-#    #tick step
-#    x_major_step=np.ceil((x_max-x_min)/10/50)*50
-#    x_minor_step=np.ceil((x_max-x_min)/10/50)*25
-#    y_major_step=0.1
-#    y_minor_step=0.05
-#    
-#    #set locator
-#    ax_contrast_curve.xaxis.set_major_locator(MultipleLocator(x_major_step))
-#    ax_contrast_curve.xaxis.set_minor_locator(MultipleLocator(x_minor_step))
-#    ax_contrast_curve.yaxis.set_major_locator(MultipleLocator(y_major_step))
-#    ax_contrast_curve.yaxis.set_minor_locator(MultipleLocator(y_minor_step))
-#    
-#    #save the fig
-#    this_fig_path=output_folder_operator+'//%d.png'%(list_VCM_code[k])
-#    plt.savefig(this_fig_path,dpi=300,bbox_inches='tight')
-#    
-#    plt.close()
+        index_start=0
+        
+    if index_end>=len(list_contrast):
+        
+        index_end=len(list_contrast)-1
+        
+    #List for fine search
+    list_VCM_code_fine=list_VCM_code[index_start:index_end+1]
+    list_contrast_fine=list_contrast[index_start:index_end+1]
+    
+    #normalization of contrast list
+    list_normalized_contrast=C_N_A.Normalize(list_contrast)
+    
+    '''AF result: peak VCM code'''
+    peak_index=FullSweepFine(list_contrast_fine)
+    peak_VCM_code=list_VCM_code_fine[peak_index]
+    peak_normalized_contrast=np.max(list_normalized_contrast)
+    
+    print('--> Best VCM Code:',peak_VCM_code)
+
+    #center of ROI
+    list_5_center_ROI=[[  height/2,   width/2],
+                       [  height/4,   width/4],
+                       [  height/4, 3*width/4],
+                       [3*height/4, 3*width/4],
+                       [3*height/4,   width/4]]
+
+    plt.figure(figsize=(17,6))
+    
+    '''input image'''
+    ax_input_image=plt.subplot(121)
+    
+    plt.imshow(frames[peak_index].img_gray,cmap='gray')
+    
+    #ROI bound
+    plt.imshow(list_img_ROI[peak_index],cmap='seismic_r')
+    
+    if text_position=='Image':
+    
+        #show ROI weight
+        for kk in range(len(list_5_center_ROI)):
+            
+            #center coordinates of ROI
+            y_center_ROI=list_5_center_ROI[kk][0]+height/60
+            x_center_ROI=list_5_center_ROI[kk][1]-width/40
+            
+            ax_input_image.text(x_center_ROI,
+                                y_center_ROI,
+                                '%.2f'%(ROI_weight[kk]),
+                                fontproperties=text_font)
+        
+    plt.title('Input Image',FontProperties=title_font)
+    
+    plt.xticks([])
+    plt.yticks([])
+    
+    '''contrast curve'''
+    ax_contrast_curve=plt.subplot(122)
+    
+    plt.plot(list_VCM_code,
+             list_normalized_contrast,
+             color=map_mode_color[contrast_operator],
+             marker='.',
+             markersize=8,
+             linestyle='-',
+             label=contrast_operator)
+
+    #plot grid
+    plt.grid()
+    
+    #set ticks fonts
+    plt.tick_params(labelsize=12)
+    labels=ax_contrast_curve.get_xticklabels()+ax_contrast_curve.get_yticklabels()
+    
+    #label fonts
+    [this_label.set_fontname('Times New Roman') for this_label in labels]
+        
+    plt.title(contrast_operator+' Contrast-VCM Code Curve',FontProperties=title_font)
+    
+    plt.xlabel('VCM Code',FontProperties=label_font)
+    plt.ylabel('Contrast',FontProperties=label_font)
+    
+    plt.legend(prop=legend_prop,loc='lower right')
+
+    #VMC code for plotting limit 
+    list_VCM_code_total=[this_frame.VCM_code for this_frame in frames]
+    
+    #limit of x and y
+    x_min,x_max=np.min(list_VCM_code_total),np.max(list_VCM_code_total)
+    y_min,y_max=0,1
+    
+    #tick step
+    x_major_step=np.ceil((x_max-x_min)/10/50)*50
+    x_minor_step=np.ceil((x_max-x_min)/10/50)*25
+    y_major_step=0.1
+    y_minor_step=0.05
+    
+    #axis boundary
+    plt.xlim([x_min-x_minor_step,x_max+x_minor_step])
+    plt.ylim([y_min-y_minor_step,y_max+y_minor_step])
+    
+    #horizontal line
+    plt.hlines(peak_normalized_contrast,
+               x_min-x_minor_step,
+               x_max+x_minor_step,
+               color='grey',
+               linestyles="--")
+    
+    #vertical line
+    plt.vlines(peak_VCM_code,
+               y_min-y_minor_step,
+               y_max+y_minor_step,
+               color='grey',
+               linestyles="--")
+
+    #set locator
+    ax_contrast_curve.xaxis.set_major_locator(MultipleLocator(x_major_step))
+    ax_contrast_curve.xaxis.set_minor_locator(MultipleLocator(x_minor_step))
+    ax_contrast_curve.yaxis.set_major_locator(MultipleLocator(y_major_step))
+    ax_contrast_curve.yaxis.set_minor_locator(MultipleLocator(y_minor_step))
+    
+    #annotation of peak VCM code
+    ax_contrast_curve.annotate('Peak: %d'%peak_VCM_code,
+                               xy=(peak_VCM_code,peak_normalized_contrast),
+                               xytext=(peak_VCM_code+x_major_step/10,y_major_step/10),
+                               color='k',
+                               fontproperties=sample_font)
+    
+    #text of parameter
+    ax_contrast_curve.text(list_VCM_code[0]+x_major_step/10,
+                           1+y_major_step/10,
+                           'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor,
+                                                                    ROI_weight[0],
+                                                                    ROI_weight[1]),
+                                                                    FontProperties=text_font)           
+                           
+    #save the fig
+    '''operator experiment'''
+    fig_path_operator=output_folder_operator+'//Peak.png'
+    
+    '''condition experiment'''
+    fig_path_condition=output_folder_condition+str_c+' '+str_d+' (Peak).png'
+    
+    plt.savefig(fig_path_operator,dpi=300,bbox_inches='tight')
+    plt.savefig(fig_path_condition,dpi=300,bbox_inches='tight')
+    
+    plt.close()
     

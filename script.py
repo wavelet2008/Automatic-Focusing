@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import MultipleLocator
 from matplotlib.font_manager import FontProperties
 
+'''VCM'''
 imgs_folder=r'C:\Users\Administrator\Desktop\Ink_Step50'
 output_folder=r'C:\Users\Administrator\Desktop\Contrast\Parameter'
 
@@ -32,12 +33,14 @@ output_folder=r'C:\Users\Administrator\Desktop\Contrast\Parameter'
 #plt.imshow(img_gray,cmap='gray')
 #cv2.imshow('gray',img_gray)
 
+'''Near'''
 experiment_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture'
  
 #E_P.ExperimentContrastComparison(experiment_folder,'Constant')
 #E_P.ExperimentContrastComparison(experiment_folder,'Advanced')
 #E_P.ExperimentContrastComparison(experiment_folder,'Standard Deviation')
     
+'''[:2]-tmp, [2:]-Near'''
 root_folder=r'C:\Users\Administrator\Desktop\Experiment'
 
 list_imgs_folder_name=[r'Luminance\Low',
@@ -49,14 +52,14 @@ list_imgs_folder_name=[r'Luminance\Low',
 
 list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[:2]]
 
-#E_P.ExperimentOverall(list_imgs_folder)
+E_P.ExperimentOverall(list_imgs_folder)
 
 '''criteria of Critiria and Algorithm from DB or photos''' 
 
 '''optimized frames construction'''
 
-'''plot maximum bound and output the best frame'''
-
 imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low'
 
-C_P_S.FullSweep(imgs_folder,'Michelson')
+#C_P_S.FullSweep(imgs_folder,'Michelson')
+
+'''try to tolerate one fluctuation in full sweep'''

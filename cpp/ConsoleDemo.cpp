@@ -50,9 +50,93 @@ float m_fVpp = 2.8;
 float m_fMclk = 18;
 
 BOOL	m_isTV;
+//get maximum in an array
+int ArrayMaximum(int* which_array) {
+
+	//length of array
+	int length = _msize(which_array) / sizeof(which_array[0]);
+
+	//init the maximum
+	int maximum=which_array[0];
+
+	//find the maximum
+	int i;
+
+	for (i = 0; i < length; i++) {
+	
+		if (which_array[i] > maximum){
+
+			maximum = which_array[i];
+		}
+	}
+	return maximum;
+}
+
+//get minimum in an array
+int ArrayMinimum(int* which_array) {
+
+	//length of array
+	int length = _msize(which_array) / sizeof(which_array[0]);
+
+	//init the minimum
+	int minimum = which_array[0];
+
+	//find the minimum
+	int i;
+
+	for (i = 0; i < length; i++) {
+
+		if (which_array[i] < minimum) {
+
+			minimum = which_array[i];
+		}
+	}
+	return minimum;
+}
+
+//get ROI matrix as an array
+int* GetROIArray(Mat img_gray, int center_ROI[2]) {
+
+	//size of matrix
+	int height = img_gray.rows;
+	int width = img_gray.cols;
+
+	//5-Area ROI size
+	int height_ROI = int(height / 18);
+	int width_ROI = int(width / 18);
+
+	//half size
+	int half_height_ROI = int(height / 36);
+	int half_width_ROI = int(width / 36);
+
+	//amount of pixel in ROI
+	int area_ROI = height_ROI * width_ROI;
+
+	//ROI matrix
+	int* ROI = new int[area_ROI];
+
+	//give value to ROI matrix object
+	int i;
+	int j;
+	int i_start = center_ROI[0] - half_height_ROI;
+	int j_start = center_ROI[1] - half_width_ROI;
+
+	for (i = 0; i < height_ROI; i++) {
+
+		for (j = 0; j < width_ROI; j++) {
+
+			ROI[i * width_ROI + j] = img_gray.ptr<uchar>(i_start + i)[j_start + j];
+
+		}
+	}
+	//judge whether it is correct
+	//cout << bool(_msize(ROI) / sizeof(ROI[0]) == area_ROI) << endl;
+	//cout << ROI[0] << endl;
+
+	return ROI;
+}
 
 //get gray value of img gray
-
 int GetValueFromImgGray(Mat img_gray,int i,int j){
 
 	//size of img//
@@ -1066,77 +1150,43 @@ int main()
 			int height = iris_img.rows;
 			int width = iris_img.cols;
 
-			//5-Area ROI center
-			int center_ROI_A[2]; 
-			int center_ROI_B[2];
-			int center_ROI_C[2];
-			int center_ROI_D[2];
-			int center_ROI_E[2];
-
-			//upper left
-			center_ROI_A[0] = int(height / 4);
-			center_ROI_A[1] = int(height / 4);
-
-			//upper right
-			center_ROI_B[0] = int(height / 4);
-			center_ROI_B[1] = int(3 * height / 4);
-
-			//lower left
-			center_ROI_C[0] = int(3 * height / 4);
-			center_ROI_C[1] = int(height / 4);
-
-			//lower right
-			center_ROI_D[0] = int(3 * height / 4);
-			center_ROI_D[1] = int(3 * height / 4);
-
-			//center
-			center_ROI_E[0] = int(height / 2);
-			center_ROI_E[1] = int(height / 2);
-
-			//5-Area ROI size
-			int height_ROI = int(height / 18);
-			int width_ROI = int(width / 18);
-
-			//half size
-			int half_height_ROI = int(height / 36);
-			int half_width_ROI = int(width / 36);
-
-			//amount of pixel in ROI
-			int area_ROI = height_ROI * width_ROI;
-
-			//ROI matrix
-			int* ROI_A = new int[area_ROI];
-			int* ROI_B = new int[area_ROI];
-			int* ROI_C = new int[area_ROI];
-			int* ROI_D = new int[area_ROI];
-			int* ROI_E = new int[area_ROI];
-
 			//construct img gray//
 			Mat img_gray(height, width, CV_8UC1);
 			cvtColor(iris_img, img_gray, CV_BGR2GRAY);
 
-			//give value to ROI matrix object
-
-			//A
-			int i_start = center_ROI_A[0] - half_height_ROI;
-			int j_start = center_ROI_A[1] - half_width_ROI;
-
-			for (int i = 0; i < height_ROI; i++) {
-
-				for (int j = 0; j < width_ROI; j++) {
-
-					ROI_A[i * width_ROI + j] = img_gray.ptr<uchar>(i_start + i)[j_start + j];
-
-				}
-			}
+			//5-Area ROI center
+			int center_ROI_A[2] = { int(height / 2) ,int(height / 2) };
+			int center_ROI_B[2] = { int(height / 4) ,int(height / 4) };
+			int center_ROI_C[2] = { int(height / 4) ,int(3 * height / 4) };
+			int center_ROI_D[2] = { int(3 * height / 4) ,int(height / 4) };
+			int center_ROI_E[2] = { int(3 * height / 4) ,int(3 * height / 4) };
 			
+			//ROI array
+			int* array_ROI_A = GetROIArray(img_gray, center_ROI_A);
+			int* array_ROI_B = GetROIArray(img_gray, center_ROI_B);
+			int* array_ROI_C = GetROIArray(img_gray, center_ROI_C);
+			int* array_ROI_D = GetROIArray(img_gray, center_ROI_D);
+			int* array_ROI_E = GetROIArray(img_gray, center_ROI_E);
+
+			int L_max = ArrayMaximum(array_ROI_A);
+			int L_min = ArrayMinimum(array_ROI_A);
+
+			//type?
+			double contrast = (L_max - L_min) / (L_max + L_min);
+
+			cout << L_max << endl;
+			cout << L_min << endl;
+			cout << L_max - L_min << endl;
+			cout << L_max + L_min << endl;
+			cout << (L_max - L_min) / (L_max + L_min) << endl;
+
+
+
 			//sizeof(ROI_A) stands for size of index variable
 			//cout << sizeof(ROI_A) << endl;
 
 			//_msize(ROI_A£©represent the array size to which the index points
 			//cout << _msize(ROI_A) << endl;
-
-			cout << bool(_msize(ROI_A) / sizeof(ROI_A[0]) == area_ROI) << endl;
 
 			//vector<int> compression_params;
 			//compression_params.push_back(COLOR_IMWRITE_PNG_STRATEGY_DEFAULT);
@@ -1147,9 +1197,12 @@ int main()
 			//resizeWindow("iris_img", 1200, 900);
 			//imshow("iris_img", iris_img);
 			//resize(iris_img, iris_img, Size(3968, 2976), 0, 0, INTER_LINEAR);//
+
 			char name[50];//the problem "buffer too small" once raised
+
 			printf("");
 			printf("-->VCM Code: %d\n", nStart);
+			
 			// change 3: save path
 			if (nStart < 1000)
 			{
