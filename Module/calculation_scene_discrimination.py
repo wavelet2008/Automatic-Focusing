@@ -41,7 +41,11 @@ def ForeAndBackLuminance(img_gray,e=0.1,show=False):
     threshold_pre=average_gray_level
     threshold_next=threshold_pre+10*e
     
-    count=1
+    #list to contain
+    list_average_gray_level_f=[]
+    list_average_gray_level_b=[]
+    
+    count=0
     
     while np.abs(threshold_next-threshold_pre)>e:
         
@@ -57,19 +61,41 @@ def ForeAndBackLuminance(img_gray,e=0.1,show=False):
         array_frequency_f=array_frequency[np.where(array_gray_level>threshold_pre)]
         
         #average value of gray level of b&f
-        average_gray_level_b=np.sum(array_gray_level_b*array_frequency_b)/np.sum(array_frequency_b)
-        average_gray_level_f=np.sum(array_gray_level_f*array_frequency_f)/np.sum(array_frequency_f)
+        if np.sum(array_frequency_f)==0:
+            
+            if count:
+                
+                average_gray_level_f=list_average_gray_level_f[-1]
+                
+            else:
+                
+                average_gray_level_f=0
+            
+        else:
+            
+            average_gray_level_f=np.sum(array_gray_level_f*array_frequency_f)/np.sum(array_frequency_f)
+
+        if np.sum(array_frequency_b)==0:
+            
+            if count:
+                
+                average_gray_level_b=list_average_gray_level_b[-1]  
+                
+            else:
+                
+                average_gray_level_b=0
+            
+        else:
+            
+            average_gray_level_b=np.sum(array_gray_level_b*array_frequency_b)/np.sum(array_frequency_b)
+        
+        #collect
+        list_average_gray_level_f.append(average_gray_level_f)
+        list_average_gray_level_b.append(average_gray_level_b)
         
         #update threhold
-        threshold_next=0.5*(average_gray_level_f+average_gray_level_b)
+        threshold_next=0.5*(average_gray_level_f+average_gray_level_b)   
         
-        '''???'''
-        if np.sum(array_frequency_f)==0:
-                
-            print(count,np.abs(threshold_next-threshold_pre))
-            print(array_frequency_f)
-            print(average_gray_level_b,average_gray_level_f)
-            
         count+=1
       
     if show:

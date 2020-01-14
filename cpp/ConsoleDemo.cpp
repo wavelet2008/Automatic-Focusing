@@ -50,6 +50,67 @@ float m_fVpp = 2.8;
 float m_fMclk = 18;
 
 BOOL	m_isTV;
+
+//contrast of ROI array
+float GetContrast(int* array_ROI, const char* contrast_operatot) {
+
+	int L_max = ArrayMaximum(array_ROI);
+	int L_min = ArrayMinimum(array_ROI);
+
+	float contrast;
+
+	//Michelson (1927)
+	if (contrast_operatot == "Michelson") {
+
+		contrast = L_max - L_min;
+
+	}
+	//Whittle (1986)
+	if (contrast_operatot == "Whittle") {
+
+		contrast = L_max - L_min;
+
+	}
+	//Weber (1840)
+	if (contrast_operatot == "Weber") {
+
+		contrast = L_max - L_min;
+
+	}
+	//W3C (2006)
+	if (contrast_operatot == "W3C") {
+
+		contrast = L_max - L_min;
+
+	}
+	//Boccignone (1996)
+	if (contrast_operatot == "Boccignone") {
+
+		contrast = L_max - L_min;
+
+	}
+	//Moulden (1990): Standard Deviation
+	//SD: standard deviation
+	if (contrast_operatot == "SD") {
+
+		contrast = L_max - L_min;
+
+	}
+	//SDLG: standard deviation of logarithm of luminance
+	if (contrast_operatot == "SDLG") {
+
+		contrast = L_max - L_min;
+
+	}
+	//SAW: space-average of Whittle contrast
+	if (contrast_operatot == "SAW") {
+
+		contrast = L_max - L_min;
+
+	}
+	return contrast;
+}
+
 //get maximum in an array
 int ArrayMaximum(int* which_array) {
 
@@ -1172,7 +1233,10 @@ int main()
 			int L_min = ArrayMinimum(array_ROI_A);
 
 			//type?
-			double contrast = (L_max - L_min) / (L_max + L_min);
+			float contrast = (L_max - L_min) / (L_max + L_min);
+			//cout could only print int type?
+			printf("%f", img_gray.ptr<uchar>(0)[0]);
+			printf("%f", contrast);
 
 			cout << L_max << endl;
 			cout << L_min << endl;
@@ -1180,7 +1244,8 @@ int main()
 			cout << L_max + L_min << endl;
 			cout << (L_max - L_min) / (L_max + L_min) << endl;
 
-
+			//weight of 5-Area
+			int ROI_weight[5] = { 0.44,0.14,0.14,0.14,0.14 };
 
 			//sizeof(ROI_A) stands for size of index variable
 			//cout << sizeof(ROI_A) << endl;

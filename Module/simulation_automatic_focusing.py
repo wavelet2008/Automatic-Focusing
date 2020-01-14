@@ -233,9 +233,6 @@ def ImageAndContrast(imgs_folder,contrast_operator):
                  linestyle='-',
                  label=contrast_operator)
         
-        #plot grid
-        plt.grid()
-        
         #limit of x and y
         x_min,x_max=np.min(list_VCM_code),np.max(list_VCM_code)
         y_min,y_max=0,1
@@ -282,8 +279,10 @@ def ImageAndContrast(imgs_folder,contrast_operator):
         
         #save the fig
         this_fig_path=output_folder_operator+'//%d.png'%(list_VCM_code[k])
-        plt.savefig(this_fig_path,dpi=300,bbox_inches='tight')
         
+        plt.grid()
+        
+        plt.savefig(this_fig_path,dpi=300,bbox_inches='tight')
         plt.close()
         
         #collect fig to create GIF

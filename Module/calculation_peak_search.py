@@ -346,9 +346,6 @@ def FullSweep(imgs_folder,contrast_operator):
              markersize=8,
              linestyle='-',
              label=contrast_operator)
-
-    #plot grid
-    plt.grid()
     
     #set ticks fonts
     plt.tick_params(labelsize=12)
@@ -415,7 +412,7 @@ def FullSweep(imgs_folder,contrast_operator):
                                                                     ROI_weight[0],
                                                                     ROI_weight[1]),
                                                                     FontProperties=text_font)           
-                           
+                                        
     #save the fig
     '''operator experiment'''
     fig_path_operator=output_folder_operator+'//Peak.png'
@@ -423,8 +420,9 @@ def FullSweep(imgs_folder,contrast_operator):
     '''condition experiment'''
     fig_path_condition=output_folder_condition+str_c+' '+str_d+' (Peak).png'
     
+    plt.grid()  
+    
     plt.savefig(fig_path_operator,dpi=300,bbox_inches='tight')
     plt.savefig(fig_path_condition,dpi=300,bbox_inches='tight')
-    
     plt.close()
     

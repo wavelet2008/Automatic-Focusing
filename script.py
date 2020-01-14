@@ -34,7 +34,7 @@ output_folder=r'C:\Users\Administrator\Desktop\Contrast\Parameter'
 #cv2.imshow('gray',img_gray)
 
 '''Near'''
-experiment_folder=r'C:\Users\Administrator\Desktop\Experiment\Texture'
+experiment_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance'
  
 #E_P.ExperimentContrastComparison(experiment_folder,'Constant')
 #E_P.ExperimentContrastComparison(experiment_folder,'Advanced')
@@ -63,3 +63,4 @@ imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low'
 #C_P_S.FullSweep(imgs_folder,'Michelson')
 
 '''try to tolerate one fluctuation in full sweep'''
+

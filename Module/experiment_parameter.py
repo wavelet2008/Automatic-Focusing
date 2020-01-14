@@ -19,9 +19,6 @@ import calculation_contrast as C_C
 import calculation_peak_search as C_P_S
 import simulation_automatic_focusing as S_A_F
 
-#annotation font
-annotation_font=FontProperties(fname="C:\Windows\Fonts\GILI____.ttf",size=16)
-
 list_contrast_operator=['KK',
                         'Whittle',
                         'Burkhardt',
@@ -51,12 +48,11 @@ Experiment: block module size factor
 Args:
     imgs_folder: images folder  
     output_folder: figs output_folder
-    all_series: if False: only Constant, if True: both Constant and Standard Deviation
-
+   
 Returns:
     None
 """
-def ExperimentBlockModuleRatio(imgs_folder,output_folder,all_series=False):
+def ExperimentBlockModuleRatio(imgs_folder,output_folder):
     
     final_folder=output_folder+'\\Block Module\\Ratio\\'
     
@@ -74,24 +70,28 @@ def ExperimentBlockModuleRatio(imgs_folder,output_folder,all_series=False):
         #plot curve
         C_C.ContrastCurve(imgs_folder,'Constant','Block Module',ratio=this_ratio)
 
+        plt.grid()
+        
         plt.savefig(final_folder+str(k)+' (Constant).png',dpi=300,bbox_inches='tight')
         plt.close()
+  
+        '''Standard Deviation'''
+        #plot curve
+        C_C.ContrastCurve(imgs_folder,'Standard Deviation','Block Module',ratio=this_ratio)
+    
+        plt.grid()
         
-        if all_series:
-            
-            '''Standard Deviation'''
-            #plot curve
-            C_C.ContrastCurve(imgs_folder,'Standard Deviation','Block Module',ratio=this_ratio)
+        plt.savefig(final_folder+str(k)+' (Standard Deviation).png',dpi=300,bbox_inches='tight')
+        plt.close()
         
-            plt.savefig(final_folder+str(k)+' (Standard Deviation).png',dpi=300,bbox_inches='tight')
-            plt.close()
-            
-            '''Advanced'''
-            #plot curve
-            C_C.ContrastCurve(imgs_folder,'Advanced','Block Module',ratio=this_ratio)
+        '''Advanced'''
+        #plot curve
+        C_C.ContrastCurve(imgs_folder,'Advanced','Block Module',ratio=this_ratio)
+    
+        plt.grid()
         
-            plt.savefig(final_folder+str(k)+' (Advanced).png',dpi=300,bbox_inches='tight')
-            plt.close()
+        plt.savefig(final_folder+str(k)+' (Advanced).png',dpi=300,bbox_inches='tight')
+        plt.close()
         
 #------------------------------------------------------------------------------
 """
@@ -100,12 +100,11 @@ Experiment: weight in 5 area method
 Args:
     imgs_folder: images folder  
     output_folder: figs output_folder
-    all_series: if False: only Constant, if True: both Constant and Standard Deviation
 
 Returns:
     None
 """
-def Experiment5AreaWeight(imgs_folder,output_folder,all_series=False):
+def Experiment5AreaWeight(imgs_folder,output_folder):
     
     final_folder=output_folder+'\\5-Area\\Weight\\'
     
@@ -127,24 +126,28 @@ def Experiment5AreaWeight(imgs_folder,output_folder,all_series=False):
         #plot curve
         C_C.ContrastCurve(imgs_folder,'Constant','5-Area',ROI_weight=this_weight)
     
+        plt.grid()
+        
         plt.savefig(final_folder+str(k)+' (Constant).png',dpi=300,bbox_inches='tight')
         plt.close()
         
-        if all_series:
-            
-            '''Standard Deviation'''
-            #plot curve
-            C_C.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',ROI_weight=this_weight)
+        '''Standard Deviation'''
+        #plot curve
+        C_C.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',ROI_weight=this_weight)
+    
+        plt.grid()
         
-            plt.savefig(final_folder+str(k)+' (Standard Deviation).png',dpi=300,bbox_inches='tight')
-            plt.close()
-            
-            '''Advanced'''
-            #plot curve
-            C_C.ContrastCurve(imgs_folder,'Advanced','5-Area',ROI_weight=this_weight)
+        plt.savefig(final_folder+str(k)+' (Standard Deviation).png',dpi=300,bbox_inches='tight')
+        plt.close()
         
-            plt.savefig(final_folder+str(k)+' (Advanced).png',dpi=300,bbox_inches='tight')
-            plt.close()
+        '''Advanced'''
+        #plot curve
+        C_C.ContrastCurve(imgs_folder,'Advanced','5-Area',ROI_weight=this_weight)
+    
+        plt.grid()
+        
+        plt.savefig(final_folder+str(k)+' (Advanced).png',dpi=300,bbox_inches='tight')
+        plt.close()
         
 #------------------------------------------------------------------------------
 """
@@ -153,12 +156,11 @@ Experiment: 5 area module factor
 Args:
     imgs_folder: images folder  
     output_folder: figs output_folder
-    all_series: if False: only Constant, if True: both Constant and Standard Deviation
 
 Returns:
     None
 """
-def Experiment5AreaFactor(imgs_folder,output_folder,all_series=False):
+def Experiment5AreaFactor(imgs_folder,output_folder):
     
     final_folder=output_folder+'\\5-Area\\Factor\\'
     
@@ -178,24 +180,28 @@ def Experiment5AreaFactor(imgs_folder,output_folder,all_series=False):
         #plot curve
         C_C.ContrastCurve(imgs_folder,'Constant','5-Area',zoom_factor=this_factor)
     
+        plt.grid()
+        
         plt.savefig(final_folder+str(k)+' (Constant).png',dpi=300,bbox_inches='tight')
         plt.close()
         
-        if all_series:
-            
-            '''Standard Deviation'''
-            #plot curve
-            C_C.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',zoom_factor=this_factor)
+        '''Standard Deviation'''
+        #plot curve
+        C_C.ContrastCurve(imgs_folder,'Standard Deviation','5-Area',zoom_factor=this_factor)
         
-            plt.savefig(final_folder+str(k)+' (Standard Deviation).png',dpi=300,bbox_inches='tight')
-            plt.close()
-            
-            '''Advanced'''
-            #plot curve
-            C_C.ContrastCurve(imgs_folder,'Advanced','5-Area',zoom_factor=this_factor)
+        plt.grid()
         
-            plt.savefig(final_folder+str(k)+' (Advanced).png',dpi=300,bbox_inches='tight')
-            plt.close()
+        plt.savefig(final_folder+str(k)+' (Standard Deviation).png',dpi=300,bbox_inches='tight')
+        plt.close()
+        
+        '''Advanced'''
+        #plot curve
+        C_C.ContrastCurve(imgs_folder,'Advanced','5-Area',zoom_factor=this_factor)
+    
+        plt.grid()
+        
+        plt.savefig(final_folder+str(k)+' (Advanced).png',dpi=300,bbox_inches='tight')
+        plt.close()
             
 #------------------------------------------------------------------------------
 """
@@ -238,6 +244,8 @@ def ExperimentContrastComparison(folder_experiment,series_mode,save_fig=True):
         C_C.ContrastCurve(list_imgs_folder,series_mode)
         
         if save_fig:
+            
+            plt.grid()
             
             plt.savefig(folder_this_group+'\\'+series_mode+'.png',dpi=300,bbox_inches='tight')
             plt.close()
@@ -296,10 +304,10 @@ def ExperimentOverall(list_imgs_folder):
     print('')
     print('-- Experiment Overall')
     
-    for this_contrast_operator in list_contrast_operator[7:8]:
+    for this_contrast_operator in list_contrast_operator[7:]:
         
         for this_imgs_folder in list_imgs_folder:
             
-#            S_A_F.ImageAndContrast(this_imgs_folder,this_contrast_operator)
-            C_P_S.FullSweep(this_imgs_folder,this_contrast_operator)
+            S_A_F.ImageAndContrast(this_imgs_folder,this_contrast_operator)
+#            C_P_S.FullSweep(this_imgs_folder,this_contrast_operator)
     

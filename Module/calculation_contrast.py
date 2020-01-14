@@ -642,9 +642,6 @@ def ContrastCurve(list_imgs_folder,
                  linestyle='-',
                  label=this_mode)
         
-        #plot grid
-        plt.grid()
-        
         plt.legend(prop=legend_prop,loc='lower right')
 #        
 #        print(list_contrast)
