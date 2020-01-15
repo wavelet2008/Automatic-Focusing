@@ -698,7 +698,7 @@ def ContrastCurve(list_imgs_folder,
         
         plt.text(list_VCM_code[0]+x_major_step/10,
                  1+y_major_step/10,
-                 'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor,
+                 'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor/2,
                                                           ROI_weight[0],
                                                           ROI_weight[1]),
                  FontProperties=text_font)

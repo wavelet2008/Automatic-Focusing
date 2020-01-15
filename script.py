@@ -25,15 +25,15 @@ from matplotlib.font_manager import FontProperties
 imgs_folder=r'C:\Users\Administrator\Desktop\Ink_Step50'
 output_folder=r'C:\Users\Administrator\Desktop\Contrast\Parameter'
 
-#E_P.Experiment5AreaFactor(imgs_folder,output_folder,1)
-#E_P.Experiment5AreaWeight(imgs_folder,output_folder,1)
-#E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder,1)
+#E_P.Experiment5AreaFactor(imgs_folder,output_folder)
+#E_P.Experiment5AreaWeight(imgs_folder,output_folder)
+#E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder)
 
 #img_gray=O_I.BatchImages(imgs_folder)[1][10]
 #plt.imshow(img_gray,cmap='gray')
 #cv2.imshow('gray',img_gray)
 
-'''Near'''
+'''tmp-Luminance, Near-others'''
 experiment_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance'
  
 #E_P.ExperimentContrastComparison(experiment_folder,'Constant')
@@ -50,9 +50,9 @@ list_imgs_folder_name=[r'Luminance\Low',
                        r'Distance\Invarious',
                        r'Distance\Various']
 
-list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[:2]]
+list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[2:]]
 
-E_P.ExperimentOverall(list_imgs_folder)
+#E_P.ExperimentOverall(list_imgs_folder)
 
 '''criteria of Critiria and Algorithm from DB or photos''' 
 
