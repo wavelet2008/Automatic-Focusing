@@ -219,7 +219,8 @@ int GetValueFromImgGray(Mat img_gray,int i,int j){
 
 }
 
-int GetValueFromImgRGB(Mat img_bgr,int i,int j){
+//get gray value of img bgr
+int GetValueFromImgBGR(Mat img_bgr,int i,int j){
 	
 	Vec3i bgr = img_bgr.at<Vec3b>(i, j);
 
@@ -1237,12 +1238,6 @@ int main()
 			//cout could only print int type?
 			printf("%f", img_gray.ptr<uchar>(0)[0]);
 			printf("%f", contrast);
-
-			cout << L_max << endl;
-			cout << L_min << endl;
-			cout << L_max - L_min << endl;
-			cout << L_max + L_min << endl;
-			cout << (L_max - L_min) / (L_max + L_min) << endl;
 
 			//weight of 5-Area
 			int ROI_weight[5] = { 0.44,0.14,0.14,0.14,0.14 };

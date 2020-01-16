@@ -52,7 +52,7 @@ list_imgs_folder_name=[r'Luminance\Low',
 
 list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[2:]]
 
-#E_P.ExperimentOverall(list_imgs_folder)
+E_P.ExperimentOverall(list_imgs_folder)
 
 '''criteria of Critiria and Algorithm from DB or photos''' 
 
@@ -60,7 +60,7 @@ list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_na
 
 imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low'
 
-#C_P_S.FullSweep(imgs_folder,'Michelson')
+#C_P_S.FullSweep(imgs_folder,'Tadmor-1')
 
 '''try to tolerate one fluctuation in full sweep'''
-
+'''gif look like search'''

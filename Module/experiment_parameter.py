@@ -308,6 +308,6 @@ def ExperimentOverall(list_imgs_folder):
         
         for this_imgs_folder in list_imgs_folder:
             
-#            S_A_F.ImageAndContrast(this_imgs_folder,this_contrast_operator)
+            S_A_F.ImageAndContrast(this_imgs_folder,this_contrast_operator)
             C_P_S.FullSweep(this_imgs_folder,this_contrast_operator)
     

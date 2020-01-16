@@ -10,7 +10,7 @@ Created on Thu Jan  9 17:00:27 2020
 """
 
 import os
-import imageio
+import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -19,6 +19,7 @@ from matplotlib.font_manager import FontProperties
 
 import operation_path as O_P
 import operation_import as O_I
+import operation_dictionary as O_D
 
 import calculation_contrast as C_C
 import calculation_numerical_analysis as C_N_A
@@ -151,9 +152,6 @@ Returns:
 """   
 def FullSweepFine(list_contrast):
     
-    print('')
-    print('-- Full Sweep Fine')
-    
     return list_contrast.index(np.max(list_contrast))
 
 #------------------------------------------------------------------------------
@@ -190,12 +188,33 @@ def FullSweep(imgs_folder,contrast_operator):
     list_imgs_folder=[imgs_folder+'\\'+this_name for this_name in os.listdir(imgs_folder) if '.' not in this_name]
 
     #construct frame objects
-    frames=O_I.CombineFrames(list_imgs_folder)
+    imgs_folder_coarse=''
+    imgs_folder_fine=''
+    
+    for this_imgs_folder in list_imgs_folder:
+        
+        if 'Coarse' in this_imgs_folder:
 
-    #total data of frames
-    list_VCM_code=[]
-    list_contrast=[]
-    list_img_ROI=[]
+            imgs_folder_coarse=cp.deepcopy(this_imgs_folder)
+        
+        if 'Fine' in this_imgs_folder:
+
+            imgs_folder_fine=cp.deepcopy(this_imgs_folder)
+    
+    if imgs_folder_coarse=='' or imgs_folder_fine=='':
+        
+        print('--> ERROR: Incorrect images folder')
+        
+        return
+    
+    #frame object for coarse and fine search
+    frames_coarse=O_I.FramesConstruction(imgs_folder_coarse)
+    frames_fine=O_I.FramesConstruction(imgs_folder_fine)
+    
+    #total data of coarse frames
+    list_VCM_code_coarse=[]
+    list_contrast_coarse=[]
+    list_img_ROI_coarse=[]
 
     if contrast_operator not in list_contrast_operator:
         
@@ -207,7 +226,7 @@ def FullSweep(imgs_folder,contrast_operator):
     print('-- Full Sweep Coarse')
     
     #traverse all frames for full sweeping
-    for this_frame in frames:
+    for this_frame in frames_coarse:
 
         img_gray=this_frame.img_gray
            
@@ -255,12 +274,12 @@ def FullSweep(imgs_folder,contrast_operator):
                 this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
 
         #collect the data
-        list_VCM_code.append(this_frame.VCM_code)
-        list_contrast.append(np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas)))
-        list_img_ROI.append(this_img_ROI)
+        list_VCM_code_coarse.append(this_frame.VCM_code)
+        list_contrast_coarse.append(np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas)))
+        list_img_ROI_coarse.append(this_img_ROI)
        
         #result of full sweep
-        result_full_sweep=FullSweepCoarse(list_contrast)
+        result_full_sweep=FullSweepCoarse(list_contrast_coarse)
         
         print('--> VCM Code:',this_frame.VCM_code)
         
@@ -274,48 +293,154 @@ def FullSweep(imgs_folder,contrast_operator):
     #no valid peak: select maximum instead
     if result_full_sweep is None:
 
-        index_start=list_contrast.index(np.max(list_contrast))-1
-        index_end=list_contrast.index(np.max(list_contrast))+1
+        index_start=list_contrast_coarse.index(np.max(list_contrast_coarse))-1
+        index_end=list_contrast_coarse.index(np.max(list_contrast_coarse))+1
       
     #expetion    
     if index_start<0:
         
         index_start=0
         
-    if index_end>=len(list_contrast):
+    if index_end>=len(list_contrast_coarse):
         
-        index_end=len(list_contrast)-1
+        index_end=len(list_contrast_coarse)-1
+    
+    #VCM code boundary for fine search
+    VCM_code_start=list_VCM_code_coarse[index_start]
+    VCM_code_end=list_VCM_code_coarse[index_end]
+    
+    #frame list for final search
+    frames=[]
+    
+    for this_frame in frames_fine:
         
-    #List for fine search
-    list_VCM_code_fine=list_VCM_code[index_start:index_end+1]
-    list_contrast_fine=list_contrast[index_start:index_end+1]
+        if VCM_code_start<=this_frame.VCM_code<=VCM_code_end:
+            
+            frames.append(this_frame)
+
+    #if blank
+    if frames==[]:
+
+        flag='Coarse'
+
+        list_VCM_code_fine=[]
+        list_contrast_fine=[]
+        
+    else:
+        
+        flag='Fine'
+   
+        #total data of fine frames
+        list_VCM_code_fine=[]
+        list_contrast_fine=[]
+        list_img_ROI_fine=[]
+        
+        print('')
+        print('-- Full Sweep Fine')
+        
+        #traverse all frames for full sweeping
+        for this_frame in frames:
+    
+            img_gray=this_frame.img_gray
+               
+            #size of img
+            height,width=np.shape(img_gray)
+            
+            #basic parameters
+            ROI_weight=[0.44,0.14,0.14,0.14,0.14]
+            zoom_factor=18
+            ROI_linewidth=int(height//300)
+            text_position='Contrast'
+            
+        #    print(height,width)
+            
+            #image of ROI
+            this_img_ROI=np.full(np.shape(img_gray),np.nan)
+            
+            list_5_points=[[ height/2, width/2],
+                           [ height/4, width/4],
+                           [ height/4,-width/4],
+                           [-height/4,-width/4],
+                           [-height/4, width/4]]
+            
+            #size of area
+            area_half_height=int(np.shape(img_gray)[0]/zoom_factor)
+            area_half_width=int(np.shape(img_gray)[1]/zoom_factor)
+            
+            #calculate contrast in each area
+            list_contrast_5_areas=[]
+            
+            for i,j in list_5_points:
+                        
+                this_area=img_gray[int(i)-area_half_height:int(i)+area_half_height,
+                                   int(j)-area_half_width:int(j)+area_half_width]
+            
+                #collect it
+                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+            
+                #draw the bound of ROI
+                for k in range(ROI_linewidth):
+                    
+                    this_img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                    this_img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
+                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
+    
+            #collect the data
+            list_VCM_code_fine.append(this_frame.VCM_code)
+            list_contrast_fine.append(np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas)))
+            list_img_ROI_fine.append(this_img_ROI)
+           
+            print('--> VCM Code:',this_frame.VCM_code)
+
+    '''combine coarse and fine frames'''
+    list_VCM_code=list_VCM_code_coarse+list_VCM_code_fine
+    list_contrast=list_contrast_coarse+list_contrast_fine
+    
+    #construct map between VCM code and contrast
+    map_VCM_code_frames=dict(zip(list_VCM_code,list_contrast))
+    
+    #sort the VCM code list in an ascending order
+    list_VCM_code=list(set(list_VCM_code))
+    list_VCM_code.sort()
+    
+    list_contrast=list(O_D.DictSortByIndex(map_VCM_code_frames,list_VCM_code).values())   
     
     #normalization of contrast list
     list_normalized_contrast=C_N_A.Normalize(list_contrast)
-    
-    '''AF result: peak VCM code'''
-    peak_index=FullSweepFine(list_contrast_fine)
-    peak_VCM_code=list_VCM_code_fine[peak_index]
-    peak_normalized_contrast=np.max(list_normalized_contrast)
-    
-    print('--> Best VCM Code:',peak_VCM_code)
 
+    plt.figure(figsize=(17,6))
+    
+    '''input image and bound'''
+    ax_input_image=plt.subplot(121)
+    
+    '''AF result: peak VCM code'''  
+    if flag=='Coarse':
+
+        peak_index=FullSweepFine(list_contrast_coarse)
+        peak_VCM_code=list_VCM_code_coarse[peak_index]
+        peak_normalized_contrast=C_N_A.Normalize(list_contrast_coarse)[peak_index]
+        
+        plt.imshow(frames_coarse[peak_index].img_gray,cmap='gray')
+        plt.imshow(list_img_ROI_coarse[peak_index],cmap='seismic_r')
+         
+    if flag=='Fine':
+
+        peak_index=FullSweepFine(list_contrast_fine)
+        peak_VCM_code=list_VCM_code_fine[peak_index]
+        peak_normalized_contrast=C_N_A.Normalize(list_contrast_fine)[peak_index]
+        
+        plt.imshow(frames[peak_index].img_gray,cmap='gray')
+        plt.imshow(list_img_ROI_fine[peak_index],cmap='seismic_r') 
+        
+    print('--> Peak VCM Code:',peak_VCM_code)
+    
     #center of ROI
     list_5_center_ROI=[[  height/2,   width/2],
                        [  height/4,   width/4],
                        [  height/4, 3*width/4],
                        [3*height/4, 3*width/4],
                        [3*height/4,   width/4]]
-
-    plt.figure(figsize=(17,6))
-    
-    '''input image'''
-    ax_input_image=plt.subplot(121)
-    
-    plt.imshow(frames[peak_index].img_gray,cmap='gray')
-    
-    #ROI bound
-    plt.imshow(list_img_ROI[peak_index],cmap='seismic_r')
     
     if text_position=='Image':
     
@@ -362,7 +487,7 @@ def FullSweep(imgs_folder,contrast_operator):
     plt.legend(prop=legend_prop,loc='lower right')
 
     #VMC code for plotting limit 
-    list_VCM_code_total=[this_frame.VCM_code for this_frame in frames]
+    list_VCM_code_total=[this_frame.VCM_code for this_frame in frames_coarse]
     
     #limit of x and y
     x_min,x_max=np.min(list_VCM_code_total),np.max(list_VCM_code_total)
