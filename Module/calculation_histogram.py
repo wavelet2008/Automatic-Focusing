@@ -6,7 +6,7 @@ Created on Fri Dec 20 10:59:44 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：Module-Histogram
+@title: Module-Histogram
 """
 
 import cv2

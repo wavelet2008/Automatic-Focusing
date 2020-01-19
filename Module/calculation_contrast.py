@@ -6,7 +6,7 @@ Created on Fri Dec 20 11:01:31 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：Module-Contrast
+@title: Module-Contrast
 """
 
 import cv2

@@ -1,5 +1,14 @@
-﻿// Auto-Focus-Cpp.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
+﻿// -*- coding: utf-8 -*-
+/******************************************************************************
+@author: Wei Huajing
+@company: KAMERAWERK
+@e-mail: jerryweihuajing@126.com
+
+@title: main script
+******************************************************************************/
+
+// Auto-Focus-Cpp.cpp: This file contains the "main" function.
+// This is where program execution begins and ends
 
 #include <string>
 #include <vector>
@@ -11,77 +20,10 @@
 #include <opencv2\imgproc\imgproc_c.h>
 #include <opencv2\highgui\highgui.hpp>
 
+#include "operation_array.cpp"
+
 using namespace cv;
 using namespace std;
-
-//Calculate length of array
-//overloaded function 1: pointer array of int type
-int ArrayLength(int* which_array) {
-
-	int length = _msize(which_array) / sizeof(which_array[0]);
-
-	return length;
-}
-//overloaded function 2: pointer array of float type
-int ArrayLength(float* which_array) {
-
-	int length = _msize(which_array) / sizeof(which_array[0]);
-
-	return length;
-}
-//overloaded function 3: array pointer of double type
-int ArrayLength(double* which_array) {
-
-	int length = _msize(which_array) / sizeof(which_array[0]);
-
-	return length;
-}
-//overloaded function 4: pointer array of char type
-//char could be the pointer variable
-int ArrayLength(char* which_array) {
-
-	int length = _msize(which_array) / sizeof(which_array[0]);
-
-	return length;
-}
-
-//Calculate sum of array
-//overloaded function 1: pointer array of int type
-int ArraySum(int* which_array) {
-
-	//final result
-	int sum = 0;
-
-	for (int i = 0; i < ArrayLength(which_array); i++) {
-
-		sum += which_array[i];
-	}
-	return sum;
-}
-//overloaded function 2: pointer array of float type
-float ArraySum(float* which_array) {
-
-	//final result
-	float sum = 0;
-
-	for (int i = 0; i < ArrayLength(which_array); i++) {
-
-		sum += which_array[i];
-	}
-	return sum;
-}
-//overloaded function 3: pointer array of double type
-double ArraySum(double* which_array) {
-
-	//final result
-	double sum = 0;
-
-	for (int i = 0; i < ArrayLength(which_array); i++) {
-
-		sum += which_array[i];
-	}
-	return sum;
-}
 
 //Calculate sum of vector
 //overloaded function 1: vector of int type
@@ -119,29 +61,6 @@ double VectorSum(vector<double> which_vector) {
 		sum += which_vector[i];
 	}
 	return sum;
-}
-
-//Calculate average of array
-//overloaded function 1: pointer array of int type
-double ArrayAverage(int* which_array) {
-
-	int sum = ArraySum(which_array);
-
-	return double(sum) / ArrayLength(which_array);
-}
-//overloaded function 1: pointer array of float type
-double ArrayAverage(float* which_array) {
-
-	float sum = ArraySum(which_array);
-
-	return double(sum) / ArrayLength(which_array);
-}
-//overloaded function 1: pointer array of double type
-double ArrayAverage(double* which_array) {
-
-	double sum = ArraySum(which_array);
-
-	return double(sum) / ArrayLength(which_array);
 }
 
 //Calculate average of vector
@@ -216,7 +135,7 @@ int VectorMinimum(vector<int> which_vector) {
 	return minimum;
 }
 //overloaded function 2: vector of double type
-int VectorMinimum(vector<double> which_vector) {
+double VectorMinimum(vector<double> which_vector) {
 
 	//init the minimum
 	double minimum = which_vector[0];
@@ -229,71 +148,6 @@ int VectorMinimum(vector<double> which_vector) {
 		}
 	}
 	return minimum;
-}
-
-//The array elements are multiplied
-//overloaded function 1: both array of int
-int ArrayMultiplication(int* array_A, int* array_B) {
-
-	//judge if the length is the same
-	if (ArrayLength(array_A) == ArrayLength(array_B)) {
-
-		//final result
-		int sum = 0;
-
-		for (int i = 0; i < ArrayLength(array_A); i++) {
-		
-			sum += array_A[i] * array_B[i];
-		}
-		return sum;
-	}
-	else {
-
-		cout << "--> ERROR: Incorrct size of array";
-		return 0;
-	}
-}
-//overloaded function 2: array of int and float
-float ArrayMultiplication(int* array_A, float* array_B) {
-
-	//judge if the length is the same
-	if (ArrayLength(array_A) == ArrayLength(array_B)) {
-
-		//final result
-		float sum = 0;
-
-		for (int i = 0; i < ArrayLength(array_A); i++) {
-
-			sum += array_A[i] * array_B[i];
-		}
-		return sum;
-	}
-	else {
-
-		cout << "--> ERROR: Incorrct size of array";
-		return 0;
-	}
-}
-//overloaded function 3: array of int and double
-double ArrayMultiplication(int* array_A, double* array_B) {
-
-	//judge if the length is the same
-	if (ArrayLength(array_A) == ArrayLength(array_B)) {
-
-		//final result
-		double sum = 0;
-
-		for (int i = 0; i < ArrayLength(array_A); i++) {
-
-			sum += array_A[i] * array_B[i];
-		}
-		return sum;
-	}
-	else {
-
-		cout << "--> ERROR: Incorrct size of array";
-		return 0;
-	}
 }
 
 //The vector elements are multiplied
@@ -319,7 +173,7 @@ int VectorMultiplication(vector<int> vector_A, vector<int> vector_B) {
 	}
 }
 //overloaded function 2: both array of double
-int VectorMultiplication(vector<double> vector_A, vector<double> vector_B) {
+double VectorMultiplication(vector<double> vector_A, vector<double> vector_B) {
 
 	//judge if the length is the same
 	if (vector_A.size() == vector_B.size()) {
@@ -340,7 +194,7 @@ int VectorMultiplication(vector<double> vector_A, vector<double> vector_B) {
 	}
 }
 //overloaded function 3: vector of int and double
-int VectorMultiplication(vector<int> vector_A, vector<double> vector_B) {
+double VectorMultiplication(vector<int> vector_A, vector<double> vector_B) {
 
 	//judge if the length is the same
 	if (vector_A.size() == vector_B.size()) {
@@ -360,7 +214,7 @@ int VectorMultiplication(vector<int> vector_A, vector<double> vector_B) {
 		return 0;
 	}
 }
-int VectorMultiplication(vector<double> vector_A, vector<int> vector_B) {
+double VectorMultiplication(vector<double> vector_A, vector<int> vector_B) {
 
 	//judge if the length is the same
 	if (vector_A.size() == vector_B.size()) {
@@ -385,7 +239,7 @@ int VectorMultiplication(vector<double> vector_A, vector<int> vector_B) {
 //overloaded function 1: pointer array of int type
 vector<int> VectorIndexAboveThreshold(int* which_array, double threshold) {
 
-	const int length = ArrayLength(which_array);
+	const size_t length = ArrayLength(which_array);
 
 	//final result
 	vector <int> list_index;
@@ -418,7 +272,7 @@ vector<int> VectorIndexAboveThreshold(vector<int> which_array, double threshold)
 //list of index of value which is smaller than threshold which_array
 vector<int> VectorIndexBelowThreshold(int* which_array, double threshold) {
 
-	const int length = ArrayLength(which_array);
+	const size_t length = ArrayLength(which_array);
 
 	//final result
 	vector <int> list_index;
@@ -611,7 +465,7 @@ double CalculateContrast(vector<int> vector_ROI, const string contrast_operator)
 
 		cout << contrast_operator << endl;
 	}
-	
+
 	//SD: standard deviation
 	if (contrast_operator == "SD") {
 
@@ -632,6 +486,42 @@ double CalculateContrast(vector<int> vector_ROI, const string contrast_operator)
 	}
 	return contrast;
 }
+
+/******************************************************************************
+Gets the new vector based on the index list
+
+Args:
+	which_vector: vector to be processed
+	index_vector: vector of index which is valid
+
+Returns:
+	new vector based on the index list
+******************************************************************************/
+//overloaded function 1: vector of int type
+vector<int> VectorFromIndex(vector<int> which_vector, vector<int> index_vector) {
+
+	//final result
+	vector<int> new_vector;
+
+	for (int i = 0; i < index_vector.size(); i++) {
+
+		new_vector.push_back(which_vector[index_vector[i]]);
+	}
+	return new_vector;
+}
+//overloaded function 2: vector of double type
+vector<double> VectorFromIndex(vector<double> which_vector, vector<int> index_vector) {
+
+	//final result
+	vector<double> new_vector;
+
+	for (int i = 0; i < index_vector.size(); i++) {
+
+		new_vector.push_back(which_vector[index_vector[i]]);
+	}
+	return new_vector;
+}
+	
 int main()
 {
 	cout << "Built with OpenCV " << CV_VERSION << endl;
@@ -662,30 +552,52 @@ int main()
 	int center_ROI_E[2] = { int(3 * height / 4) ,int(3 * height / 4) };
 
 	//5-Area ROI vector
-	vector <int>ROI_A = VectorROI(img_gray, center_ROI_A);
-	vector <int>ROI_B = VectorROI(img_gray, center_ROI_B);
-	vector <int>ROI_C = VectorROI(img_gray, center_ROI_C);
-	vector <int>ROI_D = VectorROI(img_gray, center_ROI_D);
-	vector <int>ROI_E = VectorROI(img_gray, center_ROI_E);
+	vector<int> ROI_A = VectorROI(img_gray, center_ROI_A);
+	vector<int> ROI_B = VectorROI(img_gray, center_ROI_B);
+	vector<int> ROI_C = VectorROI(img_gray, center_ROI_C);
+	vector<int> ROI_D = VectorROI(img_gray, center_ROI_D);
+	vector<int> ROI_E = VectorROI(img_gray, center_ROI_E);
 
-	vector <int>gray_level = VectorGrayLevel(1);
-	vector <double>gray_frequency = VectorGrayLevelFrequency(ROI_A);
+	//gray level and their frequency
+	vector<int> gray_level = VectorGrayLevel(1);
+	vector<double> gray_frequency = VectorGrayLevelFrequency(ROI_A);
 
 	//calculate avearge gray level
-	double L_mean = VectorMultiplication(gray_level, gray_frequency);
+	double L_average = VectorMultiplication(gray_level, gray_frequency);
 
 	//calculate index of gray value who is smaller or bigger than threshold
-	vector <int> index_list_below_threshold = VectorIndexBelowThreshold(gray_level, L_mean);
-	vector <int> index_list_above_threshold = VectorIndexAboveThreshold(gray_level, L_mean);
+	vector<int> index_vector_below_average = VectorIndexBelowThreshold(gray_level, L_average);
+	vector<int> index_vector_above_average = VectorIndexAboveThreshold(gray_level, L_average);
 	
-	//cout << index_list_below_threshold.size() << endl;
-	//cout << index_list_above_threshold.size() << endl;
+	//divide gray level
+	vector<int> gray_level_below_average = VectorFromIndex(gray_level, index_vector_below_average);
+	vector<int> gray_level_above_average = VectorFromIndex(gray_level, index_vector_above_average);
+
+	//divide gray level frequency
+	vector<double> gray_frequency_below_average = VectorFromIndex(gray_frequency, index_vector_below_average);
+	vector<double> gray_frequency_above_average = VectorFromIndex(gray_frequency, index_vector_above_average);
+
+	//cout << VectorSum(gray_frequency_below_average) << endl;
+	//cout << VectorSum(gray_frequency_above_average) << endl;
+	//cout << VectorSum(gray_frequency) << endl;
+
+	//above average stands for foreground
+	double L_above_average = VectorMultiplication(gray_level_above_average, gray_frequency_above_average) / VectorSum(gray_frequency_above_average);
+
+	//below average stands for foreground
+	double L_below_average = VectorMultiplication(gray_level_below_average, gray_frequency_below_average) / VectorSum(gray_frequency_below_average);
+
+	cout << L_above_average << endl;
+	cout << L_below_average << endl;
+
+	cout << VectorAverage(gray_level_above_average) << endl;
+	cout << VectorAverage(gray_level_below_average) << endl;
 
 	//double contrast = CalculateContrast(ROI, "Michelson");
 	//double contrast = CalculateContrast(ROI, "Whittle");
-	double contrast = CalculateContrast(ROI_A, "SD");
+	//double contrast = CalculateContrast(ROI_A, "SD");
 
-	cout << contrast << endl;
+	//cout << contrast << endl;
 
 	//delete corresponds to new and delete[] corresponds to new[]
 	//delete and delete[] play the same role in built-in data structure (pointer variable)

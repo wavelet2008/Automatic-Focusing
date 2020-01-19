@@ -6,7 +6,7 @@ Created on Mon Dec 23 17:30:30 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：Module-Experiment
+@title: Module-Experiment
 """
 
 import os
@@ -304,10 +304,10 @@ def ExperimentOverall(list_imgs_folder):
     print('')
     print('-- Experiment Overall')
     
-    for this_contrast_operator in list_contrast_operator[7:]:
+    for this_contrast_operator in list_contrast_operator:
         
         for this_imgs_folder in list_imgs_folder:
             
-            S_A_F.ImageAndContrast(this_imgs_folder,this_contrast_operator)
+#            S_A_F.ImageAndContrast(this_imgs_folder,this_contrast_operator)
             C_P_S.FullSweep(this_imgs_folder,this_contrast_operator)
     

@@ -6,7 +6,7 @@ Created on Thu Jan  9 17:00:27 2020
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：Module-Search of contrast peak value
+@title: Module-Search of contrast peak value
 """
 
 import os
@@ -80,6 +80,62 @@ map_mode_color=dict(zip(list_contrast_operator,list_contrast_color))
 
 #------------------------------------------------------------------------------
 """
+Preprocessing in peak search to tolerate one fluctuation in ascending
+
+Args:
+    list_contrast: contrast value list
+    
+Returns:
+    new contrast list after processing
+"""
+def PreProcessing(list_contrast):
+    
+    #final result
+    list_contrast_new=[list_contrast[0]]
+    
+    for k in range(1,len(list_contrast)-1):
+        
+        #replace the particular with the average
+        if list_contrast[k]<list_contrast[k-1]<list_contrast[k+1]:
+            
+            list_contrast_new.append(0.5*(list_contrast[k-1]+list_contrast[k+1]))
+        
+        else:
+            
+            list_contrast_new.append(list_contrast[k])
+            
+    return list_contrast_new+[list_contrast[-1]]
+
+#------------------------------------------------------------------------------
+"""
+Postprocessing in peak search to tolerate one fluctuation in ascending
+
+Args:
+    list_contrast: contrast value list
+    
+Returns:
+    new contrast list after processing
+"""
+def PostProcessing(list_contrast):
+
+    #final result
+    list_contrast_new=[list_contrast[0]]
+    
+    for k in range(1,len(list_contrast)-1):
+        
+        #replace the particular with the average
+        if list_contrast[k]>list_contrast[k-1]>list_contrast[k+1]:
+            
+            list_contrast_new.append(0.5*(list_contrast[k-1]+list_contrast[k+1]))
+        
+        else:
+            
+            list_contrast_new.append(list_contrast[k])
+            
+    return list_contrast_new+[list_contrast[-1]]
+
+#------------------------------------------------------------------------------
+"""
 Calculation of peak value in contrast value coarsely
 
 Args:
@@ -91,7 +147,7 @@ Returns:
 def FullSweepCoarse(list_contrast):
   
     #amount of consecutive ascending or descending points
-    amount_revert=5
+    amount_revert=3
     
     #real-time
     amount_ascending,amount_descending=0,0
@@ -101,36 +157,47 @@ def FullSweepCoarse(list_contrast):
     
     #index of maximum
     index_maximum=list_contrast.index(np.max(list_contrast))
-    
-    '''try to tolerate one fluctuation'''
+
+    '''preprocessing: try to tolerate one fluctuation in ascending'''
+    if len(list_contrast)>=3:
+        
+        list_contrast=PreProcessing(list_contrast)
+
     for k in range(len(list_contrast)-1):
         
+        '''ascending'''
         if list_contrast[k]<list_contrast[k+1]:
             
             amount_ascending+=1
-            amount_descending=0
-            
+            amount_descending=0  
+                    
         if list_contrast[k]==list_contrast[k+1]:
         
             continue
-            
-        if list_contrast[k]>list_contrast[k+1]:
         
+        '''descending'''
+        if list_contrast[k]>list_contrast[k+1]:
+            
             amount_descending+=1
             amount_ascending=0
-
+        
         #end index of ascending
         if amount_ascending>=amount_revert:
-            
+
             index_a=k+1
-            
+   
         #start index of descending
         if amount_descending>=amount_revert:
             
             index_b=k-amount_descending+1
 
-    if index_a!=None and index_b!=None:
+        ''''postprocessing: try to tolerate one fluctuation in descending'''
+        if index_a!=None:
+
+            list_contrast=list_contrast[:index_a]+PostProcessing(list_contrast[index_a:])
         
+    if index_a!=None and index_b!=None:
+
         #expire the exception
         if index_a==index_maximum or index_b==index_maximum:
             

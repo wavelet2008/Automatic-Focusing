@@ -6,7 +6,7 @@ Created on Mon Dec 30 17:54:22 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：Module-Simulation of AutoFocus
+@title: Module-Simulation of AutoFocus
 """
 
 import os

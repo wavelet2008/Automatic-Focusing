@@ -6,7 +6,7 @@ Created on Fri Dec 20 11:08:33 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：Module-Import
+@title: Module-Import
 """
 
 import os
@@ -17,7 +17,7 @@ import operation_dictionary as O_D
 from o_frame import frame
 
 #pre_fix: same part of imgs name
-pre_fix='Near'
+pre_fix='tmp'
 
 #------------------------------------------------------------------------------
 """

@@ -6,7 +6,7 @@ Created on Wed Oct  2 16:17:21 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：initialization script
+@title: initialization script
 """
 
 import sys,os

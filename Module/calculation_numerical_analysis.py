@@ -6,7 +6,7 @@ Created on Tue Dec 31 17:00:23 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：Module-Numerical Calculation
+@title: Module-Numerical Calculation
 """
 
 import numpy as np

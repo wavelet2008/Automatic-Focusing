@@ -6,7 +6,7 @@ Created on Wed Dec 25 13:06:56 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：Module-Fourier Tranform
+@title: Module-Fourier Tranform
 """
 
 import cv2

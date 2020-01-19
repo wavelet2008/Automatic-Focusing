@@ -6,7 +6,7 @@ Created on Tue Dec 31 10:44:22 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：Module-Dictionary Operation
+@title: Module-Dictionary Operation
 """
 
 #------------------------------------------------------------------------------

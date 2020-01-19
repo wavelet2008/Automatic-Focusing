@@ -6,7 +6,7 @@ Created on Thu Dec 19 10:50:07 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title：Contrast Calculation
+@title: Contrast Calculation
 """
 
 from __init__ import *
@@ -50,17 +50,14 @@ list_imgs_folder_name=[r'Luminance\Low',
                        r'Distance\Invarious',
                        r'Distance\Various']
 
-list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[2:]]
+list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[:2]]
 
 E_P.ExperimentOverall(list_imgs_folder)
 
-'''criteria of Critiria and Algorithm from DB or photos''' 
-
 '''optimized frames construction'''
 
-imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\Low'
+imgs_folder=r'C:\Users\Administrator\Desktop\Experiment\Luminance\High'
 
-#C_P_S.FullSweep(imgs_folder,'Tadmor-1')
+#C_P_S.FullSweep(imgs_folder,'Michelson')
 
-'''try to tolerate one fluctuation in full sweep'''
-'''gif look like search'''
+'''gif look like peak search'''
