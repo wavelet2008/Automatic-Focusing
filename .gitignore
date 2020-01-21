@@ -1,7 +1,2 @@
-*.pyc
-*.ipch
-Debug
-Release
-x64
-DTCCM2_SDK
-LC898124EP1
+*
+*!.py
