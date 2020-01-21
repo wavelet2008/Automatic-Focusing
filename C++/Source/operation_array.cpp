@@ -4,21 +4,10 @@
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title: Module-operation on array
+@title: Source-operation on array
 ******************************************************************************/
 
-#include <string>
-#include <vector>
-#include <stdio.h>
-#include <tchar.h>
-#include <iostream>
-#include <opencv2/opencv.hpp>
-#include <opencv2\imgproc\imgproc.hpp>
-#include <opencv2\imgproc\imgproc_c.h>
-#include <opencv2\highgui\highgui.hpp>
-
-using namespace cv;
-using namespace std;
+#include "..\Header\operation_array.h"
 
 //Calculate length of array
 //overloaded function 1: pointer array of int type
@@ -176,3 +165,4 @@ double ArrayMultiplication(int* array_A, double* array_B) {
 		return 0;
 	}
 }
+

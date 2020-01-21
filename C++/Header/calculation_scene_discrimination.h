@@ -4,8 +4,12 @@
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title: initialization script
+@title: Header-Discrimination of foreground and background
 ******************************************************************************/
 
-#pragma once
+#include "..\init.h"
 
+#ifndef _CALCULATION_SCENE_DISCRIMINATION_
+#define _CALCULATION_SCENE_DISCRIMINATION_
+
+#endif
