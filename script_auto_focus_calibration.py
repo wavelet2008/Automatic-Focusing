@@ -139,6 +139,7 @@ for k in range(n_interval+1):
     
     print('-- zoom factor:',this_zoom_factor)
     
+    '''wrong function'''
     #Generate circle array
     EqualCircleArray(frame_original,
                      int(np.round(radius_circle_original)),
