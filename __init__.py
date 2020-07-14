@@ -16,6 +16,8 @@ sys.path.append(os.getcwd()+'\\Module')
 sys.path.append(os.getcwd()+'\\Object')
 sys.path=list(set(sys.path))
 
+from o_circle import circle
+
 import operation_path as O_P
 import operation_import as O_I
 

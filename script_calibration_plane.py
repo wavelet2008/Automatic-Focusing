@@ -10,6 +10,7 @@ Created on Mon Jul 13 17:15:48 2020
 """
 
 import os
+import imageio
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -43,21 +44,21 @@ def GenerateFolder(path):
         os.makedirs(path)
         
 def PlotCircle(center,radius):
+
+    plt.scatter(x=center[0],y=center[1],s=60*radius,color='k')
     
-    # plt.scatter(x=center[0],y=center[1],s=300,color='k')
-    
-    plt.plot(center[0],
-             center[1],
-             marker='o',
-             markersize=radius,
-             markeredgewidth=1.3,
-             markeredgecolor='black',
-             markerfacecolor='black')
+    # plt.plot(center[0],
+    #          center[1],
+    #          marker='o',
+    #          markersize=radius,
+    #          markeredgewidth=1.3,
+    #          markeredgecolor='black',
+    #          markerfacecolor='black')
     
 def Scaling(zoom_factor):
     
     plt.xlim([-0.5*size_fig[0]*zoom_factor-0.5,0.5*size_fig[0]*zoom_factor+0.5])
-    plt.ylim([-0.5*size_fig[0]*zoom_factor-0.5,0.5*size_fig[1]*zoom_factor+0.5])
+    plt.ylim([-0.5*size_fig[1]*zoom_factor-0.5,0.5*size_fig[1]*zoom_factor+0.5])
     
 def MoveOn(offset):
     
@@ -79,25 +80,36 @@ d2=5
 
 n_interval=10
 
+figures=[]
+
+scatter_interval=0.5
+
 for k in range(n_interval+1):
     
-    this_zoom_factor=(d1+k*(d2-d1)/n_interval)/d2
-    this_radius=int(23/this_zoom_factor)
+    frame_zoom_factor=(d1+(k/n_interval)*(d2-d1))/d2
     
     print('')
     print('--frame:',k)
-    print('--zoom factor:',this_zoom_factor)
     
-    for x in range(size_fig[0]+1):
+    for x in range(int(size_fig[0]/scatter_interval)+1):
     
-        for y in range(size_fig[1]+1):
+        for y in range(int(size_fig[1]/scatter_interval)+1): 
             
-            PlotCircle([+x,+y],this_radius)
-            PlotCircle([+x,-y],this_radius)
-            PlotCircle([-x,-y],this_radius)
-            PlotCircle([-x,+y],this_radius)
-        
-    Scaling(this_zoom_factor)
+            offset=np.max([x,y])
+            
+            ratio=offset/np.max(size_fig)
+            radius_zoom_factor=(d1+ratio*(d2-d1))/d2
+            
+            this_radius=int(13/radius_zoom_factor/frame_zoom_factor)
+            
+            PlotCircle([+x*scatter_interval,+y*scatter_interval],this_radius)
+            PlotCircle([+x*scatter_interval,-y*scatter_interval],this_radius)
+            PlotCircle([-x*scatter_interval,-y*scatter_interval],this_radius)
+            PlotCircle([-x*scatter_interval,+y*scatter_interval],this_radius)
+    
+    print('--zoom factor:',frame_zoom_factor)
+    
+    Scaling(frame_zoom_factor)
     
     plt.xticks([])
     plt.yticks([])
@@ -105,4 +117,12 @@ for k in range(n_interval+1):
     this_fig_path=folder_path+'//'+str(k)+'.png'
     plt.savefig(this_fig_path,dpi=300,bbox_inches='tight')
     
+    #collect fig to create GIF
+    figures.append(imageio.imread(this_fig_path))
+        
 plt.close()
+
+#save GIF 
+'''operator experiment'''
+imageio.mimsave(folder_path+'\\'+'move on.gif',figures,duration=0.23) 
+    
