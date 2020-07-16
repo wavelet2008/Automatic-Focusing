@@ -45,4 +45,4 @@ for k in range(n_interval+1):
     
 #save GIF 
 '''operator experiment'''
-imageio.mimsave(equal_folder_path+'\\'+'equal circle array.gif',figures,duration=0.13) 
+imageio.mimsave(equal_folder_path+'\\equal circle array.gif',figures,duration=0.13) 

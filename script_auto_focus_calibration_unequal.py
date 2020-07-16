@@ -53,4 +53,4 @@ for k in range(n_interval+1):
     
 #save GIF 
 '''operator experiment'''
-imageio.mimsave(unequal_folder_path+'\\'+'unequal circle array.gif',figures,duration=0.13) 
+imageio.mimsave(unequal_folder_path+'\\unequal circle array.gif',figures,duration=0.13) 
