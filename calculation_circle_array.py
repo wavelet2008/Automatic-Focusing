@@ -16,12 +16,27 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
+canvas=np.zeros((1080,1920))
+
 #list of offset sign
 list_sign=[[+1,+1],
            [+1,-1],
            [-1,-1],
            [-1,+1]]
 
+#------------------------------------------------------------------------------
+"""
+Generate circle array whose radius is euqal
+
+Args:
+    canvas: canvas where the pixels were plotted
+    n_interval: amount of frames
+    radius_circle: radius of circle
+    interval_circle: interval of circle
+    
+Returns:
+    None
+"""
 def EqualCircleArray(canvas,
                      n_interval,
                      radius_circle,
@@ -44,9 +59,9 @@ def EqualCircleArray(canvas,
     center_circle.Init()
     
     #copy them
-    for k_i in range(n_interval):
+    for k_i in range(int(np.ceil(np.shape(canvas)[0]/(2*interval_circle)))+1):
     
-        for k_j in range(n_interval):
+        for k_j in range(int(np.ceil(np.shape(canvas)[1]/(2*interval_circle)))+1):
             
             for sign_i,sign_j in list_sign:
                 
@@ -70,12 +85,27 @@ def EqualCircleArray(canvas,
                         
                             this_frame[this_i_copied,this_j_copied]=1  
                 
-    plt.figure(figsize=(16,9))
+    plt.figure(figsize=(16,16))
     plt.imshow(this_frame,cmap='gray_r')
     
     plt.xticks([])
-    plt.yticks([])  
+    plt.yticks([])
     
+#------------------------------------------------------------------------------
+"""
+Generate circle samples who have totally different radius
+
+Args:
+    offset_start: offset of start point
+    offset_end: offset of end point
+    n_interval: amount of frames
+    radius_circle_original: radius of center circle
+    center_canvas: center coordinates of center
+    zoom_factor_frame: zoom factor of one frame
+    
+Returns:
+    None
+"""
 def GenerateCircleSamples(offset_start,
                           offset_end,
                           n_interval,
@@ -103,6 +133,19 @@ def GenerateCircleSamples(offset_start,
     
     return samples_circle
 
+#------------------------------------------------------------------------------
+"""
+Generate circle array whose radius is uneuqal
+
+Args:
+    canvas: canvas where the pixels were plotted
+    n_interval: amount of frames
+    interval_circle: interval of circle
+    circle samples who have totally different radius
+    
+Returns:
+    None
+"""
 def UnequalCircleEqual(canvas,
                        n_interval,
                        interval_circle,

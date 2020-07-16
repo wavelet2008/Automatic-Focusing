@@ -14,19 +14,18 @@ from __init__ import *
 import numpy as np
 
 offset_end=5
+offset_start=0.5
 
-n_interval=23
+#regard the distance grow meter by 125 millimeter
+interval_offset=0.125
 
-#regard the distance grow meter by 1 millimeter
-interval_offset=0.0666
+n_interval=int(np.floor((offset_end-offset_start)/interval_offset))
 
-offset_start=offset_end-interval_offset*n_interval
-
-canvas=np.zeros((1080,1920))
+canvas=np.zeros((1920,1920))
 
 '''add the circle lap by lap'''
-radius_circle_original=13
-interval_circle_original=47
+radius_circle_original=8
+interval_circle_original=36
 
 #generate output folder path
 equal_folder_path=os.getcwd()+'//calibration plane frames/equal'

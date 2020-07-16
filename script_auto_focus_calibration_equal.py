@@ -28,7 +28,7 @@ for k in range(n_interval+1):
     
     print('-- frame:',k)
     print('-- zoom factor:',this_zoom_factor)
-    
+
     #Generate circle array
     C_A_A.EqualCircleArray(canvas,
                            n_interval,
