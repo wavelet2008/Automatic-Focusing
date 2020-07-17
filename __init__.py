@@ -24,7 +24,6 @@ import operation_import as O_I
 import calculation_contrast as C_C
 import calculation_histogram as C_H
 import calculation_peak_search as C_P_S
-import calculation_circle_array as C_A_A
 import calculation_scene_discrimination as C_S_D
 
 import experiment_parameter as E_P

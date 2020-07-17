@@ -26,10 +26,3 @@ canvas=np.zeros((1920,1920))
 '''add the circle lap by lap'''
 radius_circle_original=8
 interval_circle_original=36
-
-#generate output folder path
-equal_folder_path=os.getcwd()+'//calibration plane frames/equal'
-unequal_folder_path=os.getcwd()+'//calibration plane frames/unequal'
-
-O_P.GenerateFolder(equal_folder_path)
-O_P.GenerateFolder(unequal_folder_path)

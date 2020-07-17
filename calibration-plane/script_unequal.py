@@ -9,7 +9,7 @@ Created on Wed Jul 15 09:57:39 2020
 @title: Script-Simulation of Auto Focus Calibration for unequal samples
 """
 
-from configuration_auto_focus_calibration import *
+from __init__ import *
 
 import os,imageio
 
@@ -17,6 +17,10 @@ import copy as cp
 import numpy as np
 
 import matplotlib.pyplot as plt
+
+unequal_folder_path=os.getcwd()+'//frames/unequal'
+
+O_P.GenerateFolder(unequal_folder_path)
 
 center_canvas=[canvas.shape[0]/2,canvas.shape[1]/2]
 

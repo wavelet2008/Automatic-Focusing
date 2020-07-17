@@ -9,7 +9,7 @@ Created on Wed Jul 15 09:56:16 2020
 @title: Script-Simulation of Auto Focus Calibration for equal samples
 """
 
-from configuration_auto_focus_calibration import *
+from __init__ import *
 
 import os,imageio
 
@@ -17,6 +17,11 @@ import copy as cp
 import numpy as np
 
 import matplotlib.pyplot as plt
+
+#generate output folder path
+equal_folder_path=os.getcwd()+'//frames/equal'
+
+O_P.GenerateFolder(equal_folder_path)
 
 figures=[]
 
