@@ -85,12 +85,17 @@ def CalculateGLCM(input,d_x,d_y):
                 
                 pass
 
+    #calculate total gray value
+    total_gray_level=np.sum(np.array(GLCM).ravel())
+
+    #normalization
     for i in range(gray_level):
         
         for j in range(gray_level):
             
-            GLCM[i][j]/=float(height*width)
-
+            GLCM[i][j]/=total_gray_level
+            # GLCM[i][j]/=float(height*width)
+            
     return GLCM
 
 #------------------------------------------------------------------------------
