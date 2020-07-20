@@ -76,4 +76,4 @@ img=cv2.resize(img,(int(img_shape[1]/20),int(img_shape[0]/20)),interpolation=cv2
 
 img_gray=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-contrast=C_T_F.MapTextureFeature(img_gray,0)['Contrast']
+contrast=C_T_F.MapTextureFeature(img_gray)['Contrast']

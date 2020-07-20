@@ -9,8 +9,8 @@ Created on Wed Dec 25 13:06:56 2019
 @title: Module-Calculation of Texture Feature
 """
 
-import cv2
 import math
+import numpy as np
 
 #define the maximum grayscale series
 gray_level = 256
@@ -75,9 +75,15 @@ def CalculateGLCM(input,d_x,d_y):
         
         for i in range(width-d_x):
             
-             rows = srcdata[j][i]
-             cols = srcdata[j + d_y][i+d_x]
-             GLCM[rows][cols]+=1.0
+            try:
+                
+                rows = srcdata[j][i]
+                cols = srcdata[j + d_y][i+d_x]
+                GLCM[rows][cols]+=1.0
+                
+            except:
+                
+                pass
 
     for i in range(gray_level):
         
@@ -142,13 +148,21 @@ Calculate dictionary of texture feature
 
 Args:
     img_gray: image in gray level
-    direction: direction to calculate GLCM
 
 Returns:
     dictionary of texture feature
 """
-def MapTextureFeature(img_gray,direction):
+def MapTextureFeature(img_gray):
     
-    list_feature=['ASM','Entropy','Contrast','IDM']
+    list_feature=['ASM','Contrast','Energy','IDM']
     
-    return dict(zip(list_feature,ListTextureFeature(img_gray,direction)))
+    #init feature value
+    list_value=len(list_feature)*[0]
+    
+    for k in range(len(list_value)):
+        
+        for kk in range(4):
+
+            list_value[k]+=ListTextureFeature(img_gray,kk)[k]
+
+    return dict(zip(list_feature,list(np.array(list_value)/4)))
