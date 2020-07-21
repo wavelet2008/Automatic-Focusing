@@ -244,7 +244,7 @@ def FullSweep(imgs_folder,contrast_operator):
     
     str_a,str_b=imgs_folder.split('Experiment')
     str_c,str_d=imgs_folder.split('Experiment')[-1].strip('\\').split('\\')
-    
+
     #construct output folder
     output_folder_operator=str_a+'\\Contrast\\Scenario'+str_b
     output_folder_condition=output_folder_operator.split(str_c)[0].replace('\\Scenario','')+'\\Operator'

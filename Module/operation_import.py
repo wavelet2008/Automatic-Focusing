@@ -17,7 +17,7 @@ import operation_dictionary as O_D
 from o_frame import frame
 
 #pre_fix: same part of imgs name
-pre_fix='tmp'
+pre_fix='12M_0500mm_VCM_top'
 
 #------------------------------------------------------------------------------
 """
@@ -51,8 +51,15 @@ def BatchImages(imgs_folder):
         #collect it
         list_imgs_bgr.append(this_img_rgb)
         list_imgs_gray.append(this_img_gray)
-        list_VCM_code.append(int(this_img_name.strip('.jpg').split(pre_fix)[-1]))
         
+        if '.jpg' in this_img_name:
+            
+            list_VCM_code.append(int(this_img_name.strip('.jpg').split(pre_fix)[-1]))
+        
+        if '.png' in this_img_name:
+            
+            list_VCM_code.append(int(this_img_name.strip('.png').split(pre_fix)[-1]))
+            
     #construct map between VCM code and imgs_gray/imgs_bgr
     map_VCM_code_imgs_bgr=dict(zip(list_VCM_code,list_imgs_bgr))
     map_VCM_code_imgs_gray=dict(zip(list_VCM_code,list_imgs_gray))

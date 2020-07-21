@@ -36,5 +36,11 @@ class frame:
         self.img_gray=cv2.cvtColor(self.img_bgr,cv2.COLOR_BGR2GRAY)
         
         #VCM code calculation
-        self.VCM_code=int(self.path.strip('.jpg').split(self.pre_fix)[-1])
+        try:
+            
+            self.VCM_code=int(self.path.strip('.jpg').split(self.pre_fix)[-1])
+            
+        except:
+            
+            self.VCM_code=int(self.path.strip('.png').split(self.pre_fix)[-1])
         

@@ -49,13 +49,17 @@ list_contrast_operator=['KK',
                         'Tadmor-1',
                         'Tadmor-2',
                         'Tadmor-3',
-                        'Rizzi']
+                        'Rizzi',
+                        'CMSL',
+                        'CMAN']
         
 list_contrast_color=['tan',
+                     'cyan',
                      'teal',
                      'olive',
                      'maroon',
                      'orchid',
+                     'sienna',
                      'fuchsia',
                      'crimson',
                      'magenta',
