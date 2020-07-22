@@ -17,7 +17,7 @@ import operation_dictionary as O_D
 from o_frame import frame
 
 #pre_fix: same part of imgs name
-pre_fix='12M_0500mm_VCM_top'
+pre_fix='12M_0500mm_VCM_bottom'
 
 #------------------------------------------------------------------------------
 """

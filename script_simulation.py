@@ -9,6 +9,12 @@ Created on Thu Dec 19 10:50:07 2019
 @title: Contrast Calculation
 """
 
+"""
+demand:
+    1 gif look like peak search
+    2 optimized frames construction
+"""
+
 from __init__ import *
 
 import os
@@ -54,14 +60,10 @@ from matplotlib.font_manager import FontProperties
 
 # E_P.ExperimentOverall(list_imgs_folder)
 
-# '''optimized frames construction'''
+imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Spot Chart\730mm'
 
-imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Random\Office'
-
-'''gif look like peak search'''
-'''only coarse'''
-# C_P_S.FullSweep(imgs_folder,'Boccignone')
-S_A_F.ImageAndContrast(imgs_folder,'Boccignone')
+# C_P_S.FullSweep(imgs_folder,'Boccignone','Center')
+S_A_F.ImageAndContrast(imgs_folder,'Boccignone','Center')
 
 # img = cv2.imread("test.jpg")
     

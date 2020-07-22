@@ -232,11 +232,12 @@ Plot input image as well as contrast curve
 Args:
    imgs_folder: folder which contains a batch of images 
    contrast_operator: operator of contrast calculation 
+   ROI mode: definition method of ROI ['5-Area', 'Center']
    
 Returns:
     None
 """
-def FullSweep(imgs_folder,contrast_operator):
+def FullSweep(imgs_folder,contrast_operator,ROI_mode):
     
     print('')
     print('-- Full Sweep')
@@ -325,34 +326,60 @@ def FullSweep(imgs_folder,contrast_operator):
         area_half_height=int(np.shape(img_gray)[0]/zoom_factor)
         area_half_width=int(np.shape(img_gray)[1]/zoom_factor)
         
-        #calculate contrast in each area
-        list_contrast_5_areas=[]
-        
-        for i,j in list_5_points:
-                    
-            this_area=img_gray[int(i)-area_half_height:int(i)+area_half_height,
-                               int(j)-area_half_width:int(j)+area_half_width]
-        
-            #collect it
-            list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
-        
-            #draw the bound of ROI
-            for k in range(ROI_linewidth):
-                
-                this_img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
-                this_img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
-                this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
-                this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
-
-        #collect the data
         list_VCM_code_coarse.append(this_frame.VCM_code)
-        list_contrast_coarse.append(np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas)))
-        list_img_ROI_coarse.append(this_img_ROI)
+        
+        #calculate contrast in each area
+        list_contrast_5_areas=[] 
+        
+        if ROI_mode=='5-Area':
+            
+            for i,j in list_5_points:
+                        
+                this_area=img_gray[int(i)-area_half_height:int(i)+area_half_height,
+                                   int(j)-area_half_width:int(j)+area_half_width]
+            
+                #collect it
+                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+            
+                #draw the bound of ROI
+                for k in range(ROI_linewidth):
+                    
+                    this_img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                    this_img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
+                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
+      
+            #collect the data
+            list_contrast_coarse.append(np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas)))
+            list_img_ROI_coarse.append(this_img_ROI)
        
+        if ROI_mode=='Center':
+            
+            for i,j in list_5_points[:1]:
+                        
+                this_area=img_gray[int(i)-area_half_height:int(i)+area_half_height,
+                                   int(j)-area_half_width:int(j)+area_half_width]
+            
+                #collect it
+                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+            
+                #draw the bound of ROI
+                for k in range(ROI_linewidth):
+                    
+                    this_img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                    this_img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
+                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
+      
+            #collect the data
+            list_contrast_coarse.append(list_contrast_5_areas[0])
+            list_img_ROI_coarse.append(this_img_ROI)
+            
         #result of full sweep
         result_full_sweep=FullSweepCoarse(list_contrast_coarse)
         
         print('--> VCM Code:',this_frame.VCM_code)
+        # print('---> Contrast:',list_contrast_coarse[-1])
         
         if result_full_sweep is not None:
             
@@ -438,32 +465,58 @@ def FullSweep(imgs_folder,contrast_operator):
             area_half_height=int(np.shape(img_gray)[0]/zoom_factor)
             area_half_width=int(np.shape(img_gray)[1]/zoom_factor)
             
+            list_VCM_code_fine.append(this_frame.VCM_code)
+            
             #calculate contrast in each area
             list_contrast_5_areas=[]
             
-            for i,j in list_5_points:
+            if ROI_mode=='5-Area':
+                
+                for i,j in list_5_points:
+                            
+                    this_area=img_gray[int(i)-area_half_height:int(i)+area_half_height,
+                                       int(j)-area_half_width:int(j)+area_half_width]
+                
+                    #collect it
+                    list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+                
+                    #draw the bound of ROI
+                    for k in range(ROI_linewidth):
                         
-                this_area=img_gray[int(i)-area_half_height:int(i)+area_half_height,
-                                   int(j)-area_half_width:int(j)+area_half_width]
-            
-                #collect it
-                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
-            
-                #draw the bound of ROI
-                for k in range(ROI_linewidth):
-                    
-                    this_img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
-                    this_img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
-                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
-                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
-    
-            #collect the data
-            list_VCM_code_fine.append(this_frame.VCM_code)
-            list_contrast_fine.append(np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas)))
-            list_img_ROI_fine.append(this_img_ROI)
+                        this_img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                        this_img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                        this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
+                        this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
+        
+                #collect the data
+                list_contrast_fine.append(np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas)))
+                list_img_ROI_fine.append(this_img_ROI)
            
+            if ROI_mode=='Center':
+                
+                for i,j in list_5_points[:1]:
+                            
+                    this_area=img_gray[int(i)-area_half_height:int(i)+area_half_height,
+                                       int(j)-area_half_width:int(j)+area_half_width]
+                
+                    #collect it
+                    list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+                
+                    #draw the bound of ROI
+                    for k in range(ROI_linewidth):
+                        
+                        this_img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                        this_img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                        this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
+                        this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
+        
+                #collect the data
+                list_contrast_fine.append(list_contrast_5_areas[0])
+                list_img_ROI_fine.append(this_img_ROI)
+                
             print('--> VCM Code:',this_frame.VCM_code)
-
+            # print('---> Contrast:',list_contrast_fine[-1])
+            
     '''combine coarse and fine frames'''
     list_VCM_code=list_VCM_code_coarse+list_VCM_code_fine
     list_contrast=list_contrast_coarse+list_contrast_fine
@@ -597,7 +650,7 @@ def FullSweep(imgs_folder,contrast_operator):
     #annotation of peak VCM code
     ax_contrast_curve.annotate('Peak: %d'%peak_VCM_code,
                                xy=(peak_VCM_code,peak_normalized_contrast),
-                               xytext=(peak_VCM_code+x_major_step/10,y_major_step/10),
+                               xytext=(peak_VCM_code+x_major_step/10,peak_normalized_contrast+y_major_step/10),
                                color='k',
                                fontproperties=sample_font)
     
