@@ -63,6 +63,8 @@ from matplotlib.font_manager import FontProperties
 imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Spot Chart\730mm'
 
 # C_P_S.FullSweep(imgs_folder,'Boccignone','Center')
+
+#contain coarse and fine
 S_A_F.ImageAndContrast(imgs_folder,'Boccignone','Center')
 
 # img = cv2.imread("test.jpg")
