@@ -103,8 +103,15 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
     
     #construct output folder
     output_folder_operator=str_a+'\\Contrast\\Scenario'+str_b
-    output_folder_condition=output_folder_operator.split(str_c)[0].replace('\\Scenario','')+'\\Operator'
     
+    try:
+        
+        output_folder_condition=output_folder_operator.split(str_c)[0].replace('\\Scenario','')+'\\Operator'
+    
+    except:
+        
+        output_folder_condition=str_a+'\\Contrast\Operator'
+        
     output_folder_operator+='\\'+contrast_operator+'\\'
     output_folder_condition+='\\'+contrast_operator+'\\'
     
@@ -113,6 +120,10 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
     
     '''need optimized frames construction'''
     list_imgs_folder=[imgs_folder+'\\'+this_name for this_name in os.listdir(imgs_folder) if '.' not in this_name]
+
+    if list_imgs_folder==[]:
+        
+        list_imgs_folder=[imgs_folder]
 
     #construct frame objects
     frames=O_I.CombineFrames(list_imgs_folder)
@@ -124,7 +135,7 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
 
     if contrast_operator not in list_contrast_operator:
         
-        return print('=> ERROR: Incorrect Input')
+        return print('=> ERROR: Incorrect Contrast Operator')
         
     #traverse all frames
     for this_frame in frames:

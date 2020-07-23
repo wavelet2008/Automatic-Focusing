@@ -248,7 +248,14 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
 
     #construct output folder
     output_folder_operator=str_a+'\\Contrast\\Scenario'+str_b
-    output_folder_condition=output_folder_operator.split(str_c)[0].replace('\\Scenario','')+'\\Operator'
+    
+    try:
+        
+        output_folder_condition=output_folder_operator.split(str_c)[0].replace('\\Scenario','')+'\\Operator'
+    
+    except:
+        
+        output_folder_condition=str_a+'\\Contrast\Operator'
     
     output_folder_operator+='\\'+contrast_operator+'\\'
     output_folder_condition+='\\'+contrast_operator+'\\'
@@ -275,13 +282,20 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
     
     if imgs_folder_coarse=='' or imgs_folder_fine=='':
         
-        print('--> ERROR: Incorrect images folder')
+        print('--> ERROR: No both Corase and Fine Folder')
         
-        return
-    
+        imgs_folder_coarse=cp.deepcopy(imgs_folder)
+
     #frame object for coarse and fine search
     frames_coarse=O_I.FramesConstruction(imgs_folder_coarse)
-    frames_fine=O_I.FramesConstruction(imgs_folder_fine)
+    
+    try:
+        
+        frames_fine=O_I.FramesConstruction(imgs_folder_fine)
+    
+    except:
+        
+        pass
     
     #total data of coarse frames
     list_VCM_code_coarse=[]
@@ -410,11 +424,17 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
     #frame list for final search
     frames=[]
     
-    for this_frame in frames_fine:
+    try:
         
-        if VCM_code_start<=this_frame.VCM_code<=VCM_code_end:
+        for this_frame in frames_fine:
             
-            frames.append(this_frame)
+            if VCM_code_start<=this_frame.VCM_code<=VCM_code_end:
+                
+                frames.append(this_frame)
+                
+    except:
+        
+        pass
 
     #if blank
     if frames==[]:

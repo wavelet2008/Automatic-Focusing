@@ -6,7 +6,7 @@ Created on Thu Dec 19 10:50:07 2019
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title: Contrast Calculation
+@title: script-Automatic Focusing Simulation
 """
 
 """
@@ -60,12 +60,18 @@ from matplotlib.font_manager import FontProperties
 
 # E_P.ExperimentOverall(list_imgs_folder)
 
-imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Spot Chart\730mm'
+# imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite\100mm'
 
-# C_P_S.FullSweep(imgs_folder,'Boccignone','Center')
+total_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Small'
 
-#contain coarse and fine
-S_A_F.ImageAndContrast(imgs_folder,'Boccignone','Center')
+# for this_imgs_folder_name in os.listdir(total_folder):
+    
+#     this_imgs_fodler=total_folder+'\\'+this_imgs_folder_name
+    
+#     C_P_S.FullSweep(this_imgs_fodler,'Boccignone','Center')
+
+#     #contain coarse and fine
+    # S_A_F.ImageAndContrast(this_imgs_fodler,'Boccignone','Center')
 
 # img = cv2.imread("test.jpg")
     
@@ -82,3 +88,12 @@ S_A_F.ImageAndContrast(imgs_folder,'Boccignone','Center')
 # img_gray=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 # contrast=C_T_F.MapTextureFeature(img_gray)['Contrast']
+
+# img_src=plt.imread('top_VCM_660.png')
+
+# plt.imshow(img_src)
+    
+'''using that style and plot them'''
+list_depth=[]
+list_best_VCM_code=[850,580,500,460,440,430,410,400,400,400]
+# plt.plot(list_best_VCM_code)
