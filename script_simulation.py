@@ -93,7 +93,3 @@ total_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Small'
 
 # plt.imshow(img_src)
     
-'''using that style and plot them'''
-list_depth=[]
-list_best_VCM_code=[850,580,500,460,440,430,410,400,400,400]
-# plt.plot(list_best_VCM_code)
