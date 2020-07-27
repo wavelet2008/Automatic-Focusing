@@ -133,6 +133,10 @@ def FramesConstruction(imgs_folder):
     #traverse all image
     for this_img_name in os.listdir(imgs_folder):
         
+        if '.jpg' not in this_img_name and '.png' not in this_img_name:
+
+            continue
+        
         #define a new image object
         that_image=frame()
 

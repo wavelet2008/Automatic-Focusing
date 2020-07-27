@@ -60,7 +60,12 @@ from matplotlib.font_manager import FontProperties
 
 # E_P.ExperimentOverall(list_imgs_folder)
 
-# imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite\100mm'
+imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Small\100mm'
+
+C_P_S.FullSweep(imgs_folder,'Boccignone','Center')
+
+#contain coarse and fine
+S_A_F.ImageAndContrast(imgs_folder,'Boccignone','Center')
 
 total_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Small'
 
@@ -68,10 +73,10 @@ total_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Small'
     
 #     this_imgs_fodler=total_folder+'\\'+this_imgs_folder_name
     
-#     C_P_S.FullSweep(this_imgs_fodler,'Boccignone','Center')
+#     C_P_S.FullSweep(this_imgs_folder,'Boccignone','Center')
 
 #     #contain coarse and fine
-    # S_A_F.ImageAndContrast(this_imgs_fodler,'Boccignone','Center')
+    # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
 
 # img = cv2.imread("test.jpg")
     

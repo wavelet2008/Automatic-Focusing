@@ -15,7 +15,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from matplotlib.pyplot import MultipleLocator
-from matplotlib.font_manager import FontProperties
 
 import operation_path as O_P
 import operation_import as O_I
@@ -24,63 +23,8 @@ import operation_dictionary as O_D
 import calculation_contrast as C_C
 import calculation_numerical_analysis as C_N_A
 
-#font of fonts of all kinds
-legend_prop={'family':'Gill Sans MT','weight':'normal','size':12}
-text_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=12)
-label_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=16)
-title_font=FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=18)
-sample_font=FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=12)
-
-list_contrast_operator=['KK',
-                        'Whittle',
-                        'Burkhardt',
-                        'Michelson',
-                        'Peli',
-                        'W3C',
-                        'Weber',
-                        'Stevens',
-                        'Boccignone',
-                        'SD',
-                        'SDLG',
-                        'SAM',
-                        'SALGM',
-                        'SAW',
-                        'SALGW',
-                        'RMSC-1',
-                        'RMSC-2',
-                        'Tadmor-1',
-                        'Tadmor-2',
-                        'Tadmor-3',
-                        'Rizzi',
-                        'CMSL',
-                        'CMAN']
-        
-list_contrast_color=['tan',
-                     'cyan',
-                     'teal',
-                     'olive',
-                     'maroon',
-                     'orchid',
-                     'sienna',
-                     'fuchsia',
-                     'crimson',
-                     'magenta',
-                     'thistle',
-                     'chocolate',
-                     'firebrick',
-                     'rosybrown',
-                     'slategray',
-                     'steelblue',
-                     'slateblue',
-                     'cadetblue',
-                     'lightsalmon',
-                     'mediumvioletred',
-                     'mediumslateblue',
-                     'mediumturquoise',
-                     'mediumaquamarine']
-
-#map between mode and color     
-map_mode_color=dict(zip(list_contrast_operator,list_contrast_color))
+from configuration_font import legend_prop,text_font,label_font,title_font
+from configuration_color import map_mode_color
 
 #------------------------------------------------------------------------------
 """
