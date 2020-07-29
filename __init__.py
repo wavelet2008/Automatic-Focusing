@@ -19,12 +19,14 @@ sys.path=list(set(sys.path))
 from o_circle import circle
 
 import operation_path as O_P
+import operation_curve as O_C
 import operation_import as O_I
 
 import calculation_contrast as C_C
 import calculation_histogram as C_H
 import calculation_peak_search as C_P_S
 import calculation_texture_feature as C_T_F
+import calculation_numerical_analysis as C_N_A
 import calculation_scene_discrimination as C_S_D
 
 import experiment_parameter as E_P
