@@ -1,3 +1,14 @@
+#image
 *.pyc
 *.png
+
+#python
 __pycache__/
+
+#cpp
+*.sln
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+.vs/
+x64/
