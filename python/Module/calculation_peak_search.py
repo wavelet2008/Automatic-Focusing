@@ -378,7 +378,11 @@ def FullSweep(imgs_folder,operator,ROI_mode):
                 
     except:
         
-        pass
+        for this_frame in frames_coarse:
+            
+            if VCM_code_start<=this_frame.VCM_code<=VCM_code_end:
+                
+                frames.append(this_frame)
 
     #if blank
     if frames==[]:
@@ -410,7 +414,7 @@ def FullSweep(imgs_folder,operator,ROI_mode):
             
             #basic parameters
             ROI_weight=[0.44,0.14,0.14,0.14,0.14]
-            zoom_factor=18
+            zoom_factor=16
             ROI_linewidth=int(height//300)
             text_position='Contrast'
             
@@ -586,10 +590,10 @@ def FullSweep(imgs_folder,operator,ROI_mode):
 
     #VMC code for plotting limit 
     list_VCM_code_total=[this_frame.VCM_code for this_frame in frames_coarse]
-    
+
     #limit of x and y
     x_min,x_max=-24,1024
-    y_min,y_max=-0.24,1.024
+    y_min,y_max=0-.023*2,1+.023*2
     
     #tick step
     x_major_step=100
@@ -637,7 +641,7 @@ def FullSweep(imgs_folder,operator,ROI_mode):
 
         str_text='ROI Zoom Factor: %d'%(zoom_factor/2)   
                                      
-    ax_contrast_curve.text(list_VCM_code[0]+x_major_step/10,
+    ax_contrast_curve.text(0+x_major_step/10,
                            1+y_major_step/10,
                            str_text,
                            FontProperties=text_font)           

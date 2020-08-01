@@ -218,18 +218,18 @@ def AutoFocusAnimation(imgs_folder,operator,ROI_mode):
                  label=operator)
         
         #limit of x and y
-        x_min,x_max=np.min(list_VCM_code),np.max(list_VCM_code)
-        y_min,y_max=0,1
+        x_min,x_max=-24,1024
+        y_min,y_max=0-.023*2,1+.023*2
         
         #tick step
-        x_major_step=np.ceil((x_max-x_min)/10/50)*50
-        x_minor_step=np.ceil((x_max-x_min)/10/50)*25
+        x_major_step=100
+        x_minor_step=50
         y_major_step=0.1
         y_minor_step=0.05
         
         #axis boundary
-        plt.xlim([x_min-x_minor_step,x_max+x_minor_step])
-        plt.ylim([y_min-y_minor_step,y_max+y_minor_step])  
+        plt.xlim([x_min,x_max])
+        plt.ylim([y_min,y_max])
         
         #set ticks fonts
         plt.tick_params(labelsize=12)
@@ -269,7 +269,7 @@ def AutoFocusAnimation(imgs_folder,operator,ROI_mode):
 
                 str_text='ROI Zoom Factor: %d'%(zoom_factor/2)   
                                         
-            ax_contrast_curve.text(list_VCM_code[0]+x_major_step/10,
+            ax_contrast_curve.text(0+x_major_step/10,
                                    1+y_major_step/10,
                                    str_text,
                                    FontProperties=text_font)               
