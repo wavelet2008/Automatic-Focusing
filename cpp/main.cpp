@@ -47,6 +47,7 @@ int main()
 	//cout << Articulation(img_gray, "Variance") << endl;
 
 	frame this_frame;
+
 	this_frame.img_gray = img_gray;
 	this_frame.img_bgr = img_bgr;
 

@@ -64,37 +64,17 @@ imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Small\100m
 
 C_P_S.FullSweep(imgs_folder,'Boccignone','Center')
 
-#contain coarse and fine
-S_A_F.ImageAndContrast(imgs_folder,'Boccignone','Center')
+# # contain coarse and fine
+# S_A_F.AutoFocusAnimation(imgs_folder,'Variance','Center')
 
-total_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Small'
+total_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Large'
 
-# for this_imgs_folder_name in os.listdir(total_folder):
+for this_imgs_folder_name in os.listdir(total_folder):
     
-#     this_imgs_fodler=total_folder+'\\'+this_imgs_folder_name
+    this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
     
-#     C_P_S.FullSweep(this_imgs_folder,'Boccignone','Center')
+    C_P_S.FullSweep(this_imgs_folder,'Boccignone','Center')
 
-#     #contain coarse and fine
+    #contain coarse and fine
     # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
 
-# img = cv2.imread("test.jpg")
-    
-# try:
-    
-#     img_shape=img.shape
-    
-# except:
-    
-#     print('imread error')
-    
-# img=cv2.resize(img,(int(img_shape[1]/20),int(img_shape[0]/20)),interpolation=cv2.INTER_CUBIC)
-
-# img_gray=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-# contrast=C_T_F.MapTextureFeature(img_gray)['Contrast']
-
-# img_src=plt.imread('top_VCM_660.png')
-
-# plt.imshow(img_src)
-    

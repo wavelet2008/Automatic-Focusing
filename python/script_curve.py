@@ -17,7 +17,7 @@ import numpy as np
 list_object_depth=[(k+1)*100 for k in range(10)]
 
 #data from 100mm is from small chart plane, so that dot distance need to mutiply a factor (14/2.8)
-list_focused_VCM_code=[850,580,500,460,440,430,410,400,400,400]
+list_focused_VCM_code=[850,580,500,460,440,430,410,400,400,390]
 
 list_dot_scale=[2.8]+[14]*9
 list_dot_distance=[100.8,231.6,156.0,111.6,89.3,75.5,64.3,55.7,49.3,44.6];

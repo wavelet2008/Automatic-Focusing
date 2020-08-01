@@ -17,8 +17,12 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import MultipleLocator
 from matplotlib.font_manager import FontProperties
 
+from configuration_color import list_articulation_operator
+
 import operation_import as O_I
 
+import calculation_articulation as C_A
+import calculation_texture_feature as C_T_F
 import calculation_scene_discrimination as C_S_D
 
 #font of fonts of all kinds
@@ -34,7 +38,7 @@ of a brighter area of interest and that of an adjacent darker area.
         
 #------------------------------------------------------------------------------
 """
-Calculation of contrast with different mode
+Calculation of contrast with different operator
 
 Args:
     img_gray: matrix of gray img
@@ -118,6 +122,11 @@ def GlobalContrast(img_gray,contrast_operator):
         L_b_S,L_f_S=C_S_D.ForeAndBackLuminance(img_gray_S.astype(np.uint8))
         
         return np.abs(L_b_S-L_f_S)
+    
+    '''Garalick (1979): GLCM'''
+    if contrast_operator=='GLCM':
+        
+        return C_T_F.MapTextureFeature(img_gray)['Contrast']
     
     '''Moulden (1990): Standard Deviation'''    
     if 'S' in contrast_operator:
@@ -405,6 +414,11 @@ def GlobalContrast(img_gray,contrast_operator):
             if L_max>T2:n=3
                 
             return np.average((L/n).ravel())
+        
+    '''Articulation'''
+    if contrast_operator in list_articulation_operator:
+        
+        return C_A.Articulation(img_gray,contrast_operator)
             
 #------------------------------------------------------------------------------
 """

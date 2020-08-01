@@ -9,6 +9,7 @@ Created on Mon Jul 27 17:03:23 2020
 @title: Module-Cofiguration of contrast operator and their color
 """
 
+#contrast
 list_contrast_operator=['KK',
                         'Whittle',
                         'Burkhardt',
@@ -18,6 +19,7 @@ list_contrast_operator=['KK',
                         'Weber',
                         'Stevens',
                         'Boccignone',
+                        'GLCM',
                         'SD',
                         'SDLG',
                         'SAM',
@@ -51,11 +53,30 @@ list_contrast_color=['tan',
                      'steelblue',
                      'slateblue',
                      'cadetblue',
+                     'oliverdrab',
                      'lightsalmon',
                      'mediumvioletred',
                      'mediumslateblue',
                      'mediumturquoise',
                      'mediumaquamarine']
 
-#map between mode and color     
-map_mode_color=dict(zip(list_contrast_operator,list_contrast_color)) 
+#articulation
+list_articulation_operator=['Variance',
+                            'Canny',
+                            'Sobel-x',
+                            'Sobel-y',
+                            'Laplacian']
+
+list_articulation_color=['plum',
+                         'bisque',
+                         'indigo',
+                         'lavender',
+                         'lightgreen']  
+
+#map between mode and color   
+map_contrast_color=dict(zip(list_contrast_operator,list_contrast_color)) 
+
+map_articulation_color=dict(zip(list_articulation_operator,list_articulation_color)) 
+
+list_operator=list_contrast_operator+list_articulation_operator
+map_operator_color={**map_contrast_color,**map_articulation_color}

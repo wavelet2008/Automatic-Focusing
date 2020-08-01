@@ -23,7 +23,7 @@ import calculation_contrast as C_C
 import calculation_numerical_analysis as C_N_A
 
 from configuration_font import legend_prop,text_font,label_font,title_font
-from configuration_color import map_mode_color
+from configuration_color import map_operator_color,list_operator,list_contrast_operator,list_articulation_operator
     
 #------------------------------------------------------------------------------
 """
@@ -31,17 +31,17 @@ Plot input image as well as contrast curve
 
 Args:
    imgs_folder: folder which contains a batch of images 
-   contrast_operator: operator of contrast calculation 
+   operator: operator of contrast calculation 
    ROI mode: definition method of ROI ['5-Area', 'Center']
    
 Returns:
     None
 """
-def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
+def AutoFocusAnimation(imgs_folder,operator,ROI_mode):
     
     print('')
     print('-- Image And Contrast')
-    print('-> Operator:',contrast_operator)
+    print('-> Operator:',operator)
     
     str_a,str_b=imgs_folder.split('Experiment')
     str_c,str_d=imgs_folder.split('Experiment')[-1].strip('\\').split('\\')
@@ -57,8 +57,8 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
         
         output_folder_condition=str_a+'\\Contrast\Operator'
         
-    output_folder_operator+='\\'+contrast_operator+'\\'
-    output_folder_condition+='\\'+contrast_operator+'\\'
+    output_folder_operator+='\\'+operator+'\\'
+    output_folder_condition+='\\'+operator+'\\'
     
     O_P.GenerateFolder(output_folder_operator)
     O_P.GenerateFolder(output_folder_condition)
@@ -78,9 +78,9 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
     list_contrast=[]
     list_img_ROI=[]
 
-    if contrast_operator not in list_contrast_operator:
+    if operator not in list_operator:
         
-        return print('=> ERROR: Incorrect Contrast Operator')
+        return print('=> ERROR: Incorrect Operator')
         
     #traverse all frames
     for this_frame in frames:
@@ -92,7 +92,7 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
         
         #basic parameters
         ROI_weight=[0.44,0.14,0.14,0.14,0.14]
-        zoom_factor=18
+        zoom_factor=16
         ROI_linewidth=int(height//300)
         text_position='Contrast'
    
@@ -122,7 +122,7 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
                                    int(j)-area_half_width:int(j)+area_half_width]
             
                 #collect it
-                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,operator))
             
                 #draw the bound of ROI
                 for k in range(ROI_linewidth):
@@ -144,7 +144,7 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
                                    int(j)-area_half_width:int(j)+area_half_width]
             
                 #collect it
-                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,operator))
             
                 #draw the bound of ROI
                 for k in range(ROI_linewidth):
@@ -211,11 +211,11 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
 
         plt.plot(list_VCM_code_this_frame,
                  list_normalized_contrast_this_frame,
-                 color=map_mode_color[contrast_operator],
+                 color=map_operator_color[operator],
                  marker='.',
                  markersize=8,
                  linestyle='-',
-                 label=contrast_operator)
+                 label=operator)
         
         #limit of x and y
         x_min,x_max=np.min(list_VCM_code),np.max(list_VCM_code)
@@ -238,11 +238,18 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
         #label fonts
         [this_label.set_fontname('Times New Roman') for this_label in labels]
             
-        plt.title(contrast_operator+' Contrast-VCM Code Curve',FontProperties=title_font)
+        if operator in list_contrast_operator:
         
-        plt.xlabel('VCM Code',FontProperties=label_font)
-        plt.ylabel('Contrast',FontProperties=label_font)
-        
+            plt.title(operator+' Contrast-VCM Code Curve',FontProperties=title_font)
+    
+            plt.ylabel('Contrast',FontProperties=label_font)
+            
+        if operator in list_articulation_operator:
+            
+            plt.title(operator+' Articulation-VCM Code Curve',FontProperties=title_font)
+    
+            plt.ylabel('Articulation',FontProperties=label_font)
+            
         plt.legend(prop=legend_prop,loc='lower right')
   
         #set locator
@@ -254,12 +261,18 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
         #text of parameter
         if text_position=='Contrast':
             
+            if ROI_mode=='5-Area':
+                
+                str_text='ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor/2,ROI_weight[0],ROI_weight[1])
+                
+            if ROI_mode=='Center':              
+
+                str_text='ROI Zoom Factor: %d'%(zoom_factor/2)   
+                                        
             ax_contrast_curve.text(list_VCM_code[0]+x_major_step/10,
                                    1+y_major_step/10,
-                                   'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor/2,
-                                                                            ROI_weight[0],
-                                                                            ROI_weight[1]),
-                                                                            FontProperties=text_font)               
+                                   str_text,
+                                   FontProperties=text_font)               
         
         #save the fig
         this_fig_path=output_folder_operator+'//%d.png'%(list_VCM_code[k])
@@ -274,7 +287,7 @@ def ImageAndContrast(imgs_folder,contrast_operator,ROI_mode):
         
     #save GIF 
     '''operator experiment'''
-    imageio.mimsave(output_folder_operator+'\\'+contrast_operator+'.gif',figures,duration=0.1) 
+    imageio.mimsave(output_folder_operator+'\\'+operator+'.gif',figures,duration=0.1) 
     
     '''condition experiment'''
     imageio.mimsave(output_folder_condition+str_c+' '+str_d+'.gif',figures,duration=0.1) 

@@ -23,8 +23,8 @@ import operation_dictionary as O_D
 import calculation_contrast as C_C
 import calculation_numerical_analysis as C_N_A
 
-from configuration_font import legend_prop,text_font,label_font,title_font
-from configuration_color import map_mode_color
+from configuration_font import legend_prop,text_font,label_font,title_font,sample_font
+from configuration_color import map_operator_color,list_operator,list_contrast_operator,list_articulation_operator
 
 #------------------------------------------------------------------------------
 """
@@ -106,10 +106,10 @@ def FullSweepCoarse(list_contrast):
     #index of maximum
     index_maximum=list_contrast.index(np.max(list_contrast))
 
-    '''preprocessing: try to tolerate one fluctuation in ascending'''
-    if len(list_contrast)>=3:
+    # '''preprocessing: try to tolerate one fluctuation in ascending'''
+    # if len(list_contrast)>=3:
         
-        list_contrast=PreProcessing(list_contrast)
+    #     list_contrast=PreProcessing(list_contrast)
 
     for k in range(len(list_contrast)-1):
         
@@ -139,10 +139,10 @@ def FullSweepCoarse(list_contrast):
             
             index_b=k-amount_descending+1
 
-        ''''postprocessing: try to tolerate one fluctuation in descending'''
-        if index_a!=None:
+        # ''''postprocessing: try to tolerate one fluctuation in descending'''
+        # if index_a!=None:
 
-            list_contrast=list_contrast[:index_a]+PostProcessing(list_contrast[index_a:])
+        #     list_contrast=list_contrast[:index_a]+PostProcessing(list_contrast[index_a:])
         
     if index_a!=None and index_b!=None:
 
@@ -175,17 +175,17 @@ Plot input image as well as contrast curve
 
 Args:
    imgs_folder: folder which contains a batch of images 
-   contrast_operator: operator of contrast calculation 
+   operator: operator of contrast or articulation calculation 
    ROI mode: definition method of ROI ['5-Area', 'Center']
    
 Returns:
     None
 """
-def FullSweep(imgs_folder,contrast_operator,ROI_mode):
+def FullSweep(imgs_folder,operator,ROI_mode):
     
     print('')
     print('-- Full Sweep')
-    print('-> Operator:',contrast_operator)
+    print('-> Operator:',operator)
     
     str_a,str_b=imgs_folder.split('Experiment')
     str_c,str_d=imgs_folder.split('Experiment')[-1].strip('\\').split('\\')
@@ -201,8 +201,8 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
         
         output_folder_condition=str_a+'\\Contrast\Operator'
     
-    output_folder_operator+='\\'+contrast_operator+'\\'
-    output_folder_condition+='\\'+contrast_operator+'\\'
+    output_folder_operator+='\\'+operator+'\\'
+    output_folder_condition+='\\'+operator+'\\'
     
     O_P.GenerateFolder(output_folder_operator)
     O_P.GenerateFolder(output_folder_condition)
@@ -226,7 +226,7 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
     
     if imgs_folder_coarse=='' or imgs_folder_fine=='':
         
-        print('--> ERROR: No both Corase and Fine Folder')
+        print('=> WARNING: No both Corase and Fine Folder')
         
         imgs_folder_coarse=cp.deepcopy(imgs_folder)
 
@@ -246,7 +246,7 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
     list_contrast_coarse=[]
     list_img_ROI_coarse=[]
 
-    if contrast_operator not in list_contrast_operator:
+    if operator not in list_operator:
         
         return print('=> ERROR: Incorrect Input')
 
@@ -265,7 +265,7 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
         
         #basic parameters
         ROI_weight=[0.44,0.14,0.14,0.14,0.14]
-        zoom_factor=18
+        zoom_factor=16
         ROI_linewidth=int(height//300)
         text_position='Contrast'
         
@@ -297,7 +297,7 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
                                    int(j)-area_half_width:int(j)+area_half_width]
             
                 #collect it
-                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,operator))
             
                 #draw the bound of ROI
                 for k in range(ROI_linewidth):
@@ -319,7 +319,7 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
                                    int(j)-area_half_width:int(j)+area_half_width]
             
                 #collect it
-                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,operator))
             
                 #draw the bound of ROI
                 for k in range(ROI_linewidth):
@@ -442,7 +442,7 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
                                        int(j)-area_half_width:int(j)+area_half_width]
                 
                     #collect it
-                    list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+                    list_contrast_5_areas.append(C_C.GlobalContrast(this_area,operator))
                 
                     #draw the bound of ROI
                     for k in range(ROI_linewidth):
@@ -464,7 +464,7 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
                                        int(j)-area_half_width:int(j)+area_half_width]
                 
                     #collect it
-                    list_contrast_5_areas.append(C_C.GlobalContrast(this_area,contrast_operator))
+                    list_contrast_5_areas.append(C_C.GlobalContrast(this_area,operator))
                 
                     #draw the bound of ROI
                     for k in range(ROI_linewidth):
@@ -521,7 +521,8 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
         plt.imshow(frames[peak_index].img_gray,cmap='gray')
         plt.imshow(list_img_ROI_fine[peak_index],cmap='seismic_r') 
         
-    print('--> Peak VCM Code:',peak_VCM_code)
+    print('')
+    print('---> Peak VCM Code:',peak_VCM_code)
     
     #center of ROI
     list_5_center_ROI=[[  height/2,   width/2],
@@ -554,11 +555,11 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
     
     plt.plot(list_VCM_code,
              list_normalized_contrast,
-             color=map_mode_color[contrast_operator],
+             color=map_operator_color[operator],
              marker='.',
              markersize=8,
              linestyle='-',
-             label=contrast_operator)
+             label=operator)
     
     #set ticks fonts
     plt.tick_params(labelsize=12)
@@ -566,42 +567,51 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
     
     #label fonts
     [this_label.set_fontname('Times New Roman') for this_label in labels]
+    
+    plt.xlabel('VCM Code',FontProperties=label_font)   
+    
+    if operator in list_contrast_operator:
         
-    plt.title(contrast_operator+' Contrast-VCM Code Curve',FontProperties=title_font)
-    
-    plt.xlabel('VCM Code',FontProperties=label_font)
-    plt.ylabel('Contrast',FontProperties=label_font)
-    
+        plt.title(operator+' Contrast-VCM Code Curve',FontProperties=title_font)
+
+        plt.ylabel('Contrast',FontProperties=label_font)
+        
+    if operator in list_articulation_operator:
+        
+        plt.title(operator+' Articulation-VCM Code Curve',FontProperties=title_font)
+
+        plt.ylabel('Articulation',FontProperties=label_font)
+        
     plt.legend(prop=legend_prop,loc='lower right')
 
     #VMC code for plotting limit 
     list_VCM_code_total=[this_frame.VCM_code for this_frame in frames_coarse]
     
     #limit of x and y
-    x_min,x_max=np.min(list_VCM_code_total),np.max(list_VCM_code_total)
-    y_min,y_max=0,1
+    x_min,x_max=-24,1024
+    y_min,y_max=-0.24,1.024
     
     #tick step
-    x_major_step=np.ceil((x_max-x_min)/10/50)*50
-    x_minor_step=np.ceil((x_max-x_min)/10/50)*25
+    x_major_step=100
+    x_minor_step=50
     y_major_step=0.1
     y_minor_step=0.05
     
     #axis boundary
-    plt.xlim([x_min-x_minor_step,x_max+x_minor_step])
-    plt.ylim([y_min-y_minor_step,y_max+y_minor_step])
+    plt.xlim([x_min,x_max])
+    plt.ylim([y_min,y_max])
     
     #horizontal line
     plt.hlines(peak_normalized_contrast,
-               x_min-x_minor_step,
-               x_max+x_minor_step,
+               x_min,
+               x_max,
                color='grey',
                linestyles="--")
     
     #vertical line
     plt.vlines(peak_VCM_code,
-               y_min-y_minor_step,
-               y_max+y_minor_step,
+               y_min,
+               y_max,
                color='grey',
                linestyles="--")
 
@@ -619,12 +629,18 @@ def FullSweep(imgs_folder,contrast_operator,ROI_mode):
                                fontproperties=sample_font)
     
     #text of parameter
+    if ROI_mode=='5-Area':
+                
+        str_text='ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor/2,ROI_weight[0],ROI_weight[1])
+        
+    if ROI_mode=='Center':              
+
+        str_text='ROI Zoom Factor: %d'%(zoom_factor/2)   
+                                     
     ax_contrast_curve.text(list_VCM_code[0]+x_major_step/10,
                            1+y_major_step/10,
-                           'ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor/2,
-                                                                    ROI_weight[0],
-                                                                    ROI_weight[1]),
-                                                                    FontProperties=text_font)           
+                           str_text,
+                           FontProperties=text_font)           
                                         
     #save the fig
     '''operator experiment'''
