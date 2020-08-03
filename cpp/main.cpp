@@ -56,7 +56,7 @@ int main()
 
 	double contrast = ContrastCenter(this_frame, "Michelson");
 	double articulation = Articulation(img_gray, "Laplacian");
-	double contrast_texture=TextureFeatures(img_gray, "contrast");
+	double contrast_texture=TextureFeatures(img_gray, "Contrast");
 	
 	//string imgs_path = "C:\\Users\\魏华敬\\Desktop\\Experiment\\Luminance\\High\\Coarse";
 

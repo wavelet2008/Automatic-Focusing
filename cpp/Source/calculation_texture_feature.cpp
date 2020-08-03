@@ -62,22 +62,22 @@ double TextureFeatures(Mat& img,const string& feature_operator) {
     double feature_average;
 
     //energy
-    if (feature_operator == "energy") {
+    if (feature_operator == "Energy") {
 
         feature_average = energy_average;
     }
     //entropy
-    if (feature_operator == "entropy") {
+    if (feature_operator == "Entropy") {
 
         feature_average = entropy_average;
     }
     //contrast
-    if (feature_operator == "contrast") {
+    if (feature_operator == "Contrast") {
 
         feature_average = contrast_average;
     }
     //idMoment
-    if (feature_operator == "idMoment") {
+    if (feature_operator == "IdMoment") {
         
         feature_average = idMoment_average;
     }
