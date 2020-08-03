@@ -66,7 +66,7 @@ imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Random\Polight'
 C_P_S.FullSweep(imgs_folder,'Boccignone','Center')
 
 # contain coarse and fine
-S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
+# S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
 # total_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Large'
 

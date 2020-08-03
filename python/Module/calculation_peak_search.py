@@ -147,7 +147,7 @@ def FullSweepCoarse(list_contrast):
     if index_a!=None and index_b!=None:
 
         #expire the exception
-        if index_a==index_maximum or index_b==index_maximum:
+        if index_a==index_maximum and index_b==index_maximum:
             
             return index_a-1,index_b+1
     
@@ -254,7 +254,7 @@ def FullSweep(imgs_folder,operator,ROI_mode):
     
     print('')
     print('-- Full Sweep Coarse')
-    
+
     #traverse all frames for full sweeping
     for this_frame in frames_coarse:
 
