@@ -12,6 +12,9 @@
 #ifndef _OPERATION_IMPORT_H_
 #define _OPERATION_IMPORT_H_
 
+//Split string like python does
+vector<string> split(const string& str, const string& delim);
+
 //Calculate the path of all the files under the path
 vector<string> VectorFilesPath(string& folder_path);
 

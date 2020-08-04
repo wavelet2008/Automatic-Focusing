@@ -337,7 +337,7 @@ def FullSweep(imgs_folder,operator,ROI_mode):
         result_full_sweep=FullSweepCoarse(list_contrast_coarse)
         
         print('--> VCM Code:',this_frame.VCM_code)
-        # print('---> Contrast:',list_contrast_coarse[-1])
+        print('---> Contrast:',list_contrast_coarse[-1])
         
         if result_full_sweep is not None:
             

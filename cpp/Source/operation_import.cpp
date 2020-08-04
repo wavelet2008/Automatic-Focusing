@@ -8,7 +8,40 @@
 ******************************************************************************/
 
 #include "..\Header\operation_import.h"
+#include "..\Header\calculation_contrast.h"
 
+//------------------------------------------------------------------------------
+/*
+Split string like python does
+
+Args:
+	str: original string
+	delim: separator string
+
+Returns:
+	separated string vector
+*/
+vector<string> split(const string& str, const string& delim) {
+	vector<string> res;
+	if ("" == str) return res;
+	//先将要切割的字符串从string类型转换为char*类型
+	char* strs = new char[str.length() + 1]; //不要忘了
+	strcpy(strs, str.c_str());
+
+	char* d = new char[delim.length() + 1];
+	strcpy(d, delim.c_str());
+
+	char* p = strtok(strs, d);
+	while (p) {
+		string s = p; //分割得到的字符串转换为string类型
+		res.push_back(s); //存入结果数组
+		p = strtok(NULL, d);
+	}
+
+	return res;
+}
+
+//------------------------------------------------------------------------------
 /*
 Calculate the path of all the files under the path
 
@@ -65,7 +98,7 @@ vector<string> VectorFilesPath(string& folder_path) {
 	}
 	return total_files;
 }
-
+//------------------------------------------------------------------------------
 /*
 Get bgr image matrix and construct a vector
 
@@ -99,7 +132,7 @@ vector<Mat> VectorImgBGR(string& folder_path) {
 	}
 	return vector_img_bgr;
 }
-
+//------------------------------------------------------------------------------
 /*
 Get gray image matrix and construct a vector
 
@@ -119,6 +152,15 @@ vector<Mat> VectorImgGray(string& folder_path) {
 
 	//generate matrix
 	for (int k = 0; k < vector_files_path.size(); k++) {
+
+		cout << vector_files_path[k] << endl;
+
+		vector<string> res = split(vector_files_path[k], "\\");
+		/*for (int i = 0; i < res.size(); ++i)
+		{
+			cout << res[i] << endl;
+		}*/
+		cout << res[res.size()-1] << endl;
 
 		Mat that_img_bgr = imread(vector_files_path[k], 1);
 

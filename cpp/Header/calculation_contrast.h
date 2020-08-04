@@ -8,6 +8,7 @@
 ******************************************************************************/
 
 #include "..\init.h"
+#include "object_frame.h"
 
 #ifndef _CALCULATION_CONTRAST_H_
 #define _CALCULATION_CONTRAST_H_

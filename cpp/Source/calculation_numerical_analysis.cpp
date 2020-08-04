@@ -10,7 +10,16 @@
 #include "..\Header\operation_vector.h"
 #include "..\Header\calculation_numerical_analysis.h"
 
-//Calculation of vector normalization
+//------------------------------------------------------------------------------
+/*
+Calculation of vector normalization
+
+Args:
+	which_vector: vector object to be calculated
+
+Returns:
+	normalized vector
+*/
 vector<double> Normalize(vector<double>& which_vector) {
 
 	//maximum and minimum

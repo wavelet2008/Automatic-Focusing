@@ -13,6 +13,7 @@
 #include "..\Header\calculation_contrast.h"
 #include "..\Header\calculation_histogram.h"
 
+//------------------------------------------------------------------------------
 /*
 Calculate ROI matrix as an vector
 
@@ -30,12 +31,12 @@ vector<int> VectorROI(Mat& img_gray, int center_ROI[2]) {
 	int width = img_gray.cols;
 
 	//5-Area ROI size
-	int height_ROI = int(height / 9);
-	int width_ROI = int(width / 9);
+	int height_ROI = int(height / 8);
+	int width_ROI = int(width / 8);
 
 	//half size
-	int half_height_ROI = int(height / 18);
-	int half_width_ROI = int(width / 18);
+	int half_height_ROI = int(height / 16);
+	int half_width_ROI = int(width / 16);
 
 	//amount of pixel in ROI
 	int area_ROI = height_ROI * width_ROI;
@@ -62,7 +63,7 @@ vector<int> VectorROI(Mat& img_gray, int center_ROI[2]) {
 	//cout << ROI[0] << endl;
 	return ROI_gray;
 }
-
+//------------------------------------------------------------------------------
 /*
 Calculate contrast of ROI vector
 
@@ -112,43 +113,89 @@ double ContrastROI(vector<int>& vector_ROI, const string& contrast_operator) {
 	if (contrast_operator == "Boccignone") {
 
 		//need iteration
+		double e = 0.1;
 
 		//gray level and their frequency
-		vector<int> gray_level = VectorGrayLevel(1);
-		vector<double> gray_frequency = VectorGrayLevelFrequency(vector_ROI);
+		vector<int> vector_gray_level = VectorGrayLevel(1);
+		vector<double> vector_gray_frequency = VectorGrayLevelFrequency(vector_ROI);
 
 		//calculate avearge gray level
-		double L_average = VectorMultiplication(gray_level, gray_frequency);
+		double average_gray_level = VectorMultiplication(vector_gray_level, vector_gray_frequency);
 
 		//calculate index of gray value who is smaller or bigger than threshold
-		vector<int> index_vector_below_average = VectorIndexBelowThreshold(gray_level, L_average);
-		vector<int> index_vector_above_average = VectorIndexAboveThreshold(gray_level, L_average);
+		vector<int> index_vector_b = VectorIndexBelowThreshold(vector_gray_level, average_gray_level);
+		vector<int> index_vector_f = VectorIndexAboveThreshold(vector_gray_level, average_gray_level);
 
-		//divide gray level
-		vector<int> gray_level_below_average = VectorFromIndex(gray_level, index_vector_below_average);
-		vector<int> gray_level_above_average = VectorFromIndex(gray_level, index_vector_above_average);
+		//init threshold
+		double threshold_pre = average_gray_level;
+		double threshold_next = threshold_pre + 10 * e;
 
-		//divide gray level frequency
-		vector<double> gray_frequency_below_average = VectorFromIndex(gray_frequency, index_vector_below_average);
-		vector<double> gray_frequency_above_average = VectorFromIndex(gray_frequency, index_vector_above_average);
+		//divide the gray level and frequency to background(b) and foreground(f)
+		double average_gray_level_b, average_gray_level_f;
+		vector<int>vector_gray_level_b, vector_gray_level_f;
+		vector<double>vector_gray_frequency_b, vector_gray_frequency_f;
+		vector<double>list_average_gray_level_b,list_average_gray_level_f;
+		
+		int count = 0;
 
-		//cout << VectorSum(gray_frequency_below_average) << endl;
-		//cout << VectorSum(gray_frequency_above_average) << endl;
-		//cout << VectorSum(gray_frequency) << endl;
+		while (abs(threshold_next - threshold_pre) > e) {
+		
+			threshold_pre = (threshold_next);
+			
+			//divide gray level
+			index_vector_b= VectorIndexBelowThreshold(vector_gray_level, threshold_pre);
+			index_vector_f = VectorIndexAboveThreshold(vector_gray_level, threshold_pre);
 
-		//above average stands for foreground
-		double L_above_average = VectorMultiplication(gray_level_above_average, gray_frequency_above_average) / VectorSum(gray_frequency_above_average);
+			//divide gray level
+			vector_gray_level_b = VectorFromIndex(vector_gray_level, index_vector_b);
+			vector_gray_level_f = VectorFromIndex(vector_gray_level, index_vector_f);
 
-		//below average stands for foreground
-		double L_below_average = VectorMultiplication(gray_level_below_average, gray_frequency_below_average) / VectorSum(gray_frequency_below_average);
+			//divide gray level frequency
+			vector_gray_frequency_b = VectorFromIndex(vector_gray_frequency, index_vector_b);
+			vector_gray_frequency_f = VectorFromIndex(vector_gray_frequency, index_vector_f);
 
-		//cout << L_above_average << endl;
-		//cout << L_below_average << endl;
+			//average value of gray level of b & f
+			if (VectorSum(vector_gray_frequency_f) == 0.0) {
 
-		//cout << VectorAverage(gray_level_above_average) << endl;
-		//cout << VectorAverage(gray_level_below_average) << endl;
+				if (count > 0) {
 
-		contrast = 0.0;
+					average_gray_level_f = list_average_gray_level_f[list_average_gray_level_f.size()-1];
+					}
+				else {
+
+					average_gray_level_f = 0;
+				}
+			}
+			else {
+
+				//above average stands for foreground
+				average_gray_level_f = VectorMultiplication(vector_gray_level_f, vector_gray_frequency_f) / VectorSum(vector_gray_frequency_f);
+			}
+			if (VectorSum(vector_gray_frequency_b) == 0.0) {
+
+				if (count > 0) {
+
+					average_gray_level_b = list_average_gray_level_b[list_average_gray_level_b.size() - 1];
+					}
+				else {
+
+					average_gray_level_b = 0;
+				}
+			}
+			else {
+
+				//above average stands for background
+				average_gray_level_b = VectorMultiplication(vector_gray_level_b, vector_gray_frequency_b) / VectorSum(vector_gray_frequency_b);
+			}
+			list_average_gray_level_f.push_back(average_gray_level_f);
+			list_average_gray_level_b.push_back(average_gray_level_b);
+
+			//update threhold
+			threshold_next = 0.5 * (average_gray_level_f + average_gray_level_b);
+
+			count++;
+		}
+		contrast = log(average_gray_level_f / average_gray_level_b);
 	}
 	//Moulden (1990): Standard Deviation
 	//judge if 'S' is in the string
@@ -177,7 +224,7 @@ double ContrastROI(vector<int>& vector_ROI, const string& contrast_operator) {
 
 	return contrast;
 }
-
+//------------------------------------------------------------------------------
 /*
 Calculate 5-Area contrast of image
 
@@ -223,7 +270,7 @@ double Contrast5Area(Mat& img_gray, const string& contrast_operator) {
 
 	return VectorMultiplication(vector_5_area_contrast, vector_5_area_weight);
 }
-
+//------------------------------------------------------------------------------
 /*
 Calculate center contrast of image
 
@@ -247,7 +294,7 @@ double ContrastCenter(Mat& img_gray, const string& contrast_operator) {
 	int width = img_gray.cols;
 
 	//5-Area ROI center
-	int center_ROI[2] = { int(height / 2) ,int(height / 2) };
+	int center_ROI[2] = { int(height / 2) ,int(width / 2) };
 
 	//5-Area ROI vector
 	vector<int> ROI = VectorROI(img_gray, center_ROI);

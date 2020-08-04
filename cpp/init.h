@@ -12,6 +12,7 @@
 #include <io.h> 
 #include <stdio.h>
 #include <tchar.h>
+#include <stdlib.h>
 
 #include <string>
 #include <vector>

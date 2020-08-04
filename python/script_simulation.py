@@ -60,7 +60,7 @@ from matplotlib.font_manager import FontProperties
 
 # E_P.ExperimentOverall(list_imgs_folder)
 
-imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Small\100mm'
+# imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Small\100mm'
 imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Random\Polight'
 
 C_P_S.FullSweep(imgs_folder,'Boccignone','Center')

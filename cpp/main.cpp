@@ -54,24 +54,24 @@ int main()
 	//5-Area ROI center
 	int center_ROI[2] = { int(height / 2) ,int(height / 2) };
 
-	double contrast = ContrastCenter(this_frame, "Michelson");
-	double articulation = Articulation(img_gray, "Laplacian");
-	double contrast_texture=TextureFeatures(img_gray, "Contrast");
+	//double contrast = ContrastCenter(this_frame, "Boccignone");
+	//double articulation = Articulation(img_gray, "Laplacian");
+	//double contrast_texture=TextureFeatures(img_gray, "Contrast");
 	
-	//string imgs_path = "C:\\Users\\魏华敬\\Desktop\\Experiment\\Luminance\\High\\Coarse";
+	string imgs_path = "C:\\Users\\ASUS\\Desktop\\Experiment\\Random\\Polight";
 
-	//vector<string> vector_imgs_path = VectorFilesPath(imgs_path);
+	vector<string> vector_imgs_path = VectorFilesPath(imgs_path);
 
-	////VectorPrint(vector_imgs_path);
+	//VectorPrint(vector_imgs_path);
 
-	//vector<Mat> vector_img_gray = VectorImgGray(imgs_path);
+	vector<Mat> vector_img_gray = VectorImgGray(imgs_path);
+	
+	/*for (int k = 0; k < vector_img_gray.size(); k++) {
 
-	//for (int k = 0; k < vector_img_gray.size(); k++) {
-
-	//	double contrast = ContrastCenter(vector_img_gray[k], "Michelson");
-
-	//	cout << contrast << endl;
-	//}
+		double contrast = ContrastCenter(vector_img_gray[k], "Boccignone");
+		cout << k << endl;
+		cout <<contrast << endl;
+	}*/
 
 	//slice vector
 	//sort the image
