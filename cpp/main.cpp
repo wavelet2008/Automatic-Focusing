@@ -60,21 +60,16 @@ int main()
 	
 	string imgs_path = "C:\\Users\\ASUS\\Desktop\\Experiment\\Random\\Polight";
 
-	vector<string> vector_imgs_path = VectorFilesPath(imgs_path);
+	//vector<string> vector_imgs_path = VectorFilesPath(imgs_path);
 
 	//VectorPrint(vector_imgs_path);
 
-	vector<Mat> vector_img_gray = VectorImgGray(imgs_path);
+	vector<frame> vector_frame = VectorFrame(imgs_path);
 	
-	/*for (int k = 0; k < vector_img_gray.size(); k++) {
+	for (int k = 0; k < vector_frame.size(); k++) {
 
-		double contrast = ContrastCenter(vector_img_gray[k], "Boccignone");
-		cout << k << endl;
-		cout <<contrast << endl;
-	}*/
-
-	//slice vector
-	//sort the image
+		cout << vector_frame[k].VCM_Code << endl;
+	}
 
 	//delete corresponds to new and delete[] corresponds to new[]
 	//delete and delete[] play the same role in built-in data structure (pointer variable)

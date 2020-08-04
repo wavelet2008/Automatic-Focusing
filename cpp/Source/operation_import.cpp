@@ -7,7 +7,9 @@
 @title: Source-Operation on Import
 ******************************************************************************/
 
+#include "..\Header\object_frame.h"
 #include "..\Header\operation_import.h"
+#include "..\Header\operation_vector.h"
 #include "..\Header\calculation_contrast.h"
 
 //------------------------------------------------------------------------------
@@ -22,10 +24,15 @@ Returns:
 	separated string vector
 */
 vector<string> split(const string& str, const string& delim) {
+
 	vector<string> res;
-	if ("" == str) return res;
-	//先将要切割的字符串从string类型转换为char*类型
-	char* strs = new char[str.length() + 1]; //不要忘了
+
+	if ("" == str) {
+		return res;
+	}
+
+	//the string to be cut is converted from string to char*
+	char* strs = new char[str.length() + 1]; 
 	strcpy(strs, str.c_str());
 
 	char* d = new char[delim.length() + 1];
@@ -33,14 +40,45 @@ vector<string> split(const string& str, const string& delim) {
 
 	char* p = strtok(strs, d);
 	while (p) {
-		string s = p; //分割得到的字符串转换为string类型
-		res.push_back(s); //存入结果数组
+
+		//the split string is converted to string
+		string s = p; 
+
+		//put into the result array
+		res.push_back(s); 
 		p = strtok(NULL, d);
 	}
 
 	return res;
 }
+//Transfrom image path to VCM Code
+int ImagePath2VCMCode(const string& image_name) {
 
+	//split str into a vector
+	vector<string> vector_str = split(image_name, "\\");
+	string str_image = vector_str[vector_str.size() - 1];
+
+	//str with .jpg or .png
+	vector<string> vector_str_image = split(str_image, "_");
+	string str_code_image = vector_str_image[vector_str_image.size() - 1];
+
+	//true code str
+	vector<string> vector_str_code = split(str_code_image, ".");
+	string str_code = vector_str_code[0];
+
+	//transfrom str to int
+	return atoi(str_code.c_str());
+}
+int VectorIndex(vector<int>which_vector, int which_element) {
+
+	for (int k = 0; k < which_vector.size(); k++) {
+		
+		if (which_vector[k] == which_element) {
+
+			return k;
+		}
+	}
+}
 //------------------------------------------------------------------------------
 /*
 Calculate the path of all the files under the path
@@ -100,68 +138,28 @@ vector<string> VectorFilesPath(string& folder_path) {
 }
 //------------------------------------------------------------------------------
 /*
-Get bgr image matrix and construct a vector
+Get frame object and construct a vector
 
 Args:
 	folder_path: folder path of images
 
 Returns:
-	rgb image series
+	frame object series
 */
-vector<Mat> VectorImgBGR(string& folder_path) {
+vector<frame> VectorFrame(string& folder_path) {
 
 	//vector of input image path
 	vector<string> vector_files_path = VectorFilesPath(folder_path);
 
-	//final result
-	vector<Mat> vector_img_bgr;
+	//vector if frame and VCM Code
+	vector<frame> vector_frame;
+	vector<int> vector_VCM_Code;
 
 	//generate matrix
 	for (int k = 0; k < vector_files_path.size(); k++) {
 
-		Mat that_img_bgr = imread(vector_files_path[k], 1);
-
-		if (!that_img_bgr.data) {
-
-			cout << "Could not open or find the image" << endl;
-		}
-		else {
-
-			vector_img_bgr.push_back(that_img_bgr);
-		}
-	}
-	return vector_img_bgr;
-}
-//------------------------------------------------------------------------------
-/*
-Get gray image matrix and construct a vector
-
-Args:
-	folder_path: folder path of images
-
-Returns:
-	gray image series
-*/
-vector<Mat> VectorImgGray(string& folder_path) {
-
-	//vector of input image path
-	vector<string> vector_files_path = VectorFilesPath(folder_path);
-
-	//final result
-	vector<Mat> vector_img_gray;
-
-	//generate matrix
-	for (int k = 0; k < vector_files_path.size(); k++) {
-
-		cout << vector_files_path[k] << endl;
-
-		vector<string> res = split(vector_files_path[k], "\\");
-		/*for (int i = 0; i < res.size(); ++i)
-		{
-			cout << res[i] << endl;
-		}*/
-		cout << res[res.size()-1] << endl;
-
+		//cout << vector_files_path[k] << endl;
+	
 		Mat that_img_bgr = imread(vector_files_path[k], 1);
 
 		if (!that_img_bgr.data) {
@@ -178,8 +176,28 @@ vector<Mat> VectorImgGray(string& folder_path) {
 			Mat that_img_gray(height, width, CV_8UC1);
 			cvtColor(that_img_bgr, that_img_gray, CV_BGR2GRAY);
 
-			vector_img_gray.push_back(that_img_gray);
+			//generate a frame object
+			frame this_frame;
+
+			this_frame.img_gray = that_img_gray;
+			this_frame.img_bgr = that_img_bgr;
+			this_frame.VCM_Code = ImagePath2VCMCode(vector_files_path[k]);
+			this_frame.contrast= ContrastCenter(this_frame, "Boccignone");
+
+			vector_frame.push_back(this_frame);
+			vector_VCM_Code.push_back(this_frame.VCM_Code);
 		}
 	}
-	return vector_img_gray;
+	//copy the VCM Code vector
+	vector<int> original_vector_VCM_Code= vector_VCM_Code;
+	vector<int> vector_index_sorted;
+
+	//sort the VCM Code
+	sort(vector_VCM_Code.begin(), vector_VCM_Code.end());
+
+	for (int i = 0; i < vector_VCM_Code.size(); i++) {
+
+		vector_index_sorted.push_back(VectorIndex(original_vector_VCM_Code, vector_VCM_Code[i]));
+	}
+	return VectorFromIndex(vector_frame, vector_index_sorted);
 }

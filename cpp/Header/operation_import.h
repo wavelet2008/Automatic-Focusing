@@ -15,13 +15,13 @@
 //Split string like python does
 vector<string> split(const string& str, const string& delim);
 
+//Transfrom image path to VCM Code
+int ImagePath2VCMCode(const string& image_name);
+
 //Calculate the path of all the files under the path
 vector<string> VectorFilesPath(string& folder_path);
 
-//Get bgr image matrix and construct a vector
-vector<Mat> VectorImgBGR(string& folder_path);
-
 //Get gray image matrix and construct a vector
-vector<Mat> VectorImgGray(string& folder_path);
+vector<frame> VectorFrame(string& folder_path);
 
 #endif

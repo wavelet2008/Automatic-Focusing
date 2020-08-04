@@ -7,8 +7,9 @@
 @title: Source-Operation on Vector
 ******************************************************************************/
 
-#include "..\Header\operation_vector.h"
+#include "..\Header\object_frame.h"
 #include "..\Header\operation_array.h"
+#include "..\Header\operation_vector.h"
 
 //Calculate sum of vector
 //overloaded function 1: vector of int type
@@ -322,7 +323,18 @@ vector<double> VectorFromIndex(vector<double>& which_vector, vector<int>& index_
 	}
 	return new_vector;
 }
+//overloaded function 3: vector of frame type
+vector<frame> VectorFromIndex(vector<frame>& which_vector, vector<int>& index_vector) {
 
+	//final result
+	vector<frame> new_vector;
+
+	for (int i = 0; i < index_vector.size(); i++) {
+
+		new_vector.push_back(which_vector[index_vector[i]]);
+	}
+	return new_vector;
+}
 //Print all element inside the vector
 //overloaded function 1: vector of int type
 void VectorPrint(vector<int>& which_vector) {

@@ -8,6 +8,7 @@
 ******************************************************************************/
 
 #include "..\init.h"
+#include "object_frame.h"
 
 #ifndef _OPERATION_VECTOR_H_
 #define _OPERATION_VECTOR_H_
@@ -47,6 +48,7 @@ vector<int> VectorIndexBelowThreshold(vector<int>& which_array, double threshold
 //Gets the new vector based on the index list
 vector<int> VectorFromIndex(vector<int>& which_vector, vector<int>& index_vector);
 vector<double> VectorFromIndex(vector<double>& which_vector, vector<int>& index_vector);
+vector<frame> VectorFromIndex(vector<frame>& which_vector, vector<int>& index_vector);
 
 //Print all element inside the vector
 void VectorPrint(vector<int>& which_vector);
