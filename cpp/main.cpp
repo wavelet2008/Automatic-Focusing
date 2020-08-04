@@ -44,15 +44,10 @@ int main()
 	Mat img_gray(height, width, CV_8UC1);
 	cvtColor(img_bgr, img_gray, CV_BGR2GRAY);
 
-	//cout << Articulation(img_gray, "Variance") << endl;
-
 	frame this_frame;
 
 	this_frame.img_gray = img_gray;
 	this_frame.img_bgr = img_bgr;
-
-	//5-Area ROI center
-	int center_ROI[2] = { int(height / 2) ,int(height / 2) };
 
 	//double contrast = ContrastCenter(this_frame, "Boccignone");
 	//double articulation = Articulation(img_gray, "Laplacian");

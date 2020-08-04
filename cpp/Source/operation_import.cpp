@@ -23,7 +23,7 @@ Args:
 Returns:
 	separated string vector
 */
-vector<string> split(const string& str, const string& delim) {
+vector<string> Split(const string& str, const string& delim) {
 
 	vector<string> res;
 
@@ -55,15 +55,15 @@ vector<string> split(const string& str, const string& delim) {
 int ImagePath2VCMCode(const string& image_name) {
 
 	//split str into a vector
-	vector<string> vector_str = split(image_name, "\\");
+	vector<string> vector_str = Split(image_name, "\\");
 	string str_image = vector_str[vector_str.size() - 1];
 
 	//str with .jpg or .png
-	vector<string> vector_str_image = split(str_image, "_");
+	vector<string> vector_str_image = Split(str_image, "_");
 	string str_code_image = vector_str_image[vector_str_image.size() - 1];
 
 	//true code str
-	vector<string> vector_str_code = split(str_code_image, ".");
+	vector<string> vector_str_code = Split(str_code_image, ".");
 	string str_code = vector_str_code[0];
 
 	//transfrom str to int
@@ -78,6 +78,7 @@ int VectorIndex(vector<int>which_vector, int which_element) {
 			return k;
 		}
 	}
+	return -1;
 }
 //------------------------------------------------------------------------------
 /*
