@@ -372,3 +372,15 @@ void VectorPrint(vector<string>& which_vector) {
 		cout << which_vector[i] << endl;
 	}
 }
+//Calculate index from a vector
+int VectorIndex(vector<int>which_vector, int which_element) {
+
+	for (int k = 0; k < which_vector.size(); k++) {
+
+		if (which_vector[k] == which_element) {
+
+			return k;
+		}
+	}
+	return -1;
+}

@@ -8,12 +8,13 @@
 ******************************************************************************/
 
 #include "..\init.h"
+#include "object_frame.h"
 
 #ifndef _OPERATION_IMPORT_H_
 #define _OPERATION_IMPORT_H_
 
-//Split string like python does
-vector<string> Split(const string& str, const string& delim);
+//Read img name to a BGR Mat object
+Mat ReadImgBGR(const string& img_name);
 
 //Transfrom image path to VCM Code
 int ImagePath2VCMCode(const string& image_name);

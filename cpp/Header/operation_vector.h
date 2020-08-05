@@ -56,4 +56,6 @@ void VectorPrint(vector<float>& which_vector);
 void VectorPrint(vector<double>& which_vector);
 void VectorPrint(vector<string>& which_vector);
 
+//Calculate index from a vector
+int VectorIndex(vector<int>which_vector, int which_element);
 #endif

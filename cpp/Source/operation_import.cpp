@@ -8,77 +8,50 @@
 ******************************************************************************/
 
 #include "..\Header\object_frame.h"
+
 #include "..\Header\operation_import.h"
+#include "..\Header\operation_string.h"
 #include "..\Header\operation_vector.h"
+
 #include "..\Header\calculation_contrast.h"
 
 //------------------------------------------------------------------------------
 /*
-Split string like python does
+Read img name to a BGR Mat object
 
 Args:
-	str: original string
-	delim: separator string
+	img_name: name of image
 
 Returns:
-	separated string vector
+	BGR Mat object
 */
-vector<string> Split(const string& str, const string& delim) {
+Mat ReadImgBGR(const string& img_name) {
 
-	vector<string> res;
+	Mat img_bgr = imread(img_name, 1);
 
-	if ("" == str) {
-		return res;
+	if (!img_bgr.data) {
+
+		cout << "Could not open or find the image" << endl;
 	}
-
-	//the string to be cut is converted from string to char*
-	char* strs = new char[str.length() + 1]; 
-	strcpy(strs, str.c_str());
-
-	char* d = new char[delim.length() + 1];
-	strcpy(d, delim.c_str());
-
-	char* p = strtok(strs, d);
-	while (p) {
-
-		//the split string is converted to string
-		string s = p; 
-
-		//put into the result array
-		res.push_back(s); 
-		p = strtok(NULL, d);
-	}
-
-	return res;
+	return img_bgr;
 }
 //Transfrom image path to VCM Code
 int ImagePath2VCMCode(const string& image_name) {
 
 	//split str into a vector
-	vector<string> vector_str = Split(image_name, "\\");
+	vector<string> vector_str = StringSplit(image_name, "\\");
 	string str_image = vector_str[vector_str.size() - 1];
 
 	//str with .jpg or .png
-	vector<string> vector_str_image = Split(str_image, "_");
+	vector<string> vector_str_image = StringSplit(str_image, "_");
 	string str_code_image = vector_str_image[vector_str_image.size() - 1];
 
 	//true code str
-	vector<string> vector_str_code = Split(str_code_image, ".");
+	vector<string> vector_str_code = StringSplit(str_code_image, ".");
 	string str_code = vector_str_code[0];
 
 	//transfrom str to int
 	return atoi(str_code.c_str());
-}
-int VectorIndex(vector<int>which_vector, int which_element) {
-
-	for (int k = 0; k < which_vector.size(); k++) {
-		
-		if (which_vector[k] == which_element) {
-
-			return k;
-		}
-	}
-	return -1;
 }
 //------------------------------------------------------------------------------
 /*

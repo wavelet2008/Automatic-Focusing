@@ -19,52 +19,35 @@
 
 #include "Header\calculation_contrast.h"
 #include "Header\calculation_histogram.h"
+#include "Header\calculation_peak_search.h"
 #include "Header\calculation_articulation.h"
 #include "Header\calculation_texture_feature.h"
 
 int main()
 {
 	cout << "Built with OpenCV " << CV_VERSION << endl;
-	Mat img_bgr = imread("campus.jpg", 1);
 
-	if (!img_bgr.data) {
+	//string img_name = "campus.jpg";
+	//Mat img_bgr = ReadImgBGR(img_name);
 
-		cout << "Could not open or find the image" << endl;
-		return -1;
-	}
-
-	//size of img
-	int height = img_bgr.rows;
-	int width = img_bgr.cols;
-
-	//cout << height << endl;
-	//cout << width << endl;
-
-	//construct img gray//
-	Mat img_gray(height, width, CV_8UC1);
-	cvtColor(img_bgr, img_gray, CV_BGR2GRAY);
-
-	frame this_frame;
-
-	this_frame.img_gray = img_gray;
-	this_frame.img_bgr = img_bgr;
-
-	//double contrast = ContrastCenter(this_frame, "Boccignone");
-	//double articulation = Articulation(img_gray, "Laplacian");
-	//double contrast_texture=TextureFeatures(img_gray, "Contrast");
-	
 	string imgs_path = "C:\\Users\\ASUS\\Desktop\\Experiment\\Random\\Polight";
-
-	//vector<string> vector_imgs_path = VectorFilesPath(imgs_path);
-
-	//VectorPrint(vector_imgs_path);
 
 	vector<frame> vector_frame = VectorFrame(imgs_path);
 	
+	//vector of contrast
+	vector<double> vector_contrast;
+
 	for (int k = 0; k < vector_frame.size(); k++) {
 
-		cout << vector_frame[k].VCM_Code << endl;
+		vector_contrast.push_back(vector_frame[k].contrast);
+		
+		if (FullSweepCoarse(vector_contrast) != -1) {
+
+			break;
+		}
 	}
+	cout << "" << endl;
+	cout << "-- Fcoused VCM Code: " << vector_frame[FullSweepCoarse(vector_contrast)].VCM_Code << endl;
 
 	//delete corresponds to new and delete[] corresponds to new[]
 	//delete and delete[] play the same role in built-in data structure (pointer variable)
