@@ -219,8 +219,8 @@ double ContrastROI(vector<int>& vector_ROI, const string& contrast_operator) {
 
 		contrast = L_max - L_min;
 	}
-	cout << "-> operator: " << contrast_operator << endl;
-	cout << "-> value: " << contrast << endl;
+	//cout << "--> operator: " << contrast_operator << endl;
+	//cout << "--> value: " << contrast << endl;
 
 	return contrast;
 }

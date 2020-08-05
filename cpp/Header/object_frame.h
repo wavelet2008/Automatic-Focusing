@@ -16,7 +16,7 @@
 class frame {
 
 public:
-	int VCM_Code;
+	int VCM_code;
 	double offset;
 	double contrast;
 	Mat img_bgr;

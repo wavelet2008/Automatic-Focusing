@@ -58,4 +58,5 @@ void VectorPrint(vector<string>& which_vector);
 
 //Calculate index from a vector
 int VectorIndex(vector<int>which_vector, int which_element);
+
 #endif

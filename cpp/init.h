@@ -1,4 +1,4 @@
-// -*- coding: utf-8 -*-
+﻿// -*- coding: utf-8 -*-
 /******************************************************************************
 @author: Wei Huajing
 @company: KAMERAWERK
@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 #include <cassert>
+#include <fstream>
 #include <iostream>
 #include <iterator>
 #include <functional>

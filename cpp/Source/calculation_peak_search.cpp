@@ -79,7 +79,7 @@ int FullSweepCoarse(vector<double>& vector_contrast) {
         }
     }
     //expire the exception regard the maximum as peak
-    if (index_a == index_maximum and index_b == index_maximum) {
+    if (index_a == index_maximum && index_b == index_maximum) {
         
         return index_maximum;
     }

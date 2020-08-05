@@ -127,7 +127,7 @@ vector<frame> VectorFrame(string& folder_path) {
 
 	//vector if frame and VCM Code
 	vector<frame> vector_frame;
-	vector<int> vector_VCM_Code;
+	vector<int> vector_VCM_code;
 
 	//generate matrix
 	for (int k = 0; k < vector_files_path.size(); k++) {
@@ -155,23 +155,23 @@ vector<frame> VectorFrame(string& folder_path) {
 
 			this_frame.img_gray = that_img_gray;
 			this_frame.img_bgr = that_img_bgr;
-			this_frame.VCM_Code = ImagePath2VCMCode(vector_files_path[k]);
+			this_frame.VCM_code = ImagePath2VCMCode(vector_files_path[k]);
 			this_frame.contrast= ContrastCenter(this_frame, "Boccignone");
 
 			vector_frame.push_back(this_frame);
-			vector_VCM_Code.push_back(this_frame.VCM_Code);
+			vector_VCM_code.push_back(this_frame.VCM_code);
 		}
 	}
-	//copy the VCM Code vector
-	vector<int> original_vector_VCM_Code= vector_VCM_Code;
+	//copy the VCM code vector
+	vector<int> original_vector_VCM_code= vector_VCM_code;
 	vector<int> vector_index_sorted;
 
 	//sort the VCM Code
-	sort(vector_VCM_Code.begin(), vector_VCM_Code.end());
+	sort(vector_VCM_code.begin(), vector_VCM_code.end());
 
-	for (int i = 0; i < vector_VCM_Code.size(); i++) {
+	for (int i = 0; i < vector_VCM_code.size(); i++) {
 
-		vector_index_sorted.push_back(VectorIndex(original_vector_VCM_Code, vector_VCM_Code[i]));
+		vector_index_sorted.push_back(VectorIndex(original_vector_VCM_code, vector_VCM_code[i]));
 	}
 	return VectorFromIndex(vector_frame, vector_index_sorted);
 }
