@@ -77,11 +77,11 @@ int FullSweepCoarse(vector<double>& vector_contrast) {
         if (amount_descending >= amount_revert) {
             index_b = k - amount_descending + 1;
         }
-    }
-    //expire the exception regard the maximum as peak
-    if (index_a == index_maximum && index_b == index_maximum) {
+        //expire the exception regard the maximum as peak
+        if (index_a == index_maximum && index_b == index_maximum) {
         
-        return index_maximum;
+            return index_maximum;
+        }
     }
     return -1;
 }
