@@ -117,7 +117,7 @@ def OptimizedFitting(list_x,list_y,n_step=100):
         return c+b/(x)
      
     x_min,x_max=np.min(list_x),np.max(list_x)
-    
+
     #polyfit process
     x_new=np.linspace(x_min,x_max,n_step)
     

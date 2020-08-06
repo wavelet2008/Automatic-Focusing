@@ -71,7 +71,7 @@ def Curve(list_x,
     '''p-chip interpolation'''
     if method_smoothing=='p-chip interpolation':
     
-        smoothed_x_y=C_N_A.PChipInterpolation(list_x,list_y)
+        smoothed_x_y=C_N_A.PChipInterpolation(list_x,list_y,1000)
         
         X=[this_x_y[0] for this_x_y in smoothed_x_y]
         Y=[this_x_y[1] for this_x_y in smoothed_x_y] 
@@ -79,7 +79,7 @@ def Curve(list_x,
     '''polynomial fitting'''
     if method_smoothing=='polynomial fitting':
         
-        polyfitted_x_y=C_N_A.PolynomialFitting(list_x,list_y,3,100)
+        polyfitted_x_y=C_N_A.PolynomialFitting(list_x,list_y,3,1000)
         
         X=[this_x_y[0] for this_x_y in polyfitted_x_y]
         Y=[this_x_y[1] for this_x_y in polyfitted_x_y] 
@@ -87,7 +87,7 @@ def Curve(list_x,
     '''optimized fitting'''
     if method_smoothing=='optimized fitting':
         
-        optimizedfitted_x_y=C_N_A.OptimizedFitting(list_x,list_y,100)
+        optimizedfitted_x_y=C_N_A.OptimizedFitting(list_x,list_y,1000)
         
         X=[this_x_y[0] for this_x_y in optimizedfitted_x_y]
         Y=[this_x_y[1] for this_x_y in optimizedfitted_x_y]
@@ -141,7 +141,6 @@ def Curve(list_x,
     #show the grid
     plt.grid()
     plt.show()
-    
     
 def CurveBatch(list_x_batch,
                list_y_batch,
