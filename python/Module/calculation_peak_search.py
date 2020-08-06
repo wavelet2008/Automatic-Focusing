@@ -144,16 +144,14 @@ def FullSweepCoarse(list_contrast):
 
         #     list_contrast=list_contrast[:index_a]+PostProcessing(list_contrast[index_a:])
         
-    if index_a!=None and index_b!=None:
-
-        #expire the exception
-        if index_a==index_maximum and index_b==index_maximum:
-            
-            return index_a-1,index_b+1
+        if index_a!=None and index_b!=None:
     
-    else:
-        
-        return
+            #expire the exception
+            if index_a==index_maximum and index_b==index_maximum:
+                
+                return index_a-1,index_b+1
+    
+    return
  
 #------------------------------------------------------------------------------
 """
@@ -337,7 +335,7 @@ def FullSweep(imgs_folder,operator,ROI_mode):
         result_full_sweep=FullSweepCoarse(list_contrast_coarse)
         
         print('--> VCM Code:',this_frame.VCM_code)
-        print('---> Contrast:',list_contrast_coarse[-1])
+        # print('---> Contrast:',list_contrast_coarse[-1])
         
         if result_full_sweep is not None:
             

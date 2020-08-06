@@ -69,9 +69,9 @@ from matplotlib.font_manager import FontProperties
 # contain coarse and fine
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
-# total_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Large'
+total_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Large'
 # total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Coarse'
-total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Fine'
+# total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Fine'
 
 for this_imgs_folder_name in os.listdir(total_folder):
     
