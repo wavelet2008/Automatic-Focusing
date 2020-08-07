@@ -73,14 +73,14 @@ list_image_distance_200mm=np.array(list_object_depth)*np.array(list_dot_distance
 list_focused_DAC_code=[678,480,444,426,406,400,394,388,384,378]
 
 #plot curve of Focus VCM Code-Object Depth Curve
-O_C.Curve(list_object_depth,
-          list_focused_DAC_code,
+O_C.Curve(list_object_depth[2:],
+          list_focused_DAC_code[2:],
           'maroon',
           'Focused DAC Code',
           'Object Depth (mm)',
           'Focused DAC Code (--)',
           'Focused DAC Code-Object Depth Curve (poLight)')
 
-map_object_distance_DAC_code=C_N_A.OptimizedFitting(list_object_depth,
-                                                    list_focused_DAC_code,
-                                                    1000)
+map_object_distance_DAC_code=C_N_A.OptimizedFitting(list_object_depth[2:],
+                                                    list_focused_DAC_code[2:],
+                                                    701)

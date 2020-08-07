@@ -17,6 +17,7 @@
 #include "Header\operation_import.h"
 #include "Header\operation_vector.h"
 
+#include "Header\calculation_QR_code.h"
 #include "Header\calculation_contrast.h"
 #include "Header\calculation_histogram.h"
 #include "Header\calculation_peak_search.h"
@@ -24,12 +25,12 @@
 #include "Header\calculation_texture_feature.h"
 #include "Header\calculation_numerical_analysis.h"
 
-int main()
-{
+int main(){
+
 	cout << "Built with OpenCV " << CV_VERSION << endl;
 
-	//string img_name = "campus.jpg";
-	//Mat img_bgr = ReadImgBGR(img_name);
+	Mat img_QR_code = ReadImgBGR("AF_QR_Code_Scanner.jpg");
+	ReadQRCode(img_QR_code);
 
 	string imgs_path = "C:\\Users\\ASUS\\Desktop\\Experiment\\Random\\Polight";
 

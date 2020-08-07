@@ -1,8 +1,9 @@
 #image
-*.pyc
 *.png
+*.jpg
 
 #python
+*.pyc
 __pycache__/
 
 #cpp
