@@ -60,18 +60,16 @@ from matplotlib.font_manager import FontProperties
 
 # E_P.ExperimentOverall(list_imgs_folder)
 
-# imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Small\100mm'
-# imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Random\Polight'
-# imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight\1000mm'
+# imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Coarse\60mm'
+# imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine\60mm'
 
 # C_P_S.FullSweep(imgs_folder,'Boccignone','Center')
 
 # contain coarse and fine
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
-# total_folder=r'C:\Users\ASUS\Desktop\Experiment\Focus Calibration Lite-Large'
-# total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Coarse'
-total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Fine'
+# total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Coarse'
+total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine'
 
 for this_imgs_folder_name in os.listdir(total_folder):
     

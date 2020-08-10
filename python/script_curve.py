@@ -11,16 +11,7 @@ Created on Thu Dec 19 10:50:07 2019
 
 from __init__ import *
 
-import copy as cp
 import numpy as np
-import matplotlib.pyplot as plt
-
-from configuration_color import list_contrast_color
-
-import calculation_numerical_analysis as C_N_A
-
-from matplotlib.pyplot import MultipleLocator
-from configuration_font import legend_prop,label_font,title_font,sample_font
 
 '''using that style and plot them'''
 list_object_depth=[(k+1)*100 for k in range(10)]
@@ -70,17 +61,28 @@ list_image_distance_200mm=np.array(list_object_depth)*np.array(list_dot_distance
 
 '''poLight'''
 # list_focused_DAC_code=[656,512,464,448,416,416,400,400,400,400]
-list_focused_DAC_code=[678,480,444,426,406,400,394,388,384,378]
+# list_focused_DAC_code=[678,480,444,426,406,400,394,388,384,378]
+
+list_focused_DAC_code_300_1000=[464,436,416,400,394,388,384,378]
+list_focused_DAC_code_60_300=[986,836,718,644,604,564,542,526,510,490,484,474,466]
+
+list_object_distance_300_1000=list(np.linspace(300,1000,8))
+list_object_distance_60_300=list(np.linspace(60,300,13))
 
 #plot curve of Focus VCM Code-Object Depth Curve
-O_C.Curve(list_object_depth[2:],
-          list_focused_DAC_code[2:],
+O_C.Curve(list_object_distance_300_1000,
+          list_focused_DAC_code_300_1000,
           'maroon',
           'Focused DAC Code',
           'Object Depth (mm)',
           'Focused DAC Code (--)',
           'Focused DAC Code-Object Depth Curve (poLight)')
 
-map_object_distance_DAC_code=C_N_A.OptimizedFitting(list_object_depth[2:],
-                                                    list_focused_DAC_code[2:],
-                                                    701)
+list_tuple_object_distance_DAC_code=C_N_A.OptimizedFitting(list_object_distance_60_300,
+                                                           list_focused_DAC_code_60_300,
+                                                           241)
+
+file_name = 'g_code_60_300.txt'
+
+#export the map into txt file
+O_E.WriteTupleList2File(list_tuple_object_distance_DAC_code,file_name)

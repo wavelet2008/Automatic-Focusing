@@ -21,6 +21,7 @@ from o_circle import circle
 import operation_path as O_P
 import operation_curve as O_C
 import operation_import as O_I
+import operation_export as O_E
 
 import calculation_contrast as C_C
 import calculation_histogram as C_H
