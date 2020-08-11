@@ -152,8 +152,13 @@ def CurveBatch(list_x_batch,
                method_smoothing='optimized fitting'):
     
     #list x batch defined as a serial
-    global_list_x=np.array(list_x_batch).ravel()
-    global_list_y=np.array(list_y_batch).ravel()
+    global_list_x=[]
+    global_list_y=[]
+    
+    for k in range(len(list_x_batch)):
+        
+        global_list_x+=list(list_x_batch[k])
+        global_list_y+=list(list_y_batch[k])
     
     #limit of x and y
     x_min,x_max=np.min(global_list_x),np.max(global_list_x)
@@ -191,7 +196,7 @@ def CurveBatch(list_x_batch,
         '''p-chip interpolation'''
         if method_smoothing=='p-chip interpolation':
         
-            smoothed_x_y=C_N_A.PChipInterpolation(this_list_x,this_list_y)
+            smoothed_x_y=C_N_A.PChipInterpolation(this_list_x,this_list_y,1000)
             
             X=[this_x_y[0] for this_x_y in smoothed_x_y]
             Y=[this_x_y[1] for this_x_y in smoothed_x_y] 
@@ -199,7 +204,7 @@ def CurveBatch(list_x_batch,
         '''polynomial fitting'''
         if method_smoothing=='polynomial fitting':
             
-            polyfitted_x_y=C_N_A.PolynomialFitting(this_list_x,this_list_y,3,100)
+            polyfitted_x_y=C_N_A.PolynomialFitting(this_list_x,this_list_y,3,1000)
             
             X=[this_x_y[0] for this_x_y in polyfitted_x_y]
             Y=[this_x_y[1] for this_x_y in polyfitted_x_y] 
@@ -207,7 +212,7 @@ def CurveBatch(list_x_batch,
         '''optimized fitting'''
         if method_smoothing=='optimized fitting':
             
-            optimizedfitted_x_y=C_N_A.OptimizedFitting(this_list_x,this_list_y,100)
+            optimizedfitted_x_y=C_N_A.OptimizedFitting(this_list_x,this_list_y,1000)
             
             X=[this_x_y[0] for this_x_y in optimizedfitted_x_y]
             Y=[this_x_y[1] for this_x_y in optimizedfitted_x_y]
@@ -217,7 +222,7 @@ def CurveBatch(list_x_batch,
         for kk in range(len(this_list_x)):
             
             plt.scatter(this_list_x[kk],this_list_y[kk],color=this_color_curve)
-    
+            
     ax=plt.gca()
     
     ax.xaxis.set_major_locator(MultipleLocator(x_major_step))

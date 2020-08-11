@@ -69,20 +69,30 @@ list_focused_DAC_code_60_300=[986,836,718,644,604,564,542,526,510,490,484,474,46
 list_object_distance_300_1000=list(np.linspace(300,1000,8))
 list_object_distance_60_300=list(np.linspace(60,300,13))
 
-#plot curve of Focus VCM Code-Object Depth Curve
-O_C.Curve(list_object_distance_300_1000,
-          list_focused_DAC_code_300_1000,
-          'maroon',
-          'Focused DAC Code',
-          'Object Depth (mm)',
-          'Focused DAC Code (--)',
-          'Focused DAC Code-Object Depth Curve (poLight)')
+# #plot curve of Focus VCM Code-Object Depth Curve
+# O_C.Curve(list_object_distance_300_1000,
+#           list_focused_DAC_code_300_1000,
+#           'maroon',
+#           'Focused DAC Code',
+#           'Object Depth (mm)',
+#           'Focused DAC Code (--)',
+#           'Focused DAC Code-Object Depth Curve (poLight)')
 
-list_tuple_object_distance_DAC_code=C_N_A.OptimizedFitting(list_object_distance_60_300,
-                                                           list_focused_DAC_code_60_300,
-                                                           241)
+#curve fitting and export the map into txt file
+O_E.WriteTupleList2File(C_N_A.OptimizedFitting(list_object_distance_60_300,
+                                               list_focused_DAC_code_60_300,
+                                               241),
+                        'g_code_60_300.txt')
 
-file_name = 'g_code_60_300.txt'
+O_E.WriteTupleList2File(C_N_A.OptimizedFitting(list_object_distance_300_1000,
+                                               list_focused_DAC_code_300_1000,
+                                               701),
+                        'g_code_300_1000.txt')
 
-#export the map into txt file
-O_E.WriteTupleList2File(list_tuple_object_distance_DAC_code,file_name)
+O_C.CurveBatch([list_object_distance_60_300,list_object_distance_300_1000],
+               [list_focused_DAC_code_60_300,list_focused_DAC_code_300_1000],
+               ['maroon','olive'],
+               ['60-300mm','300-1000mm'],
+               'Object Depth (mm)',
+               'Focused DAC Code (mm)',
+               'Focused DAC Code-Object Depth Curve (poLight)')
