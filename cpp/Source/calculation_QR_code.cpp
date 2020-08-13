@@ -10,9 +10,9 @@
 #include "..\Header\calculation_QR_code.h"
 
 //Read img name to scan the QR code inside
-int ReadQRCode(Mat img_QR_code) {
+int ReadQRCode(Mat inputImage) {
 
-	if (!img_QR_code.data) {
+	if (!inputImage.data) {
 
 		cout << "Could not open or find the image" << endl;
 		return -1;
@@ -22,7 +22,7 @@ int ReadQRCode(Mat img_QR_code) {
 	vector<Point> points;
 
 	// detect and recognize QR code
-	string data = qrDecoder.detectAndDecode(img_QR_code, points);
+	string data = qrDecoder.detectAndDecode(inputImage, points);
 
 	if (data.length() > 0){
 
@@ -30,14 +30,21 @@ int ReadQRCode(Mat img_QR_code) {
 		cout << "Decoded Data: \n\n" << data << endl;
 
 		// draw bouding box around QR code 
-		rectangle(img_QR_code, points[0], points[2], Scalar(0, 255, 0), 2);
-		imshow("Detected QR Code", img_QR_code);
-
-		waitKey(0);
+		//rectangle(inputImage, points[0], points[2], Scalar(0, 255, 0), 2);
+		line(inputImage, points[0], points[1], Scalar(0, 255, 0), 2);
+		line(inputImage, points[1], points[2], Scalar(0, 255, 0), 2);
+		line(inputImage, points[2], points[3], Scalar(0, 255, 0), 2);
+		line(inputImage, points[3], points[0], Scalar(0, 255, 0), 2);
 	}
 	else{
 
 		cout << "WARNING: QR Code not detected" << endl;
 	}
+	namedWindow("Detected QR Code", 0);
+	resizeWindow("Detected QR Code", 640, 480);
+	imshow("Detected QR Code", inputImage);
+
+	waitKey(0);
+
 	return 0;
 }
