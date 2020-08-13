@@ -32,7 +32,7 @@ int main(){
 	Mat img_QR_code = ReadImgBGR("AF_QR_Code_Scanner.jpg");
 	ReadQRCode(img_QR_code);
 
-	string imgs_path = "C:\\Users\\ASUS\\Desktop\\Experiment\\Random\\Polight";
+	string imgs_path = "C:\\Users\\ASUS\\Desktop\\Experiment\\poLight-Medium-Fine\\60mm";
 
 	vector<frame> vector_frame = VectorFrame(imgs_path);
 	
