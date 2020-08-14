@@ -12,6 +12,7 @@ Created on Thu Dec 19 10:50:07 2019
 from __init__ import *
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 '''using that style and plot them'''
 list_object_depth=[(k+1)*100 for k in range(10)]
@@ -96,3 +97,14 @@ O_C.CurveBatch([list_object_distance_60_300,list_object_distance_300_1000],
                'Object Depth (mm)',
                'Focused DAC Code (mm)',
                'Focused DAC Code-Object Depth Curve (poLight)')
+
+plt.figure(figsize=(8,6))
+code=np.linspace(300,700,5)
+voltage=[8.2,13.5,19,24.4,29]
+
+plt.plot(code,voltage,'k-')
+plt.scatter(383,12.7,color='r')
+
+plt.xlabel('DAC Code')
+plt.ylabel('Voltage')
+
