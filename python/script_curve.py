@@ -29,15 +29,16 @@ list_image_distance_200mm=np.array(list_object_depth)*np.array(list_dot_distance
 
 # plt.plot(list_image_depth)
 
-# #plot curve of Focus VCM Code-Object Depth Curve
-# O_C.Curve(list_object_depth,
-#           list_focused_VCM_code,
-#           'maroon',
-#           'Focused VCM Code',
-#           'Object Depth (mm)',
-#           'Focused VCM Code (--)',
-#           'Focused VCM Code-Object Depth Curve')
+ #plot curve of Focus VCM Code-Object Depth Curve
+O_C.Curve(list_object_depth,
+          list_focused_VCM_code,
+          'maroon',
+          'Focused VCM Code',
+          'Object Depth (mm)',
+          'Focused VCM Code (--)',
+          'Focused VCM Code-Object Depth Curve')
 
+plt.savefig('a.png',dpi=300,bbox='tight')
 # #plot curve of Dot Distance-Object Depth Curve
 # O_C.Curve(list_object_depth,
 #           list_image_distance_focused,

@@ -28,10 +28,10 @@ from matplotlib.pyplot import MultipleLocator
 from matplotlib.font_manager import FontProperties
 
 # '''VCM'''
-# imgs_folder=r'C:\Users\ASUS\Desktop\500mm'
-# output_folder=r'C:\Users\ASUS\Desktop\AF\500mm'
+imgs_folder=r'C:\Users\魏华敬\Desktop\Coarse'
+output_folder=r'C:\Users\魏华敬\Desktop\out'
 
-#E_P.Experiment5AreaFactor(imgs_folder,output_folder)
+E_P.Experiment5AreaFactor(imgs_folder,output_folder)
 # E_P.Experiment5AreaWeight(imgs_folder,output_folder)
 # E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder)
 
@@ -42,7 +42,7 @@ from matplotlib.font_manager import FontProperties
 # '''tmp-Luminance, Near-others'''
 # experiment_folder=r'C:\Users\ASUS\Desktop\500mm'
  
-# #E_P.ExperimentContrastComparison(experiment_folder,'Constant')
+#E_P.ExperimentContrastComparison(experiment_folder,'Constant')
 #E_P.ExperimentContrastComparison(experiment_folder,'Advanced')
 # #E_P.ExperimentContrastComparison(experiment_folder,'Standard Deviation')
     
@@ -69,13 +69,13 @@ from matplotlib.font_manager import FontProperties
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
 # total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Coarse'
-total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine'
-
-for this_imgs_folder_name in os.listdir(total_folder):
-    
-    this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
-    
-    C_P_S.FullSweep(this_imgs_folder,'Boccignone','Center')
+#total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine'
+#
+#for this_imgs_folder_name in os.listdir(total_folder):
+#    
+#    this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
+#    
+#    C_P_S.FullSweep(this_imgs_folder,'Boccignone','Center')
 
     #contain coarse and fine
     # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
