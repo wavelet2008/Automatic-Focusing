@@ -27,13 +27,13 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import MultipleLocator
 from matplotlib.font_manager import FontProperties
 
-# '''VCM'''
-imgs_folder=r'C:\Users\魏华敬\Desktop\Coarse'
-output_folder=r'C:\Users\魏华敬\Desktop\out'
+'''VCM'''
+imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Random\Office\Coarse'
+output_folder=r'C:\Users\ASUS\Desktop\out'
 
 E_P.Experiment5AreaFactor(imgs_folder,output_folder)
-# E_P.Experiment5AreaWeight(imgs_folder,output_folder)
-# E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder)
+E_P.Experiment5AreaWeight(imgs_folder,output_folder)
+E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder)
 
 # #img_gray=O_I.BatchImages(imgs_folder)[1][10]
 # #plt.imshow(img_gray,cmap='gray')
@@ -69,13 +69,13 @@ E_P.Experiment5AreaFactor(imgs_folder,output_folder)
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
 # total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Coarse'
-#total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine'
-#
-#for this_imgs_folder_name in os.listdir(total_folder):
-#    
-#    this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
-#    
-#    C_P_S.FullSweep(this_imgs_folder,'Boccignone','Center')
+# total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine'
+
+# for this_imgs_folder_name in os.listdir(total_folder):
+    
+#     this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
+    
+#     C_P_S.FullSweep(this_imgs_folder,'Boccignone','Center')
 
     #contain coarse and fine
     # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')

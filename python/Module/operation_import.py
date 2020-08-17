@@ -12,15 +12,17 @@ Created on Fri Dec 20 11:08:33 2019
 import os
 import cv2
 
+import numpy as np
 import operation_dictionary as O_D
 
 from o_frame import frame
 
 #pre_fix: same part of imgs name
 # pre_fix='12M_0500mm_VCM_bottom'
+pre_fix='12M_0500mm_VCM_top'
 # pre_fix='top_VCM_'
-#pre_fix='poLight_test_'
-pre_fix='M_Cali_Near'
+# pre_fix='poLight_test_'
+# pre_fix='M_Cali_Near'
 
 #------------------------------------------------------------------------------
 """
@@ -43,25 +45,27 @@ def BatchImages(imgs_folder):
     #traverse all image
     for this_img_name in os.listdir(imgs_folder):
 
-        this_img_path=imgs_folder+'\\'+this_img_name
-        
-        #read image
-        this_img_rgb=cv2.imread(this_img_path)
-        
-        #convert rgb img to gray img
-        this_img_gray=cv2.cvtColor(this_img_rgb,cv2.COLOR_BGR2GRAY)
-        
-        #collect it
-        list_imgs_bgr.append(this_img_rgb)
-        list_imgs_gray.append(this_img_gray)
-        
-        if '.jpg' in this_img_name:
+        if '.jpg' in this_img_name or '.png' in this_img_name:
             
-            list_VCM_code.append(int(this_img_name.strip('.jpg').split(pre_fix)[-1]))
-        
-        if '.png' in this_img_name:
+            this_img_path=imgs_folder+'\\'+this_img_name
             
-            list_VCM_code.append(int(this_img_name.strip('.png').split(pre_fix)[-1]))
+            #read image
+            this_img_rgb=cv2.imread(this_img_path)
+            
+            #convert rgb img to gray img
+            this_img_gray=cv2.cvtColor(this_img_rgb,cv2.COLOR_BGR2GRAY)
+            
+            #collect it
+            list_imgs_bgr.append(this_img_rgb)
+            list_imgs_gray.append(this_img_gray)
+            
+            if '.jpg' in this_img_name:
+                
+                list_VCM_code.append(int(this_img_name.strip('.jpg').split(pre_fix)[-1]))
+            
+            if '.png' in this_img_name:
+                
+                list_VCM_code.append(int(this_img_name.strip('.png').split(pre_fix)[-1]))
             
     #construct map between VCM code and imgs_gray/imgs_bgr
     map_VCM_code_imgs_bgr=dict(zip(list_VCM_code,list_imgs_bgr))
