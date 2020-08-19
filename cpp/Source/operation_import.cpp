@@ -175,3 +175,27 @@ vector<frame> VectorFrame(string& folder_path) {
 	}
 	return VectorFromIndex(vector_frame, vector_index_sorted);
 }
+//Read txt file line by line
+vector<string> readTxt(string file)
+{
+	vector<string> vector_string_lines;
+
+	ifstream infile;
+
+	//connect a file flow object to a file
+	infile.open(file.data());
+
+	//if it fails, an error message is printed and the program is terminated
+	assert(infile.is_open());
+
+	string string_this_line;
+	while (getline(infile, string_this_line)) {
+
+		//cout << string_this_line << endl;
+		vector_string_lines.push_back(string_this_line);
+	}
+	//close the file input stream
+	infile.close();
+
+	return vector_string_lines;
+}

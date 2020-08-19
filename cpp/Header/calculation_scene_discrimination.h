@@ -12,4 +12,6 @@
 #ifndef _CALCULATION_SCENE_DISCRIMINATION_
 #define _CALCULATION_SCENE_DISCRIMINATION_
 
+vector<double> ForeAndBackLuminance(vector<int> vector_ROI);
+
 #endif

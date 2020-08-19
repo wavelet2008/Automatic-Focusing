@@ -25,4 +25,7 @@ vector<string> VectorFilesPath(string& folder_path);
 //Get gray image matrix and construct a vector
 vector<frame> VectorFrame(string& folder_path);
 
+//Read txt file line by line
+vector<string> readTxt(string file);
+
 #endif
