@@ -96,7 +96,7 @@ O_C.CurveBatch([list_object_distance_60_300,list_object_distance_300_1000],
                ['maroon','olive'],
                ['60-300mm','300-1000mm'],
                'Object Depth (mm)',
-               'Focused DAC Code (mm)',
+               'Focused DAC Code (--)',
                'Focused DAC Code-Object Depth Curve (poLight)')
 
 plt.figure(figsize=(8,6))

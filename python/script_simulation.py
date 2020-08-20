@@ -17,16 +17,6 @@ demand:
 
 from __init__ import *
 
-import os
-import cv2
-
-import copy as cp
-import numpy as np
-import matplotlib.pyplot as plt
-
-from matplotlib.pyplot import MultipleLocator
-from matplotlib.font_manager import FontProperties
-
 '''VCM'''
 imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Random\Office\Coarse'
 output_folder=r'C:\Users\ASUS\Desktop\out'
