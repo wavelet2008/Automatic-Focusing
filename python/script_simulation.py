@@ -17,13 +17,13 @@ demand:
 
 from __init__ import *
 
-'''VCM'''
-imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Random\Office\Coarse'
-output_folder=r'C:\Users\ASUS\Desktop\out'
+# '''VCM'''
+# imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Random\Office\Coarse'
+# output_folder=r'C:\Users\ASUS\Desktop\out'
 
-E_P.Experiment5AreaFactor(imgs_folder,output_folder)
-E_P.Experiment5AreaWeight(imgs_folder,output_folder)
-E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder)
+# E_P.Experiment5AreaFactor(imgs_folder,output_folder)
+# E_P.Experiment5AreaWeight(imgs_folder,output_folder)
+# E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder)
 
 # #img_gray=O_I.BatchImages(imgs_folder)[1][10]
 # #plt.imshow(img_gray,cmap='gray')
@@ -70,3 +70,10 @@ E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder)
     #contain coarse and fine
     # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
 
+import matplotlib.pyplot as plt 
+
+img_path=r'F:\GitHub\KAMERAWERK\poLight_cam\ConsoleDemo\src\ABLE\poLight_test_405.jpg'
+
+img_code=plt.imread(img_path)
+
+plt.imshow(img_code)
