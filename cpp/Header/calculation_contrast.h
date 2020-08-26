@@ -21,6 +21,7 @@ double ContrastROI(vector<int>& vector_ROI, const string& contrast_operator);
 
 //Calculate 5-Area contrast of image
 double Contrast5Area(Mat& img_gray, const string& contrast_operator);
+double Contrast5Area(frame& which_frame, const string& contrast_operator);
 
 //Calculate center contrast of image
 double ContrastCenter(Mat& img_gray, const string& contrast_operator);

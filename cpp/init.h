@@ -14,14 +14,16 @@
 #include <tchar.h>
 #include <stdlib.h>
 
+#include <cctype>
 #include <string>
 #include <vector>
 #include <cassert>
 #include <fstream>
+#include <cstring>
 #include <iostream>
 #include <iterator>
-#include <functional>
 #include <algorithm>
+#include <functional>
 
 #include <opencv2\opencv.hpp>
 #include <opencv2\imgproc\imgproc.hpp>

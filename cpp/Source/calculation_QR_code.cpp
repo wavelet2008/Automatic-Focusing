@@ -86,15 +86,15 @@ int ReadQRCode(Mat inputImage,const string mode) {
 	//}
 	if (mode == "zxing-cpp-master") {
 
-		Mat grey;
+		Mat img_gray;
 
 		// Convert to grayscale
-		cvtColor(inputImage, grey, CV_BGR2GRAY);
+		cvtColor(inputImage, img_gray, CV_BGR2GRAY);
 
 		try {
 
 			// Create luminance  source
-			Ref<LuminanceSource> source = MatSource::create(grey);
+			Ref<LuminanceSource> source = MatSource::create(img_gray);
 
 			// Search for QR code
 			Ref<Reader> reader;

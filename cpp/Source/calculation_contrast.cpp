@@ -152,7 +152,9 @@ double ContrastROI(vector<int>& vector_ROI, const string& contrast_operator) {
 Calculate 5-Area contrast of image
 
 Args:
-	img_gray: input image(gray scale)
+	overloaded paramters:
+		1 img_gray: input image(gray scale)
+		2 which_frame: input frame object
 	contrast_operator: contrast operator
 
 Returns:
@@ -192,6 +194,11 @@ double Contrast5Area(Mat& img_gray, const string& contrast_operator) {
 	vector<double> vector_5_area_weight = { 0.44,0.14,0.14,0.14,0.14 };
 
 	return VectorMultiplication(vector_5_area_contrast, vector_5_area_weight);
+}
+//overloaded function 2:
+double Contrast5Area(frame& which_frame, const string& contrast_operator) {
+
+	return Contrast5Area(which_frame.img_gray, contrast_operator);
 }
 //------------------------------------------------------------------------------
 /*
