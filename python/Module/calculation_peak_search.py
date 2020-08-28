@@ -657,3 +657,7 @@ def FullSweep(imgs_folder,operator,ROI_mode):
     plt.savefig(fig_path_condition,dpi=300,bbox_inches='tight')
     plt.close()
     
+    
+def RuleBased():
+    
+    
