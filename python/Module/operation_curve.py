@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import calculation_numerical_analysis as C_N_A
 
 from matplotlib.pyplot import MultipleLocator
-from configuration_font import legend_prop,label_font,title_font,sample_font
+from configuration_font import legend_prop,label_prop,title_prop,sample_prop
 
 #------------------------------------------------------------------------------
 """
@@ -111,7 +111,7 @@ def Curve(list_x,
                      xytext=(list_x[k]+0.1*x_major_step,
                              list_y[k]+0.1*y_major_step),
                      color='k',
-                     fontproperties=sample_font)
+                     fontproperties=sample_prop)
         
     ax=plt.gca()
     
@@ -131,10 +131,10 @@ def Curve(list_x,
     #label fonts
     [this_label.set_fontname('Times New Roman') for this_label in labels]
         
-    plt.title(str_title,FontProperties=title_font)
+    plt.title(str_title,FontProperties=title_prop)
     
-    plt.xlabel(str_xlabel,FontProperties=label_font)
-    plt.ylabel(str_ylabel,FontProperties=label_font)
+    plt.xlabel(str_xlabel,FontProperties=label_prop)
+    plt.ylabel(str_ylabel,FontProperties=label_prop)
     
     plt.legend(prop=legend_prop,loc='upper right')  
     
@@ -243,8 +243,8 @@ def CurveBatch(list_x_batch,
         
     plt.title(str_title,FontProperties=title_font)
     
-    plt.xlabel(str_xlabel,FontProperties=label_font)
-    plt.ylabel(str_ylabel,FontProperties=label_font)
+    plt.xlabel(str_xlabel,FontProperties=label_prop)
+    plt.ylabel(str_ylabel,FontProperties=label_prop)
     
     plt.legend(prop=legend_prop,loc='upper right')  
     

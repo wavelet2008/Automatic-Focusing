@@ -23,7 +23,7 @@ import operation_dictionary as O_D
 import calculation_contrast as C_C
 import calculation_numerical_analysis as C_N_A
 
-from configuration_font import legend_prop,text_font,label_font,title_font,sample_font
+from configuration_font import legend_prop,text_prop,label_prop,title_prop,sample_prop
 from configuration_color import map_operator_color,list_operator,list_contrast_operator,list_articulation_operator
 
 #------------------------------------------------------------------------------
@@ -545,9 +545,9 @@ def FullSweep(imgs_folder,operator,ROI_mode):
             ax_input_image.text(x_center_ROI,
                                 y_center_ROI,
                                 '%.2f'%(ROI_weight[kk]),
-                                fontproperties=text_font)
+                                fontdict=text_prop)
         
-    plt.title('Input Image',FontProperties=title_font)
+    plt.title('Input Image',fontdict=title_prop)
     
     plt.xticks([])
     plt.yticks([])
@@ -570,24 +570,24 @@ def FullSweep(imgs_folder,operator,ROI_mode):
     #label fonts
     [this_label.set_fontname('Times New Roman') for this_label in labels]
     
-    plt.xlabel('VCM Code',FontProperties=label_font)   
+    plt.xlabel('VCM Code',fontdict=label_prop)   
     
     if operator in list_contrast_operator:
         
-        plt.title(operator+' Contrast-VCM Code Curve',FontProperties=title_font)
+        plt.title(operator+' Contrast-VCM Code Curve',fontdict=title_prop)
 
-        plt.ylabel('Contrast',FontProperties=label_font)
+        plt.ylabel('Contrast',fontdict=label_prop)
         
     if operator in list_articulation_operator:
         
-        plt.title(operator+' Articulation-VCM Code Curve',FontProperties=title_font)
+        plt.title(operator+' Articulation-VCM Code Curve',fontdict=title_prop)
 
-        plt.ylabel('Articulation',FontProperties=label_font)
+        plt.ylabel('Articulation',fontdict=label_prop)
         
     plt.legend(prop=legend_prop,loc='lower right')
 
     #VMC code for plotting limit 
-    list_VCM_code_total=[this_frame.VCM_code for this_frame in frames_coarse]
+    # list_VCM_code_total=[this_frame.VCM_code for this_frame in frames_coarse]
 
     #limit of x and y
     x_min,x_max=-24,1024
@@ -628,7 +628,7 @@ def FullSweep(imgs_folder,operator,ROI_mode):
                                xy=(peak_VCM_code,peak_normalized_contrast),
                                xytext=(peak_VCM_code+x_major_step/10,peak_normalized_contrast+y_major_step/10),
                                color='k',
-                               fontproperties=sample_font)
+                               fontproperties=sample_prop)
     
     #text of parameter
     if ROI_mode=='5-Area':
@@ -642,7 +642,7 @@ def FullSweep(imgs_folder,operator,ROI_mode):
     ax_contrast_curve.text(0+x_major_step/10,
                            1+y_major_step/10,
                            str_text,
-                           FontProperties=text_font)           
+                           fontdict=text_prop)           
                                         
     #save the fig
     '''operator experiment'''
@@ -660,4 +660,4 @@ def FullSweep(imgs_folder,operator,ROI_mode):
     
 def RuleBased():
     
-    
+    pass

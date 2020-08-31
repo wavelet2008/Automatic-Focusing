@@ -17,49 +17,16 @@ demand:
 
 from __init__ import *
 
-# '''VCM'''
-# imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Random\Office\Coarse'
-# output_folder=r'C:\Users\ASUS\Desktop\out'
-
-# E_P.Experiment5AreaFactor(imgs_folder,output_folder)
-# E_P.Experiment5AreaWeight(imgs_folder,output_folder)
-# E_P.ExperimentBlockModuleRatio(imgs_folder,output_folder)
-
-# #img_gray=O_I.BatchImages(imgs_folder)[1][10]
-# #plt.imshow(img_gray,cmap='gray')
-# #cv2.imshow('gray',img_gray)
-
-# '''tmp-Luminance, Near-others'''
-# experiment_folder=r'C:\Users\ASUS\Desktop\500mm'
- 
-#E_P.ExperimentContrastComparison(experiment_folder,'Constant')
-#E_P.ExperimentContrastComparison(experiment_folder,'Advanced')
-# #E_P.ExperimentContrastComparison(experiment_folder,'Standard Deviation')
-    
-# '''[:2]-tmp, [2:]-Near'''
-# root_folder=r'C:\Users\Administrator\Desktop\Experiment'
-
-# list_imgs_folder_name=[r'Luminance\Low',
-#                        r'Luminance\High',
-#                        r'Texture\Unobvious',
-#                        r'Texture\Obvious',
-#                        r'Distance\Invarious',
-#                        r'Distance\Various']
-
-# list_imgs_folder=[root_folder+'\\'+this_imgs_folder_name for this_imgs_folder_name in list_imgs_folder_name[:2]]
-
-# E_P.ExperimentOverall(list_imgs_folder)
-
 # imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Coarse\60mm'
 # imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine\60mm'
+imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Random\Mechanical Arm'
 
-# C_P_S.FullSweep(imgs_folder,'Boccignone','Center')
+C_P_S.FullSweep(imgs_folder,'Boccignone','5-Area')
 
 # contain coarse and fine
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
 # total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Coarse'
-# total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine'
 
 # for this_imgs_folder_name in os.listdir(total_folder):
     
@@ -70,10 +37,3 @@ from __init__ import *
     #contain coarse and fine
     # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
 
-import matplotlib.pyplot as plt 
-
-img_path=r'F:\GitHub\KAMERAWERK\poLight_cam\ConsoleDemo\src\ABLE\poLight_test_405.jpg'
-
-img_code=plt.imread(img_path)
-
-plt.imshow(img_code)

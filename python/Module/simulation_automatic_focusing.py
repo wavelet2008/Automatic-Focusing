@@ -22,7 +22,7 @@ import operation_import as O_I
 import calculation_contrast as C_C
 import calculation_numerical_analysis as C_N_A
 
-from configuration_font import legend_prop,text_font,label_font,title_font
+from configuration_font import legend_prop,text_prop,label_prop,title_prop
 from configuration_color import map_operator_color,list_operator,list_contrast_operator,list_articulation_operator
     
 #------------------------------------------------------------------------------
@@ -199,9 +199,9 @@ def AutoFocusAnimation(imgs_folder,operator,ROI_mode):
                 ax_input_image.text(x_center_ROI,
                                     y_center_ROI,
                                     '%.2f'%(ROI_weight[kk]),
-                                    fontproperties=text_font)
+                                    fontproperties=text_prop)
             
-        plt.title('Input Image',FontProperties=title_font)
+        plt.title('Input Image',FontProperties=title_prop)
         
         plt.xticks([])
         plt.yticks([])
@@ -240,15 +240,15 @@ def AutoFocusAnimation(imgs_folder,operator,ROI_mode):
             
         if operator in list_contrast_operator:
         
-            plt.title(operator+' Contrast-VCM Code Curve',FontProperties=title_font)
+            plt.title(operator+' Contrast-VCM Code Curve',FontProperties=title_prop)
     
-            plt.ylabel('Contrast',FontProperties=label_font)
+            plt.ylabel('Contrast',FontProperties=label_prop)
             
         if operator in list_articulation_operator:
             
-            plt.title(operator+' Articulation-VCM Code Curve',FontProperties=title_font)
+            plt.title(operator+' Articulation-VCM Code Curve',FontProperties=title_prop)
     
-            plt.ylabel('Articulation',FontProperties=label_font)
+            plt.ylabel('Articulation',FontProperties=label_prop)
             
         plt.legend(prop=legend_prop,loc='lower right')
   
@@ -272,7 +272,7 @@ def AutoFocusAnimation(imgs_folder,operator,ROI_mode):
             ax_contrast_curve.text(0+x_major_step/10,
                                    1+y_major_step/10,
                                    str_text,
-                                   FontProperties=text_font)               
+                                   FontProperties=text_prop)               
         
         #save the fig
         this_fig_path=output_folder_operator+'//%d.png'%(list_VCM_code[k])

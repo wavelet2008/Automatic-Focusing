@@ -19,9 +19,9 @@ from o_frame import frame
 
 #pre_fix: same part of imgs name
 # pre_fix='12M_0500mm_VCM_bottom'
-pre_fix='12M_0500mm_VCM_top'
+# pre_fix='12M_0500mm_VCM_top'
 # pre_fix='top_VCM_'
-# pre_fix='poLight_test_'
+pre_fix='poLight_test_'
 # pre_fix='M_Cali_Near'
 
 #------------------------------------------------------------------------------
