@@ -38,4 +38,8 @@ from __init__ import *
     # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
 
 l=[1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2,1]
-idx_peak=C_P_S.BinarySearch(l)
+idx_peak=C_P_S.GlobalSearch(l)
+
+'''JL method'''
+
+'''Rule-based'''

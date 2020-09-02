@@ -183,6 +183,37 @@ def GlobalSearch(list_contrast):
 
 #------------------------------------------------------------------------------
 """
+Calculation of peak value in coarse-to-fine search
+
+Args:
+    list_contrast: contrast value list
+    
+Returns:
+    index of VCM code of contrast peak value
+"""   
+def Coarse2FineSearch(list_contrast):
+    
+    n_step_fine=3
+    
+    #start idx and end idx in fine search
+    start_idx_fine=list_contrast.index(np.max(list_contrast))-n_step_fine
+    end_idx_fine=list_contrast.index(np.max(list_contrast))+n_step_fine
+    
+    if start_idx_fine<0:
+            
+        start_idx_fine=0
+            
+    if end_idx_fine>=len(list_contrast):
+        
+        end_idx_fine=len(list_contrast)-1
+        
+    #fine search
+    list_contrast_fine=[list_contrast[k] for k in range(start_idx_fine,end_idx_fine)]
+    
+    return list_contrast.index(np.max(list_contrast_fine))
+
+#------------------------------------------------------------------------------
+"""
 Calculation of peak value in binary search
 
 Args:
