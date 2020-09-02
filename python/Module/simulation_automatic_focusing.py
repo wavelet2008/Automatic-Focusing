@@ -238,18 +238,19 @@ def AutoFocusAnimation(imgs_folder,operator,ROI_mode):
         #label fonts
         [this_label.set_fontname('Times New Roman') for this_label in labels]
             
-        if operator in list_contrast_operator:
+        plt.xlabel('Lens Position Code',fontdict=label_prop)   
+        plt.ylabel('Focus Value',fontdict=label_prop)
         
-            plt.title(operator+' Contrast-VCM Code Curve',FontProperties=title_prop)
-    
-            plt.ylabel('Contrast',FontProperties=label_prop)
+        if operator in list_contrast_operator:
+            
+            str_focus_value=operator+' Contrast'
             
         if operator in list_articulation_operator:
             
-            plt.title(operator+' Articulation-VCM Code Curve',FontProperties=title_prop)
-    
-            plt.ylabel('Articulation',FontProperties=label_prop)
+            str_focus_value=operator+' Articulation'
             
+        plt.title(str_focus_value+'-Lens Position Curve',fontdict=title_prop)
+    
         plt.legend(prop=legend_prop,loc='lower right')
   
         #set locator

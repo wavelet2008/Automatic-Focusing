@@ -169,6 +169,73 @@ def FullSweepFine(list_contrast):
 
 #------------------------------------------------------------------------------
 """
+Calculation of peak value in global search
+
+Args:
+    list_contrast: contrast value list
+    
+Returns:
+    index of VCM code of contrast peak value
+"""   
+def GlobalSearch(list_contrast):
+    
+    return list_contrast.index(np.max(list_contrast))
+
+#------------------------------------------------------------------------------
+"""
+Calculation of peak value in binary search
+
+Args:
+    list_contrast: contrast value list
+    
+Returns:
+    index of VCM code of contrast peak value
+"""   
+def BinarySearch(list_contrast):
+    
+    #index of step
+    m=6
+    
+    m_this_round=cp.deepcopy(m)
+    step_this_round=2**m_this_round
+    
+    start_idx_this_round=0
+    end_idx_this_round=int((len(list_contrast)//step_this_round)*step_this_round)
+    
+    while m_this_round:
+        
+        step_this_round=2**m_this_round
+        
+        if step_this_round>len(list_contrast):
+            
+            m_this_round-=1
+            
+            continue
+        
+        #contrast list for this iteration
+        list_contrast_this_round=[list_contrast[k] for k in range(start_idx_this_round,
+                                                                  end_idx_this_round+step_this_round,
+                                                                  step_this_round)]
+        peak_idx_this_round=list_contrast.index(np.max(list_contrast_this_round))
+        
+        #redefine such parameters
+        start_idx_this_round=int(peak_idx_this_round-1.5*step_this_round)
+        end_idx_this_round=int(peak_idx_this_round+1.5*step_this_round)
+        
+        if start_idx_this_round<0:
+            
+            start_idx_this_round=0
+            
+        if end_idx_this_round>=len(list_contrast):
+            
+            end_idx_this_round=len(list_contrast)-1
+            
+        m_this_round-=1
+        
+    return list_contrast.index(np.max(list_contrast_this_round))
+
+#------------------------------------------------------------------------------
+"""
 Plot input image as well as contrast curve
 
 Args:
@@ -569,21 +636,20 @@ def FullSweep(imgs_folder,operator,ROI_mode):
     
     #label fonts
     [this_label.set_fontname('Times New Roman') for this_label in labels]
-    
-    plt.xlabel('VCM Code',fontdict=label_prop)   
+        
+    plt.xlabel('Lens Position Code',fontdict=label_prop)   
+    plt.ylabel('Focus Value',fontdict=label_prop)
     
     if operator in list_contrast_operator:
         
-        plt.title(operator+' Contrast-VCM Code Curve',fontdict=title_prop)
-
-        plt.ylabel('Contrast',fontdict=label_prop)
+        str_focus_value=operator+' Contrast'
         
     if operator in list_articulation_operator:
         
-        plt.title(operator+' Articulation-VCM Code Curve',fontdict=title_prop)
-
-        plt.ylabel('Articulation',fontdict=label_prop)
+        str_focus_value=operator+' Articulation'
         
+    plt.title(str_focus_value+'-Lens Position Curve',fontdict=title_prop)
+
     plt.legend(prop=legend_prop,loc='lower right')
 
     #VMC code for plotting limit 

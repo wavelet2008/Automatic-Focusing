@@ -31,7 +31,7 @@ class frame:
         
         #read image
         self.img_bgr=cv2.imread(self.path)
-        print(self.path)
+        
         #convert rgb img to gray img
         self.img_gray=cv2.cvtColor(self.img_bgr,cv2.COLOR_BGR2GRAY)
         
