@@ -20,12 +20,12 @@ class frame:
                  pre_fix=None,
                  img_bgr=None,
                  img_gray=None,
-                 VCM_code=None):
+                 lens_position_code=None):
         self.path=path
         self.pre_fix=pre_fix
         self.img_bgr=img_bgr
         self.img_gray=img_gray
-        self.VCM_code=VCM_code
+        self.lens_position_code=lens_position_code
         
     def Init(self):
         
@@ -38,9 +38,9 @@ class frame:
         #VCM code calculation
         try:
             
-            self.VCM_code=int(self.path.strip('.jpg').split(self.pre_fix)[-1])
+            self.lens_position_code=int(self.path.strip('.jpg').split(self.pre_fix)[-1])
             
         except:
             
-            self.VCM_code=int(self.path.strip('.png').split(self.pre_fix)[-1])
+            self.lens_position_code=int(self.path.strip('.png').split(self.pre_fix)[-1])
         

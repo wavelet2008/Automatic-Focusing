@@ -19,21 +19,21 @@ from __init__ import *
 
 # imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Coarse\60mm'
 # imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine\60mm'
-imgs_folder=r'C:\Users\魏华敬\Desktop\Experiment\Bottle\20cm-dark'
+imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Screen\30cm-bright'
 
-C_P_S.FullSweep(imgs_folder,'Boccignone','5-Area')
+# C_P_S.FullSweep(imgs_folder,'Boccignone','5-Area')
 
 # contain coarse and fine
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
-# total_folder=r'C:\Users\ASUS\Desktop\Experiment\Wall'
+total_folder=r'C:\Users\ASUS\Desktop\Experiment\Vehicle'
 
-# for this_imgs_folder_name in os.listdir(total_folder):
+for this_imgs_folder_name in os.listdir(total_folder):
     
-#     this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
+    this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
     
-#     C_P_S.FullSweep(this_imgs_folder,'Boccignone','5-Area')
-
+    C_P_S.PeakSearch(this_imgs_folder,'Boccignone','5-Area','Binary')
+    
     #contain coarse and fine
     # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
 
@@ -41,5 +41,6 @@ C_P_S.FullSweep(imgs_folder,'Boccignone','5-Area')
 # idx_peak=C_P_S.GlobalSearch(l)
 
 '''JL method'''
+# C_P_S.PeakSearch(imgs_folder,'Boccignone','5-Area','Binary')
 
 '''Rule-based'''

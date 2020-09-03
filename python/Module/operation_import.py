@@ -153,7 +153,7 @@ def FramesConstruction(imgs_folder):
         
         list_frames.append(that_image)
         
-    list_VCM_code=[this_frame.VCM_code for this_frame in list_frames]
+    list_VCM_code=[this_frame.lens_position_code for this_frame in list_frames]
     
     #construct map between VCM code and frame object
     map_VCM_code_frames=dict(zip(list_VCM_code,list_frames))

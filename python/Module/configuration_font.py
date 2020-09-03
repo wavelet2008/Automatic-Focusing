@@ -25,6 +25,11 @@ text_prop={'family':'Gill Sans MT',
            'style':'italic',
            'size':12}
 
+annotation_prop={'family':'Gill Sans MT',
+                 'weight':'normal',
+                 'style':'normal',
+                 'size':14}
+
 label_prop={'family':'Gill Sans MT',
             'weight':'normal',
             'style':'italic',
