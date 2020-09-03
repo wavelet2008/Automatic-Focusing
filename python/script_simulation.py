@@ -26,7 +26,7 @@ imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Screen\30cm-bright'
 # contain coarse and fine
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
-total_folder=r'C:\Users\ASUS\Desktop\Experiment\Vehicle'
+total_folder=r'C:\Users\ASUS\Desktop\Experiment\Plant'
 
 for this_imgs_folder_name in os.listdir(total_folder):
     
