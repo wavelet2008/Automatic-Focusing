@@ -155,15 +155,16 @@ vector<frame> VectorFrame(string& folder_path) {
 
 			this_frame.img_gray = that_img_gray;
 			this_frame.img_bgr = that_img_bgr;
-			this_frame.VCM_code = ImagePath2VCMCode(vector_files_path[k]);
+			this_frame.lens_position_code = ImagePath2VCMCode(vector_files_path[k]);
 
 			clock_t launch = clock();
-			this_frame.contrast= ContrastCenter(this_frame, "Boccignone");
+			this_frame.focus_value= ContrastCenter(this_frame, "Boccignone");
+			//this_frame.contrast = Contrast5Area(this_frame, "Boccignone");
 			clock_t finish = clock();
 			cout << "--> time consumed: " << 1000 * (double)(finish - launch) / CLOCKS_PER_SEC << " (ms)" << endl;
 
 			vector_frame.push_back(this_frame);
-			vector_VCM_code.push_back(this_frame.VCM_code);
+			vector_VCM_code.push_back(this_frame.lens_position_code);
 		}
 	}
 	//copy the VCM code vector

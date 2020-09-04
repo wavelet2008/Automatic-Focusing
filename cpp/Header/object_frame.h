@@ -16,9 +16,9 @@
 class frame {
 
 public:
-	int VCM_code;
-	double offset;
-	double contrast;
+	int lens_position_code;
+	double object_distance;
+	double focus_value;
 	Mat img_bgr;
 	Mat img_gray;
 	frame();
