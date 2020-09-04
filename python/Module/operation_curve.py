@@ -131,10 +131,10 @@ def Curve(list_x,
     #label fonts
     [this_label.set_fontname('Times New Roman') for this_label in labels]
         
-    plt.title(str_title,FontProperties=title_prop)
+    plt.title(str_title,fontdict=title_prop)
     
-    plt.xlabel(str_xlabel,FontProperties=label_prop)
-    plt.ylabel(str_ylabel,FontProperties=label_prop)
+    plt.xlabel(str_xlabel,fontdict=label_prop)
+    plt.ylabel(str_ylabel,fontdict=label_prop)
     
     plt.legend(prop=legend_prop,loc='upper right')  
     
@@ -241,10 +241,10 @@ def CurveBatch(list_x_batch,
     #label fonts
     [this_label.set_fontname('Times New Roman') for this_label in labels]
         
-    plt.title(str_title,FontProperties=title_font)
+    plt.title(str_title,fontdict=title_prop)
     
-    plt.xlabel(str_xlabel,FontProperties=label_prop)
-    plt.ylabel(str_ylabel,FontProperties=label_prop)
+    plt.xlabel(str_xlabel,fontdict=label_prop)
+    plt.ylabel(str_ylabel,fontdict=label_prop)
     
     plt.legend(prop=legend_prop,loc='upper right')  
     

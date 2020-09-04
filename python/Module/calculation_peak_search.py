@@ -301,11 +301,11 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     print('-- Peak Search')
     print('-> Operator:',operator)
     
-    str_a,str_b=imgs_folder.split('Experiment')
-    str_c,str_d=imgs_folder.split('Experiment')[-1].strip('\\').split('\\')
+    str_a,str_b=imgs_folder.split('Material')
+    str_c,str_d=imgs_folder.split('Material')[-1].strip('\\').split('\\')
 
     #construct output folder
-    output_folder_operator=str_a+'\\Contrast\\Scenario'+str_b
+    output_folder_operator=str_a+'\\Curve\\Scenario'+str_b
     
     try:
         
@@ -313,7 +313,7 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     
     except:
         
-        output_folder_condition=str_a+'\\Contrast\Operator'
+        output_folder_condition=str_a+'\\Curve\Operator'
     
     output_folder_operator+='\\'+operator+'\\'
     output_folder_condition+='\\'+operator+'\\'
@@ -574,11 +574,11 @@ def FullSweep(imgs_folder,operator,ROI_mode):
     print('-- Full Sweep')
     print('-> Operator:',operator)
     
-    str_a,str_b=imgs_folder.split('Experiment')
-    str_c,str_d=imgs_folder.split('Experiment')[-1].strip('\\').split('\\')
+    str_a,str_b=imgs_folder.split('Material')
+    str_c,str_d=imgs_folder.split('Material')[-1].strip('\\').split('\\')
 
     #construct output folder
-    output_folder_operator=str_a+'\\Contrast\\Scenario'+str_b
+    output_folder_operator=str_a+'\\Curve\\Scenario'+str_b
     
     try:
         
@@ -586,7 +586,7 @@ def FullSweep(imgs_folder,operator,ROI_mode):
     
     except:
         
-        output_folder_condition=str_a+'\\Contrast\Operator'
+        output_folder_condition=str_a+'\\Curve\Operator'
     
     output_folder_operator+='\\'+operator+'\\'
     output_folder_condition+='\\'+operator+'\\'

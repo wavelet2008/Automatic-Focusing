@@ -19,7 +19,7 @@ from __init__ import *
 
 # imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Coarse\60mm'
 # imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine\60mm'
-imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\Screen\30cm-bright'
+imgs_folder=r'C:\Users\ASUS\Desktop\Material\Screen\30cm-bright'
 
 C_P_S.PeakSearch(imgs_folder,'Boccignone','5-Area','Binary')
 
