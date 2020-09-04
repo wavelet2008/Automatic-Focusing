@@ -19,23 +19,24 @@ from __init__ import *
 
 # imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Coarse\60mm'
 # imgs_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Fine\60mm'
-imgs_folder=r'C:\Users\ASUS\Desktop\Material\Screen\30cm-bright'
+# imgs_folder=r'C:\Users\ASUS\Desktop\Material\Screen\30cm-bright'
 
-C_P_S.PeakSearch(imgs_folder,'Boccignone','5-Area','Binary')
+# C_P_S.PeakSearch(imgs_folder,'Boccignone','5-Area','Binary')
 
 # contain coarse and fine
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
 # total_folder=r'C:\Users\ASUS\Desktop\Experiment\Plant'
-# total_folder=r'C:\Users\ASUS\Desktop\Experiment\poLight-Medium-Coarse'
+total_folder=r'C:\Users\ASUS\Desktop\Material\poLight-Large-Coarse'
 
-# for this_imgs_folder_name in os.listdir(total_folder):
+for this_imgs_folder_name in os.listdir(total_folder):
     
-#     this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
+    this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
     
-#     C_P_S.PeakSearch(this_imgs_folder,'Boccignone','5-Area','Binary')
+    C_P_S.PeakSearch(this_imgs_folder,'Boccignone','5-Area','Binary')
+    C_P_S.PeakSearch(this_imgs_folder,'Boccignone','5-Area','Global')
     
-    #contain coarse and fine
+    # contain coarse and fine
     # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
 
 # l=[1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2,1]
