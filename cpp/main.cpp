@@ -4,7 +4,7 @@
 @company: KAMERAWERK
 @e-mail: jerryweihuajing@126.com
 
-@title: Script-main
+@title: script-Automatic Focusing Simulation
 ******************************************************************************/
 
 // main.cpp: This file contains the "main" function.
