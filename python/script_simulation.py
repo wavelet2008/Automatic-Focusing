@@ -33,10 +33,10 @@ for this_imgs_folder_name in os.listdir(total_folder):
     
     this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
     
-    C_P_S.PeakSearch(this_imgs_folder,'Boccignone','5-Area','Binary')
-    C_P_S.PeakSearch(this_imgs_folder,'Boccignone','5-Area','Global')
+    C_P_S.PeakSearch(this_imgs_folder,'Boccignone','Center','Binary')
+    C_P_S.PeakSearch(this_imgs_folder,'Boccignone','Center','Global')
     
-    # contain coarse and fine
+    # #contain coarse and fine
     # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
 
 # l=[1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2,1]
