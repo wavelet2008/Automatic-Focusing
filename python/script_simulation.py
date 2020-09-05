@@ -43,5 +43,4 @@ for this_imgs_folder_name in os.listdir(total_folder):
 # idx_peak=C_P_S.GlobalSearch(l)
 
 '''JL method'''
-
 '''Rule-based'''
