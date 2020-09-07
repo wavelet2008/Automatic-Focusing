@@ -44,6 +44,8 @@ int main(){
 
 		vector_code.push_back(vector_frame[k].lens_position_code);
 		vector_contrast.push_back(vector_frame[k].focus_value);
+
+		JLSearch(vector_contrast);
 	}
 
 	cout << "" << endl;
@@ -62,6 +64,8 @@ int main(){
 		out_file << vector_code[k] << " " << vector_normalized_contrast[k] << endl;
 	}
 	return 0;
+
+	//plot the curve
 
 	//delete corresponds to new and delete[] corresponds to new[]
 	//delete and delete[] play the same role in built-in data structure (pointer variable)

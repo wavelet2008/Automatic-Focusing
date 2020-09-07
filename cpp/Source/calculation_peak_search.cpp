@@ -33,7 +33,7 @@ Args :
 Returns :
     start index and end index for fine search
 */
-int FullSweepCoarse(vector<double>& vector_contrast) {
+int JLSearch(vector<double>& vector_contrast) {
 
     //amount of consecutive ascending or descending points
     int amount_revert = 3;
@@ -95,7 +95,7 @@ Args :
 Returns :
     index of VCM code of contrast peak value
 */
-int FullSweepFine(vector<double>& vector_contrast){
+int GlobalSearch(vector<double>& vector_contrast){
 
     //index of maximum
     return MaximumIndex(vector_contrast);
