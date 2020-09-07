@@ -7,9 +7,12 @@
 __pycache__/
 
 #cpp
+#post-fix
 *.sln
 *.vcxproj
 *.vcxproj.user
 *.vcxproj.filters
-.vs/
-x64/
+
+#folder
+.vs
+x64
