@@ -4,7 +4,7 @@
 
 #python
 *.pyc
-__pycache__/
+__pycache__
 
 #cpp
 #post-fix
