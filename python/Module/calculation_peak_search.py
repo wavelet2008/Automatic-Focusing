@@ -26,6 +26,8 @@ import calculation_numerical_analysis as C_N_A
 from configuration_font import legend_prop,text_prop,label_prop,title_prop,sample_prop,annotation_prop
 from configuration_color import map_operator_color,list_operator,list_contrast_operator,list_articulation_operator
 
+from calculation_contrast import zoom_factor,ROI_weight
+
 #------------------------------------------------------------------------------
 """
 Preprocessing in peak search to tolerate one fluctuation in ascending
@@ -158,59 +160,57 @@ def JLSearch(list_contrast):
 Calculation of peak value in global search
 
 Args:
-    list_frame: frame object list
+    list_contrast: contrast list
     step_frame: step of frame object (default: 1)
     
 Returns:
-    list of frame to be plotted
+    list of frame index to be plotted
 """   
-def GlobalSearch(list_frame,step_frame=1):
+def GlobalSearch(list_contrast,step_frame=1):
 
     #final result
-    list_frame_plotted=[]
+    list_index_plotted=[]
     
-    for k in range(len(list_frame)):
+    for k in range(len(list_contrast)):
         
         this_index=k*step_frame
         
         #out of bound
-        if this_index>=len(list_frame):
+        if this_index>=len(list_contrast):
             
             break
         
-        list_frame_plotted.append(list_frame[this_index])
+        list_index_plotted.append(this_index)
     
-    return list_frame_plotted
+    return list_index_plotted
 
 #------------------------------------------------------------------------------
 """
 Calculation of peak value in coarse-to-fine search
 
 Args:
-    list_frame: frame object list
+    list_contrast: contrast list
     step_frame: step of frame object (default: 5)
     
 Returns:
-    list of frame to be plotted
+    list of frame index to be plotted
 """   
-def Coarse2FineSearch(list_frame,step_frame=5):
-    
-    list_contrast=[this_frame.contrast for this_frame in list_frame]
+def Coarse2FineSearch(list_contrast,step_frame=5):
     
     #final result
-    list_frame_plotted=[]
+    list_index_plotted=[]
     
     #collect frame coarsely
-    for k in range(len(list_frame)):
+    for k in range(len(list_contrast)):
         
         this_index=k*step_frame
         
         #out of bound
-        if this_index>=len(list_frame):
+        if this_index>=len(list_contrast):
             
             break
         
-        list_frame_plotted.append(list_frame[this_index])
+        list_index_plotted.append(this_index)
     
     step_fine=step_frame-1
     
@@ -229,27 +229,25 @@ def Coarse2FineSearch(list_frame,step_frame=5):
     #collect frame finely
     for k in range(start_idx_fine,end_idx_fine):
 
-        list_frame_plotted.append(list_frame[k])
+        list_index_plotted.append(k)
         
-    return list_frame_plotted
+    return list_index_plotted
 
 #------------------------------------------------------------------------------
 """
 Calculation of peak value in binary search
 
 Args:
-    list_frame: frame object list
+    list_contrast: contrast list
     m: index of step
     
 Returns:
-    list of frame to be plotted
+    list of frame index to be plotted
 """   
-def BinarySearch(list_frame,m=6):
-    
-    list_contrast=[this_frame.contrast for this_frame in list_frame]
-    
+def BinarySearch(list_contrast,m=6):
+
     #final result
-    list_frame_plotted=[]
+    list_index_plotted=[]
     
     m_this_round=cp.deepcopy(m)
     step_this_round=2**m_this_round
@@ -278,10 +276,9 @@ def BinarySearch(list_frame,m=6):
             end_idx_this_round=len(list_contrast)-1-step_this_round
             
         #frame list for this iteration
-        list_frame_this_round=[list_frame[k] for k in range(start_idx_this_round,
-                                                            end_idx_this_round+step_this_round,
-                                                            step_this_round)]
-        list_contrast_this_round=[this_frame.contrast for this_frame in list_frame_this_round]
+        list_index_this_round=[k for k in range(start_idx_this_round, end_idx_this_round+step_this_round,step_this_round)]
+        
+        list_contrast_this_round=[list_contrast[this_index] for this_index in list_index_this_round]
         
         peak_idx_this_round=list_contrast.index(np.max(list_contrast_this_round))
         
@@ -291,10 +288,23 @@ def BinarySearch(list_frame,m=6):
          
         m_this_round-=1
         
-        list_frame_plotted+=list_frame_this_round
+        list_index_plotted+=list_index_this_round
         
-    return list_frame_plotted
+    return list_index_plotted
 
+#------------------------------------------------------------------------------
+"""
+Plot input image as well as focused value curve
+
+Args:
+   imgs_folder: folder which contains a batch of images 
+   operator: operator of contrast or articulation calculation 
+   ROI mode: definition method of ROI ['5-Area', 'Center']
+   peak_search_method: method of peak search
+   
+Returns:
+    None
+"""
 def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     
     print('')
@@ -322,105 +332,28 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     O_P.GenerateFolder(output_folder_condition)
     
     #frame object for coarse and fine search
-    frames=O_I.FramesConstruction(imgs_folder)
-           
-    #for plotting the curve
-    list_img_ROI_plotted=[]    
-        
-    #traverse all frames for full sweeping
-    for this_frame in frames:
-
-        img_gray=this_frame.img_gray
-           
-        #size of img
-        height,width=np.shape(img_gray)
-        
-        #basic parameters
-        ROI_weight=[0.44,0.14,0.14,0.14,0.14]
-        zoom_factor=16
-        ROI_linewidth=int(height//300)
-        
-        #image of ROI
-        this_img_ROI=np.full(np.shape(img_gray),np.nan)
-        
-        list_5_points=[[ height/2, width/2],
-                       [ height/4, width/4],
-                       [ height/4,-width/4],
-                       [-height/4,-width/4],
-                       [-height/4, width/4]]
-        
-        #size of area
-        area_half_height=int(np.shape(img_gray)[0]/zoom_factor)
-        area_half_width=int(np.shape(img_gray)[1]/zoom_factor)
-            
-        #calculate contrast in each area
-        list_contrast_5_areas=[]
-        
-        if ROI_mode=='5-Area':
-            
-            for i,j in list_5_points:
-                        
-                this_area=img_gray[int(i)-area_half_height:int(i)+area_half_height,
-                                   int(j)-area_half_width:int(j)+area_half_width]
-            
-                #collect it
-                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,operator))
-            
-                #draw the bound of ROI
-                for k in range(ROI_linewidth):
-                    
-                    this_img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
-                    this_img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
-                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
-                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
+    list_frame=O_I.FramesConstruction(imgs_folder,ROI_mode,peak_search_method)
+    list_contrast=[this_frame.focus_value for this_frame in list_frame]
     
-            #collect the data
-            this_frame.contrast=np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas))
-            list_img_ROI_plotted.append(this_img_ROI)
-       
-        if ROI_mode=='Center':
-            
-            for i,j in list_5_points[:1]:
-                        
-                this_area=img_gray[int(i)-area_half_height:int(i)+area_half_height,
-                                   int(j)-area_half_width:int(j)+area_half_width]
-            
-                #collect it
-                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,operator))
-            
-                #draw the bound of ROI
-                for k in range(ROI_linewidth):
-                    
-                    this_img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
-                    this_img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
-                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
-                    this_img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
-    
-            #collect the data
-            this_frame.contrast=list_contrast_5_areas[0]
-            list_img_ROI_plotted.append(this_img_ROI)
-            
-        print('--> Lens Position Code:',this_frame.lens_position_code)
-        # print('---> Focus Value:',list_contrast_plotted[-1])
-
     '''Global Search (Full Sweep)'''
     if peak_search_method=='Global':
         
-        list_frame_plotted=GlobalSearch(frames)
+        list_index_plotted=GlobalSearch(list_contrast)
         abbr_method='GS'
         
     '''Coarse to Fine Search'''
     if peak_search_method=='Coarse2Fine':
         
-        list_frame_plotted=Coarse2FineSearch(frames)
+        list_index_plotted=Coarse2FineSearch(list_contrast)
         abbr_method='C2F'
         
     '''Binary Search (Fibonacci)'''
     if peak_search_method=='Binary':
         
-        list_frame_plotted=BinarySearch(frames)
+        list_index_plotted=BinarySearch(list_contrast)
         abbr_method='BS'
-        
+    
+    list_frame_plotted=[list_frame[this_index] for this_index in list_index_plotted]
     list_code_plotted=[this_frame.lens_position_code for this_frame in list_frame_plotted]    
     list_contrast_plotted=[this_frame.contrast for this_frame in list_frame_plotted]
     

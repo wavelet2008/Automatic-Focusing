@@ -15,7 +15,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from matplotlib.pyplot import MultipleLocator
-from matplotlib.font_manager import FontProperties
 
 from configuration_color import list_articulation_operator
 
@@ -25,17 +24,14 @@ import calculation_articulation as C_A
 import calculation_texture_feature as C_T_F
 import calculation_scene_discrimination as C_S_D
 
-#font of fonts of all kinds
-legend_prop={'family':'Gill Sans MT','weight':'normal','size':12}
-text_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=12)
-label_font=FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=16)
-title_font=FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=18)
+#basic parameters
+ROI_weight=[0.44,0.14,0.14,0.14,0.14]
+zoom_factor=16
 
 '''
 Contrast (Luminance Contrast) is the relationship between the luminance
 of a brighter area of interest and that of an adjacent darker area.
 '''
-        
 #------------------------------------------------------------------------------
 """
 Calculation of contrast with different operator
