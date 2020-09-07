@@ -146,14 +146,14 @@ def FramesConstruction(imgs_folder,ROI_mode,peak_search_method):
             continue
         
         #define a new image object
-        that_image=frame()
+        that_frame=frame()
 
-        that_image.path=imgs_folder+'\\'+this_img_name
-        that_image.pre_fix=pre_fix
+        that_frame.path=imgs_folder+'\\'+this_img_name
+        that_frame.pre_fix=pre_fix
         
-        that_image.Init(ROI_mode,peak_search_method)
+        that_frame.Init(ROI_mode,peak_search_method)
         
-        list_frames.append(that_image)
+        list_frames.append(that_frame)
         
     list_VCM_code=[this_frame.lens_position_code for this_frame in list_frames]
     
