@@ -16,3 +16,6 @@ __pycache__
 #folder
 .vs
 x64
+
+#else
+*.txt
