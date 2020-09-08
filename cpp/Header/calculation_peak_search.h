@@ -16,9 +16,9 @@
 int MaximumIndex(vector<double>& which_vector);
 
 //Calculation of peak value in contrast value coarsely
-int FullSweepCoarse(vector<double>& vector_contrast);
+int JLSearch(vector<double>& vector_contrast);
 
 //Calculation of peak value in contrast value finely
-int FullSweepFine(vector<double>& vector_contrast);
+int GlobalSearch(vector<double>& vector_contrast);
 
 #endif
