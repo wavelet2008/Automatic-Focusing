@@ -49,7 +49,7 @@ int main(){
 	}
 
 	cout << "" << endl;
-	cout << "-- Fcoused Lens Position Code: " << vector_frame[FullSweepFine(vector_contrast)].lens_position_code << endl;
+	cout << "-- Focused Lens Position Code: " << vector_frame[GlobalSearch(vector_contrast)].lens_position_code << endl;
 
 	//write VCM Code and contrast
 	ofstream out_file;
