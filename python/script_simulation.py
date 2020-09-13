@@ -26,8 +26,8 @@ from __init__ import *
 # contain coarse and fine
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
-# total_folder=r'C:\Users\ASUS\Desktop\Experiment\Plant'
-total_folder=r'D:\Material\Bottle'
+total_folder=r'D:\Material\Plant'
+# total_folder=r'D:\Material\Bottle'
 
 for this_imgs_folder_name in os.listdir(total_folder):
     
