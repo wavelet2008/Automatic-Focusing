@@ -332,7 +332,7 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     O_P.GenerateFolder(output_folder_condition)
     
     #frame object for coarse and fine search
-    list_frame=O_I.FramesConstruction(imgs_folder,ROI_mode,peak_search_method)
+    list_frame=O_I.FramesConstruction(imgs_folder,operator,ROI_mode)
     list_contrast=[this_frame.focus_value for this_frame in list_frame]
     
     '''Global Search (Full Sweep)'''
@@ -355,7 +355,7 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     
     list_frame_plotted=[list_frame[this_index] for this_index in list_index_plotted]
     list_code_plotted=[this_frame.lens_position_code for this_frame in list_frame_plotted]    
-    list_contrast_plotted=[this_frame.contrast for this_frame in list_frame_plotted]
+    list_contrast_plotted=[this_frame.focus_value for this_frame in list_frame_plotted]
     
     peak_index=list_contrast_plotted.index(np.max(list_contrast_plotted))
     
@@ -390,7 +390,7 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     peak_normalized_contrast=list_normalized_contrast_plotted[peak_index]
     
     plt.imshow(list_frame_plotted[peak_index].img_gray,cmap='gray')
-    plt.imshow(list_img_ROI_plotted[peak_index],cmap='seismic_r') 
+    plt.imshow(list_frame_plotted[peak_index].img_ROI,cmap='seismic_r') 
         
     print('')
     print('---> Peak Lens Position Code:',peak_code)

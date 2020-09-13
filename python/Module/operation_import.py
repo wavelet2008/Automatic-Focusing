@@ -127,13 +127,13 @@ Construct all frame object from folder
 
 Args:
     imgs_folder: images folder
-    ROI mode: definition method of ROI ['5-Area', 'Center']
-    peak_search_method: method of peak search
+    operator: operator of contrast or articulation calculation 
+    ROI_mode: definition method of ROI ['5-Area', 'Center']
     
 Returns:
     frame object list
 """
-def FramesConstruction(imgs_folder,ROI_mode,peak_search_method):
+def FramesConstruction(imgs_folder,operator,ROI_mode):
     
     #final image object list and their paths
     list_frames=[]
@@ -151,7 +151,7 @@ def FramesConstruction(imgs_folder,ROI_mode,peak_search_method):
         that_frame.path=imgs_folder+'\\'+this_img_name
         that_frame.pre_fix=pre_fix
         
-        that_frame.Init(ROI_mode,peak_search_method)
+        that_frame.Init(operator,ROI_mode)
         
         list_frames.append(that_frame)
         

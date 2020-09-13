@@ -35,7 +35,7 @@ class frame:
         self.focus_value=focus_value
         self.lens_position_code=lens_position_code
         
-    def Init(self,ROI_mode,operator):
+    def Init(self,operator,ROI_mode):
         
         #read image
         self.img_bgr=cv2.imread(self.path)
@@ -54,7 +54,7 @@ class frame:
             
         #size of img
         height,width=np.shape(self.img_gray)
-        
+
         ROI_linewidth=int(height//300)
         
         #image of ROI
@@ -90,7 +90,7 @@ class frame:
                     self.img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
                     self.img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
                     self.img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
-    
+            
             #collect the data
             self.focus_value=np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas))
        
@@ -116,4 +116,4 @@ class frame:
             self.focus_value=list_contrast_5_areas[0]
             
         print('--> Lens Position Code:',self.lens_position_code)
-        print('--> Focus Value:',self.focus_value)
+        # print('--> Focus Value:',self.focus_value)

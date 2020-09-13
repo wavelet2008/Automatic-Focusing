@@ -27,13 +27,13 @@ from __init__ import *
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
 # total_folder=r'C:\Users\ASUS\Desktop\Experiment\Plant'
-total_folder=r'C:\Users\ASUS\Desktop\Material\poLight-Large-Coarse'
+total_folder=r'D:\Material\Bottle'
 
 for this_imgs_folder_name in os.listdir(total_folder):
     
     this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
     
-    C_P_S.PeakSearch(this_imgs_folder,'Boccignone','Center','Binary')
+    # C_P_S.PeakSearch(this_imgs_folder,'Boccignone','Center','Binary')
     C_P_S.PeakSearch(this_imgs_folder,'Boccignone','Center','Global')
     
     # #contain coarse and fine
