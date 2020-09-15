@@ -476,7 +476,7 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     #peak search parameter
     ax_contrast_curve.text(0+x_major_step/10,
                            1+y_major_step/10,
-                           'Iters: %d Method: %s'%(len(list_frame_plotted),abbr_method),
+                           'Method: %s Iters: %d'%(abbr_method,len(list_frame_plotted)),
                            fontdict=text_prop) 
     
     #save the fig

@@ -27,23 +27,22 @@ from __init__ import *
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
 # total_folder=r'D:\Material\Plant'
-total_folder=r'C:\Users\ASUS\Desktop\Material\Bottle'
+# total_folder=r'C:\Users\ASUS\Desktop\Material\Grape'
+total_folder=r'C:\Users\ASUS\Desktop\Material\Plant'
 
-for this_imgs_folder_name in os.listdir(total_folder):
+for this_peak_search_method in ['Binary','Global','Coarse2Fine']:
     
-    this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
-    
-    # C_P_S.PeakSearch(this_imgs_folder,'Boccignone','Center','Binary')
-    # C_P_S.PeakSearch(this_imgs_folder,'Boccignone','Center','Global')
-    S_A_F.LensAnimation(this_imgs_folder,'Boccignone','Center','Binary')
-    S_A_F.LensAnimation(this_imgs_folder,'Boccignone','Center','Global')
-    
-    S_A_F.FOVAnimation(this_imgs_folder,'Boccignone','Center','Binary')
-    S_A_F.FOVsAnimation(this_imgs_folder,'Boccignone','Center','Global')
-    
-    # #contain coarse and fine
-    # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
+    for this_ROI_mode in ['5-Area']:
+        
+        for this_imgs_folder_name in os.listdir(total_folder):
 
+            this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
+
+            # C_P_S.PeakSearch(this_imgs_folder,'Boccignone',this_ROI_mode,this_peak_search_method)
+            
+            S_A_F.LensAnimation(this_imgs_folder,'Boccignone',this_ROI_mode,this_peak_search_method)
+            # S_A_F.FOVAnimation(this_imgs_folder,'Boccignone',this_ROI_mode,this_peak_search_method)
+        
 # l=[1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2,1]
 # idx_peak=C_P_S.GlobalSearch(l)
 

@@ -140,10 +140,10 @@ def LensAnimation(imgs_folder,operator,ROI_mode,peak_search_method):
         
         #vertical line
         plt.vlines(lens_position,
-                   y_min,
-                   y_max,
-                   color='grey',
-                   linestyles="--")
+                    y_min,
+                    y_max,
+                    color='grey',
+                    linestyles="--")
 
         #save the fig
         this_fig_path=output_folder_operator+'//Lens %d.png'%(lens_position)
@@ -155,17 +155,17 @@ def LensAnimation(imgs_folder,operator,ROI_mode,peak_search_method):
         figures.append(imageio.imread(this_fig_path))
     
     '''operator experiment'''
-    fig_path_operator=output_folder_operator+'//%s.png'%peak_search_method
+    fig_path_operator=output_folder_operator+'//%s.gif'%peak_search_method
     
     '''condition experiment'''
-    fig_path_condition=output_folder_condition+'%s %s (%s).png'%(str_c,str_d,peak_search_method)
+    fig_path_condition=output_folder_condition+'%s %s (%s).gif'%(str_c,str_d,peak_search_method)
     
     #save GIF 
     '''operator experiment'''
-    imageio.mimsave(fig_path_operator+'.gif',figures,duration=0.1) 
+    imageio.mimsave(fig_path_operator,figures,duration=0.23) 
     
     '''scenario experiment'''
-    imageio.mimsave(fig_path_condition+'.gif',figures,duration=0.1) 
+    imageio.mimsave(fig_path_condition,figures,duration=0.23) 
     
 #------------------------------------------------------------------------------
 """
@@ -323,8 +323,16 @@ def FOVAnimation(imgs_folder,operator,ROI_mode,peak_search_method):
                                str_text,
                                fontdict=annotation_prop) 
 
+        #peak search parameter
+        ax_contrast_curve.text(0+x_major_step/10,
+                               1+y_major_step/10,
+                               'Method: %s Iter: %d'%(abbr_method,k),
+                               fontdict=text_prop)
+        
         #save the fig
         this_fig_path=output_folder_operator+'//Lens %d.png'%(list_code_plotted[k])
+        
+        plt.grid()
         
         plt.savefig(this_fig_path,dpi=300,bbox_inches='tight')
         plt.close()
@@ -333,17 +341,17 @@ def FOVAnimation(imgs_folder,operator,ROI_mode,peak_search_method):
         figures.append(imageio.imread(this_fig_path))
         
     '''operator experiment'''
-    fig_path_operator=output_folder_operator+'//%s.png'%peak_search_method
+    fig_path_operator=output_folder_operator+'//%s.gif'%peak_search_method
     
     '''condition experiment'''
-    fig_path_condition=output_folder_condition+'%s %s (%s).png'%(str_c,str_d,peak_search_method)
+    fig_path_condition=output_folder_condition+'%s %s (%s).gif'%(str_c,str_d,peak_search_method)
     
     #save GIF   
     '''operator experiment'''
-    imageio.mimsave(fig_path_operator+'.gif',figures,duration=0.1) 
+    imageio.mimsave(fig_path_operator,figures,duration=0.23) 
     
     '''scenario experiment'''
-    imageio.mimsave(fig_path_condition+'.gif',figures,duration=0.1) 
+    imageio.mimsave(fig_path_condition,figures,duration=0.23) 
     
 #------------------------------------------------------------------------------
 """
