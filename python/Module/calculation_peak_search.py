@@ -309,7 +309,10 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     
     print('')
     print('-- Peak Search')
-    print('-> Operator:',operator)
+    print('-> operator:',operator)
+    print('-> ROI mode:',ROI_mode)
+    print('-> peak search method:',peak_search_method)
+    print('')
     
     str_a,str_b=imgs_folder.split('Material')
     str_c,str_d=imgs_folder.split('Material')[-1].strip('\\').split('\\')
@@ -506,6 +509,7 @@ def FullSweep(imgs_folder,operator,ROI_mode):
     print('')
     print('-- Full Sweep')
     print('-> Operator:',operator)
+    print('')
     
     str_a,str_b=imgs_folder.split('Material')
     str_c,str_d=imgs_folder.split('Material')[-1].strip('\\').split('\\')

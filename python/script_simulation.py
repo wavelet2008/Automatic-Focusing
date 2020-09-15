@@ -26,15 +26,20 @@ from __init__ import *
 # contain coarse and fine
 # S_A_F.AutoFocusAnimation(imgs_folder,'Boccignone','Center')
 
-total_folder=r'D:\Material\Plant'
-# total_folder=r'D:\Material\Bottle'
+# total_folder=r'D:\Material\Plant'
+total_folder=r'C:\Users\ASUS\Desktop\Material\Bottle'
 
 for this_imgs_folder_name in os.listdir(total_folder):
     
     this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
     
     # C_P_S.PeakSearch(this_imgs_folder,'Boccignone','Center','Binary')
-    C_P_S.PeakSearch(this_imgs_folder,'Boccignone','Center','Global')
+    # C_P_S.PeakSearch(this_imgs_folder,'Boccignone','Center','Global')
+    S_A_F.LensAnimation(this_imgs_folder,'Boccignone','Center','Binary')
+    S_A_F.LensAnimation(this_imgs_folder,'Boccignone','Center','Global')
+    
+    S_A_F.FOVAnimation(this_imgs_folder,'Boccignone','Center','Binary')
+    S_A_F.FOVsAnimation(this_imgs_folder,'Boccignone','Center','Global')
     
     # #contain coarse and fine
     # S_A_F.ImageAndContrast(this_imgs_folder,'Boccignone','Center')
