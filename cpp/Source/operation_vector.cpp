@@ -135,7 +135,6 @@ double VectorMinimum(vector<double>& which_vector) {
 	}
 	return minimum;
 }
-
 //The vector elements are multiplied
 //overloaded function 1: both array of int
 int VectorMultiplication(vector<int>& vector_A, vector<int>& vector_B) {

@@ -167,11 +167,11 @@ double Contrast5Area(Mat& img_gray, const string& contrast_operator) {
 	int width = img_gray.cols;
 
 	//5-Area ROI center
-	int center_ROI_A[2] = { int(height / 2) ,int(height / 2) };
-	int center_ROI_B[2] = { int(height / 4) ,int(height / 4) };
-	int center_ROI_C[2] = { int(height / 4) ,int(3 * height / 4) };
-	int center_ROI_D[2] = { int(3 * height / 4) ,int(height / 4) };
-	int center_ROI_E[2] = { int(3 * height / 4) ,int(3 * height / 4) };
+	int center_ROI_A[2] = { int(height / 2) ,int(width / 2) };
+	int center_ROI_B[2] = { int(height / 4) ,int(width / 4) };
+	int center_ROI_C[2] = { int(height / 4) ,int(3 * width / 4) };
+	int center_ROI_D[2] = { int(3 * height / 4) ,int(width / 4) };
+	int center_ROI_E[2] = { int(3 * height / 4) ,int(3 * width / 4) };
 
 	//5-Area ROI vector
 	vector<int> ROI_A = VectorROI(img_gray, center_ROI_A);

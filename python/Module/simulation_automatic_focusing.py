@@ -23,10 +23,12 @@ import calculation_contrast as C_C
 import calculation_peak_search as C_P_S
 import calculation_numerical_analysis as C_N_A
 
-from configuration_font import legend_prop,text_prop,label_prop,title_prop,sample_prop,annotation_prop
+from configuration_font import legend_prop,text_prop,label_prop,title_prop,annotation_prop
 from configuration_color import map_operator_color,list_operator,list_contrast_operator,list_articulation_operator
 
 from calculation_contrast import zoom_factor,ROI_weight
+
+from operation_import import pre_fix
 
 #------------------------------------------------------------------------------
 """
@@ -239,6 +241,10 @@ def FOVAnimation(imgs_folder,operator,ROI_mode,peak_search_method):
         list_code_plotted=[this_frame.lens_position_code for this_frame in list_frame_plotted]    
         list_contrast_plotted=[this_frame.focus_value for this_frame in list_frame_plotted]
 
+        if pre_fix=='':
+        
+            list_code_plotted=list(np.array(C_N_A.Normalize(list_code_plotted))*1024)
+        
         #normalization of contrast list
         list_normalized_contrast_plotted=C_N_A.Normalize(list_contrast_plotted)
     
@@ -505,6 +511,10 @@ def AutoFocusAnimation(imgs_folder,operator,ROI_mode):
         list_VCM_code_this_frame=list_VCM_code[:k+1]
         list_normalized_contrast_this_frame=C_N_A.Normalize(list_contrast[:k+1])
         img_ROI_this_frame=list_img_ROI[k]
+        
+        if pre_fix=='':
+        
+            list_VCM_code_this_frame=list(np.array(C_N_A.Normalize(list_VCM_code_this_frame))*1024)
         
         plt.figure(figsize=(17,6))
         

@@ -50,8 +50,14 @@ class frame:
             
         except:
             
-            self.lens_position_code=int(self.path.strip('.png').split(self.pre_fix)[-1])
+            if self.pre_fix!='':
+                
+                self.lens_position_code=int(self.path.strip('.png').split(self.pre_fix)[-1])
             
+            else:
+                
+                self.lens_position_code=int(self.path.split('\\')[-1].strip('.png'))
+                                            
         #size of img
         height,width=np.shape(self.img_gray)
 
