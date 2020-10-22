@@ -193,7 +193,7 @@ def FOVAnimation(imgs_folder,operator,ROI_mode,peak_search_method):
     str_c,str_d=imgs_folder.split('Material')[-1].strip('\\').split('\\')
 
     #construct output folder
-    output_folder_operator=str_a+'\\FOV Animation\\Scenario'+str_b
+    output_folder_operator=str_a+'\\AF Simulation\\Scenario'+str_b
     
     try:
         
@@ -201,7 +201,7 @@ def FOVAnimation(imgs_folder,operator,ROI_mode,peak_search_method):
     
     except:
         
-        output_folder_condition=str_a+'\\FOV Animation\Operator'
+        output_folder_condition=str_a+'\\AF Simulation\Operator'
     
     output_folder_operator+='\\'+operator+'\\'
     output_folder_condition+='\\'+operator+'\\'

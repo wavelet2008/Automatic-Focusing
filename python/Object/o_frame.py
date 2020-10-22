@@ -66,22 +66,48 @@ class frame:
         #image of ROI
         self.img_ROI=np.full(np.shape(self.img_gray),np.nan)
         
-        list_5_points=[[ height/2, width/2],
-                       [ height/4, width/4],
-                       [ height/4,-width/4],
-                       [-height/4,-width/4],
-                       [-height/4, width/4]]
+       list_center_5_area=[[ height/2, width/2],
+                            [ height/4, width/4],
+                            [ height/4,-width/4],
+                            [-height/4,-width/4],
+                            [-height/4, width/4]]
+        
+        list_center_9_area=[[height/2+i*height/4,width/2+j*width/4] for i in [-1,0,1] for j in [-1,0,1]]
         
         #size of area
         area_half_height=int(np.shape(self.img_gray)[0]/zoom_factor)
         area_half_width=int(np.shape(self.img_gray)[1]/zoom_factor)
-            
-        #calculate contrast in each area
-        list_contrast_5_areas=[]
         
+        if ROI_mode=='9-Area':
+            
+            #calculate contrast in each area
+            list_contrast_9_areas=[]
+            
+            for i,j in list_center_9_area:
+                        
+                this_area=self.img_gray[int(i)-area_half_height:int(i)+area_half_height,
+                                        int(j)-area_half_width:int(j)+area_half_width]
+            
+                #collect it
+                list_contrast_9_areas.append(C_C.GlobalContrast(this_area,operator))
+            
+                #draw the bound of ROI
+                for k in range(ROI_linewidth):
+                    
+                    self.img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                    self.img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                    self.img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
+                    self.img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
+            
+            #collect the data
+            self.focus_value=np.sum(np.array(ROI_weight_9_area)*np.array(list_contrast_9_areas))
+       
         if ROI_mode=='5-Area':
             
-            for i,j in list_5_points:
+            #calculate contrast in each area
+            list_contrast_5_areas=[]
+            
+            for i,j in list_center_5_area:
                         
                 this_area=self.img_gray[int(i)-area_half_height:int(i)+area_half_height,
                                         int(j)-area_half_width:int(j)+area_half_width]
@@ -98,7 +124,7 @@ class frame:
                     self.img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
             
             #collect the data
-            self.focus_value=np.sum(np.array(ROI_weight)*np.array(list_contrast_5_areas))
+            self.focus_value=np.sum(np.array(ROI_weight_5_area)*np.array(list_contrast_5_areas))
        
         if ROI_mode=='Center':
             
