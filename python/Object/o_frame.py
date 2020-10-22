@@ -13,7 +13,8 @@ import cv2
 import numpy as np
 
 import calculation_contrast as C_C
-from calculation_contrast import zoom_factor,ROI_weight
+
+from calculation_contrast import zoom_factor,ROI_weight_5_area,ROI_weight_9_area
 
 #==============================================================================
 #object to operate image
@@ -66,11 +67,11 @@ class frame:
         #image of ROI
         self.img_ROI=np.full(np.shape(self.img_gray),np.nan)
         
-       list_center_5_area=[[ height/2, width/2],
-                            [ height/4, width/4],
-                            [ height/4,-width/4],
-                            [-height/4,-width/4],
-                            [-height/4, width/4]]
+        list_center_5_area=[[ height/2, width/2],
+                             [ height/4, width/4],
+                             [ height/4,-width/4],
+                             [-height/4,-width/4],
+                             [-height/4, width/4]]
         
         list_center_9_area=[[height/2+i*height/4,width/2+j*width/4] for i in [-1,0,1] for j in [-1,0,1]]
         

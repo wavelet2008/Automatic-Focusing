@@ -38,9 +38,9 @@ for this_peak_search_method in ['Binary','Global','Coarse2Fine']:
 
             this_imgs_folder=total_folder+'\\'+this_imgs_folder_name
 
-            # C_P_S.PeakSearch(this_imgs_folder,'Boccignone',this_ROI_mode,this_peak_search_method)
+            C_P_S.PeakSearch(this_imgs_folder,'Boccignone',this_ROI_mode,this_peak_search_method)
             
-            S_A_F.LensAnimation(this_imgs_folder,'Boccignone',this_ROI_mode,this_peak_search_method)
+            # S_A_F.LensAnimation(this_imgs_folder,'Boccignone',this_ROI_mode,this_peak_search_method)
             # S_A_F.FOVAnimation(this_imgs_folder,'Boccignone',this_ROI_mode,this_peak_search_method)
 
 # l=[1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2,1]

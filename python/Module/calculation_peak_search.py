@@ -24,9 +24,9 @@ import calculation_contrast as C_C
 import calculation_numerical_analysis as C_N_A
 
 from configuration_font import legend_prop,text_prop,label_prop,title_prop,sample_prop,annotation_prop
-from configuration_color import map_operator_color,list_operator,list_contrast_operator,list_articulation_operator
+from configuration_color import map_operator_color,list_operator,list_contrast_operator,list_tenengrad_operator
 
-from calculation_contrast import zoom_factor,ROI_weight
+from calculation_contrast import zoom_factor,ROI_weight_5_area,ROI_weight_9_area
 
 #------------------------------------------------------------------------------
 """
@@ -298,7 +298,7 @@ Plot input image as well as focused value curve
 
 Args:
    imgs_folder: folder which contains a batch of images 
-   operator: operator of contrast or articulation calculation 
+   operator: operator of contrast or tenengrad calculation 
    ROI mode: definition method of ROI ['5-Area', 'Center']
    peak_search_method: method of peak search
    
@@ -318,7 +318,7 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     str_c,str_d=imgs_folder.split('Material')[-1].strip('\\').split('\\')
 
     #construct output folder
-    output_folder_operator=str_a+'\\Curve\\Scenario'+str_b
+    output_folder_operator=str_a+'\\AF Curve\\Scenario'+str_b
     
     try:
         
@@ -326,7 +326,7 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     
     except:
         
-        output_folder_condition=str_a+'\\Curve\Operator'
+        output_folder_condition=str_a+'\\AF Curve\Operator'
     
     output_folder_operator+='\\'+operator+'\\'
     output_folder_condition+='\\'+operator+'\\'
@@ -380,11 +380,19 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     #text of parameter
     if ROI_mode=='5-Area':
                 
-        str_text='ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor/2,ROI_weight[0],ROI_weight[1])
+        str_text='ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor/2,
+                                                          ROI_weight_5_area[0],
+                                                          ROI_weight_5_area[1])
+    
+    if ROI_mode=='9-Area':
+                
+        str_text='ROI Zoom Factor: %d Weight: %.2f-%.2f'%(zoom_factor/2,
+                                                          ROI_weight_9_area[4],
+                                                          ROI_weight_9_area[0])
         
     if ROI_mode=='Center':              
 
-        str_text='ROI Zoom Factor: %d'%(zoom_factor/2)  
+        str_text='ROI Zoom Factor: %d'%(zoom_factor/2) 
         
     '''input image and bound'''
     ax_input_image=plt.subplot(121)
@@ -420,9 +428,9 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
         
         str_focus_value=operator+' Contrast'
         
-    if operator in list_articulation_operator:
+    if operator in list_tenengrad_operator:
         
-        str_focus_value=operator+' Articulation'
+        str_focus_value=operator+' Tenengrad'
             
     plt.title('Focus Value-Lens Position Curve',fontdict=title_prop)
         
@@ -498,8 +506,8 @@ Plot input image as well as contrast curve
 
 Args:
    imgs_folder: folder which contains a batch of images 
-   operator: operator of contrast or articulation calculation 
-   ROI mode: definition method of ROI ['5-Area', 'Center']
+   operator: operator of contrast or tenengrad calculation 
+   ROI mode: definition method of ROI ['9-Center', '5-Area', 'Center']
    
 Returns:
     None
@@ -903,9 +911,9 @@ def FullSweep(imgs_folder,operator,ROI_mode):
         
         str_focus_value=operator+' Contrast'
         
-    if operator in list_articulation_operator:
+    if operator in list_tenengrad_operator:
         
-        str_focus_value=operator+' Articulation'
+        str_focus_value=operator+' Tenengrad'
         
     plt.title(str_focus_value+'-Lens Position Curve',fontdict=title_prop)
 
