@@ -25,7 +25,12 @@ import calculation_texture_feature as C_T_F
 import calculation_scene_discrimination as C_S_D
 
 #basic parameters
-ROI_weight=[0.44,0.14,0.14,0.14,0.14]
+ROI_weight_5_area=[0.14]*4
+ROI_weight_5_area.insert(0,0.44)
+
+ROI_weight_9_area=[0.2]*8
+ROI_weight_9_area.insert(4,0.2)
+
 zoom_factor=16
 
 '''

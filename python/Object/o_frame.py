@@ -51,7 +51,7 @@ class frame:
         except:
             
             if self.pre_fix!='':
-                
+     
                 self.lens_position_code=int(self.path.strip('.png').split(self.pre_fix)[-1])
             
             else:

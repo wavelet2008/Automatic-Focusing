@@ -28,8 +28,6 @@ from configuration_color import map_operator_color,list_operator,list_contrast_o
 
 from calculation_contrast import zoom_factor,ROI_weight
 
-from operation_import import pre_fix
-
 #------------------------------------------------------------------------------
 """
 Preprocessing in peak search to tolerate one fluctuation in ascending
@@ -361,11 +359,7 @@ def PeakSearch(imgs_folder,operator,ROI_mode,peak_search_method):
     list_frame_plotted=[list_frame[this_index] for this_index in list_index_plotted]
     list_code_plotted=[this_frame.lens_position_code for this_frame in list_frame_plotted]    
     list_contrast_plotted=[this_frame.focus_value for this_frame in list_frame_plotted]
-    
-    if pre_fix=='':
-        
-        list_code_plotted=list(np.array(C_N_A.Normalize(list_code_plotted))*1024)
-        
+     
     peak_index=list_contrast_plotted.index(np.max(list_contrast_plotted))
     
     #normalization of contrast list
