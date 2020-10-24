@@ -12,9 +12,11 @@ Created on Mon Dec 30 18:03:19 2019
 import cv2
 import numpy as np
 
-import calculation_contrast as C_C
+import calculation_focus_value as C_F_V
 
-from calculation_contrast import zoom_factor,ROI_weight_5_area,ROI_weight_9_area
+from configuration_parameter import zoom_factor,\
+                                    ROI_weight_5_area,\
+                                    ROI_weight_9_area
 
 #==============================================================================
 #object to operate image
@@ -67,19 +69,13 @@ class frame:
         #image of ROI
         self.img_ROI=np.full(np.shape(self.img_gray),np.nan)
         
-        list_center_5_area=[[ height/2, width/2],
-                             [ height/4, width/4],
-                             [ height/4,-width/4],
-                             [-height/4,-width/4],
-                             [-height/4, width/4]]
-        
-        list_center_9_area=[[height/2+i*height/4,width/2+j*width/4] for i in [-1,0,1] for j in [-1,0,1]]
-        
         #size of area
         area_half_height=int(np.shape(self.img_gray)[0]/zoom_factor)
         area_half_width=int(np.shape(self.img_gray)[1]/zoom_factor)
         
         if ROI_mode=='9-Area':
+            
+            list_center_9_area=[[height/2+i*height/4,width/2+j*width/4] for i in [-1,0,1] for j in [-1,0,1]]
             
             #calculate contrast in each area
             list_contrast_9_areas=[]
@@ -90,7 +86,7 @@ class frame:
                                         int(j)-area_half_width:int(j)+area_half_width]
             
                 #collect it
-                list_contrast_9_areas.append(C_C.GlobalContrast(this_area,operator))
+                list_contrast_9_areas.append(C_F_V.FocusValue(this_area,operator))
             
                 #draw the bound of ROI
                 for k in range(ROI_linewidth):
@@ -105,6 +101,12 @@ class frame:
        
         if ROI_mode=='5-Area':
             
+            list_center_5_area=[[ height/2, width/2],
+                                [ height/4, width/4],
+                                [ height/4,-width/4],
+                                [-height/4,-width/4],
+                                [-height/4, width/4]]
+            
             #calculate contrast in each area
             list_contrast_5_areas=[]
             
@@ -114,7 +116,7 @@ class frame:
                                         int(j)-area_half_width:int(j)+area_half_width]
             
                 #collect it
-                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,operator))
+                list_contrast_5_areas.append(C_F_V.FocusValue(this_area,operator))
             
                 #draw the bound of ROI
                 for k in range(ROI_linewidth):
@@ -129,24 +131,21 @@ class frame:
        
         if ROI_mode=='Center':
             
-            for i,j in list_5_points[:1]:
+            i,j=height/2, width/2
                         
-                this_area=self.img_gray[int(i)-area_half_height:int(i)+area_half_height,
-                                        int(j)-area_half_width:int(j)+area_half_width]
-            
-                #collect it
-                list_contrast_5_areas.append(C_C.GlobalContrast(this_area,operator))
-            
-                #draw the bound of ROI
-                for k in range(ROI_linewidth):
-                    
-                    self.img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
-                    self.img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
-                    self.img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
-                    self.img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
-    
+            this_area=self.img_gray[int(i)-area_half_height:int(i)+area_half_height,
+                                    int(j)-area_half_width:int(j)+area_half_width]
+        
             #collect the data
-            self.focus_value=list_contrast_5_areas[0]
-            
+            self.focus_value=C_F_V.FocusValue(this_area,operator)
+        
+            #draw the bound of ROI
+            for k in range(ROI_linewidth):
+                
+                self.img_ROI[int(i-k)-area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                self.img_ROI[int(i+k)+area_half_height,int(j-k)-area_half_width:int(j+k+1)+area_half_width]=1
+                self.img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j-k)-area_half_width]=1
+                self.img_ROI[int(i-k)-area_half_height:int(i+k+1)+area_half_height,int(j+k)+area_half_width]=1
+      
         print('--> Lens Position Code:',self.lens_position_code)
         # print('--> Focus Value:',self.focus_value)

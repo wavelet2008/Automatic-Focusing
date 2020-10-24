@@ -30,9 +30,9 @@ from __init__ import *
 # total_folder=r'C:\Users\ASUS\Desktop\Material\Grape'
 total_folder=r'C:\Users\ASUS\Desktop\Material\Plant'
 
-for this_peak_search_method in ['Binary','Global','Coarse2Fine']:
+for this_peak_search_method in ['Binary','Global','Coarse2Fine'][-1:]:
     
-    for this_ROI_mode in ['5-Area']:
+    for this_ROI_mode in ['5-Area','9-Area','Center'][-1:]:
         
         for this_imgs_folder_name in os.listdir(total_folder):
 

@@ -16,22 +16,10 @@ import matplotlib.pyplot as plt
 
 from matplotlib.pyplot import MultipleLocator
 
-from configuration_color import list_tenengrad_operator
-
 import operation_import as O_I
 
-import calculation_tenengrad as C_T
 import calculation_texture_feature as C_T_F
 import calculation_scene_discrimination as C_S_D
-
-#basic parameters
-ROI_weight_5_area=[0.14]*4
-ROI_weight_5_area.insert(0,0.44)
-
-ROI_weight_9_area=[0.2]*8
-ROI_weight_9_area.insert(4,0.2)
-
-zoom_factor=16
 
 '''
 Contrast (Luminance Contrast) is the relationship between the luminance
@@ -415,11 +403,6 @@ def GlobalContrast(img_gray,contrast_operator):
             if L_max>T2:n=3
                 
             return np.average((L/n).ravel())
-        
-    '''Articulation'''
-    if contrast_operator in list_tenengrad_operator:
-        
-        return C_T.Tenengrad(img_gray,tenengrad_operator)
             
 #------------------------------------------------------------------------------
 """
