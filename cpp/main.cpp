@@ -17,7 +17,6 @@
 #include "Header\operation_import.h"
 #include "Header\operation_vector.h"
 
-#include "Header\calculation_qr_code.h"
 #include "Header\calculation_contrast.h"
 #include "Header\calculation_histogram.h"
 #include "Header\calculation_peak_search.h"
