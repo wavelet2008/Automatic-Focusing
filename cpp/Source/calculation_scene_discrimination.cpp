@@ -10,6 +10,7 @@ Created on Mon Sept 11 14:51:37 2020
 ******************************************************************************/
 
 #include "..\Header\operation_vector.h"
+
 #include "..\Header\calculation_histogram.h"
 #include "..\Header\calculation_scene_discrimination.h"
 
