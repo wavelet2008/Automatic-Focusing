@@ -36,7 +36,7 @@ O_C.Curve(list_object_depth,
           'Focused Lens Position Code (--)',
           'Focused Lens Position Code (VCM)-Object Depth Curve')
 
-plt.savefig('VCM.png',dpi=300,bbox_inches='tight')
+plt.savefig('output/VCM.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 # #plot curve of Dot Distance-Object Depth Curve
@@ -76,12 +76,12 @@ list_object_distance_60_300=list(np.linspace(60,300,13))
 O_E.WriteTupleList2File(C_N_A.OptimizedFitting(list_object_distance_60_300,
                                                list_focused_DAC_code_60_300,
                                                241),
-                        'g_code_60_300.txt')
+                        'output/g_code_60_300.txt')
 
 O_E.WriteTupleList2File(C_N_A.OptimizedFitting(list_object_distance_300_1000,
                                                list_focused_DAC_code_300_1000,
                                                701),
-                        'g_code_300_1000.txt')
+                        'output/g_code_300_1000.txt')
 
 O_C.CurveBatch([list_object_distance_60_300,list_object_distance_300_1000],
                [list_focused_DAC_code_60_300,list_focused_DAC_code_300_1000],
@@ -91,7 +91,7 @@ O_C.CurveBatch([list_object_distance_60_300,list_object_distance_300_1000],
                'Focused Lens Position Code (--)',
                'Focused Lens Position Code (DAC)-Object Depth Curve')
 
-plt.savefig('DAC.png',dpi=300,bbox_inches='tight')
+plt.savefig('output/DAC.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 # plt.figure(figsize=(8,6))
