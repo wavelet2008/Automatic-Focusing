@@ -54,7 +54,7 @@ int main(){
 
 	//write VCM Code and contrast
 	ofstream out_file;
-	out_file.open("Code-Contrast.txt");
+	out_file.open("../Outcome/Code-Contrast.txt");
 	out_file << "Code" << " " << "Contrast" << endl;
 
 	//normalization
