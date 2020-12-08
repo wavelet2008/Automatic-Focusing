@@ -53,13 +53,29 @@ plt.close()
 # img_src=plt.imread(folder+'\\top_VCM_850.png')
 # plt.imshow(img_src)
 
+# O_C.CurveBatch([list_object_depth]*2,
+#                 [list_image_distance_focused,list_image_distance_200mm],
+#                 list_contrast_color,
+#                 ['Code in various g','FCode in g=200mm'],
+#                 'Object Depth (mm)',
+#                 'Image Distance (mm)',
+#                 'Image Distance-Object Depth Curve')
+
+
+'''Dual Code Matching'''
+list_focused_VCM_code_left=[656,512,464,448,416,416,400,400,400,400]
+list_focused_VCM_code_right=[678,480,444,426,406,400,394,388,384,378]
+
 O_C.CurveBatch([list_object_depth]*2,
-                [list_image_distance_focused,list_image_distance_200mm],
-                list_contrast_color,
-                ['Focused VCM Code in various g','Focused VCM Code in g=200mm'],
+                [list_focused_VCM_code_left,list_focused_VCM_code_right],
+                list_contrast_color[3:],
+                ['Code of Left Camera','Code of Right Camera'],
                 'Object Depth (mm)',
-                'Image Distance (mm)',
-                'Image Distance-Object Depth Curve')
+                'Focused Lens Position Code (--)',
+                'Focused Lens Position Code (VCM)-Object Depth Curve')
+
+plt.savefig('../Outcome/Dual Matching.png',dpi=300,bbox_inches='tight')
+plt.close()
 
 '''DAC'''
 # list_focused_DAC_code=[656,512,464,448,416,416,400,400,400,400]
